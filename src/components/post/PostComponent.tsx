@@ -5,7 +5,7 @@ import VideoPreviewComponent from "../video/preview/VideoPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
 import CommentBoxComponent from "../post/commentbox/CommentBoxComponent";
 
-const PostComponent = () => {
+const PostComponent = ({navigation}) => {
   const styles = StyleSheet.create({
     imageContainer: {
       width: "100%",
@@ -59,7 +59,7 @@ const PostComponent = () => {
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <VideoPreviewComponent />
+              <VideoPreviewComponent navigation={navigation} videoKey="rMbATaj7Il8"/>
               <ActionButtonsComponent />
               <Text style={{color: "white"}}>
                 Happy Halloween!

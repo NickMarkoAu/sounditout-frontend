@@ -1,8 +1,11 @@
 import {FlatList, SafeAreaView, StyleSheet, StatusBar, View} from "react-native";
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
+import {Post} from "../../state/song-suggestion.model";
+import {useAppSelector} from "../../state/hooks";
+import {selectPosts} from "../../state/song-suggestion.selector";
 
-const FeedComponent = () => {
+const FeedComponent = ({navigation}) => {
   const styles = StyleSheet.create({
     scrollView: {
       width: "100%"
@@ -18,6 +21,8 @@ const FeedComponent = () => {
     },
   });
 
+  const posts: Post[] = useAppSelector(selectPosts);
+  
   const data = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -37,7 +42,7 @@ const FeedComponent = () => {
     <SafeAreaView style={styles.container}>
       <FlatList style={styles.scrollView} data={data}  renderItem={({item}) =>
         <View style={{overflow: "visible"}}>
-          <PostComponent />
+          <PostComponent navigation={navigation}/>
           <Divider bg="#F6BD60" style={{width: "100%"}}/>
       </View>
       }/>

@@ -1,9 +1,8 @@
-import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { HStack, VStack } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import {Image, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 
-const VideoPreviewComponent = () => {
+const VideoPreviewComponent = ({navigation, videoKey}) => {
   const styles = StyleSheet.create({
     previewContainer: {
       width: "100%",
@@ -38,7 +37,7 @@ const VideoPreviewComponent = () => {
       left: "50%",
       alignItems: "center",
       justifyContent: "center",
-      transform: [{ translateX: -25 }, { translateY: -25 }],
+      transform: [{translateX: -25}, {translateY: -25}],
     },
     playIcon: {
       color: "#F6BD60",
@@ -47,16 +46,16 @@ const VideoPreviewComponent = () => {
   return (
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={require("../../../../assets/test-song.png")} />
-        <TouchableOpacity style={styles.playIconContainer}>
-          <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle} />
+        <Image style={styles.image} source={require("../../../../assets/test-song.png")}/>
+        <TouchableOpacity style={styles.playIconContainer} onPress={() => navigation.navigate("Playlist", {videoKey})}>
+          <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
         </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
-        <Text style={{ color: "white", textAlign: "left", fontWeight: "bold" }}>
+        <Text style={{color: "white", textAlign: "left", fontWeight: "bold"}}>
           Born To Be Wild (Easy Rider)
         </Text>
-        <Text style={{ color: "white", textAlign: "left" }}>Steppenwolf</Text>
+        <Text style={{color: "white", textAlign: "left"}}>Steppenwolf</Text>
       </View>
     </View>
   );

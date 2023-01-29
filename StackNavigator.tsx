@@ -4,10 +4,8 @@ import Feed from './src/pages/Feed';
 import Search from './src/pages/Search';
 import Profile from './src/pages/Profile';
 import Playlist from './src/pages/Playlist'
-import {TouchableOpacity} from "react-native";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faArrowCircleLeft} from "@fortawesome/free-solid-svg-icons";
 import { createAppContainer } from 'react-navigation';
+import Player from "./src/pages/Player";
 
 // @ts-ignore
 const StackNavigator = createStackNavigator({
@@ -21,6 +19,12 @@ const StackNavigator = createStackNavigator({
     screen: Camera,
     navigationOptions: {
       headerShown: false
+    }
+  },
+  Player: {
+    screen: Player,
+    navigationOptions: {
+      headerShown: false,
     }
   },
   Playlist: {
