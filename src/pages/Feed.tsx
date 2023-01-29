@@ -29,7 +29,7 @@ const Feed = ({navigation}) => {
       <View style={styles.container}>
         <StatusBar style="light"/>
         <TopBarComponent/>
-        <FeedComponent/>
+        <FeedComponent navigation={navigation}/>
         <NavigationComponent navigation={navigation} />
       </View>
     </NativeBaseProvider>
