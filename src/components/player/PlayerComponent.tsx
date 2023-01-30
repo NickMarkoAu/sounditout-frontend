@@ -69,7 +69,7 @@ const PlayerComponent = ({navigation, videoKey}) => {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require("../../../assets/test-profile.png")}
+          source={require("../../../assets/samples/test-profile.png")}
         />
       </View>
       <View style={styles.previewContainer}>

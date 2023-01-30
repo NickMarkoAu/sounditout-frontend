@@ -31,7 +31,7 @@ const PreviewComponent = () => {
   return (
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={require("../../../assets/test-song.png")} />
+        <Image style={styles.image} source={require("../../../assets/samples/test-song.png")} />
       </View>
       <View style={styles.textContainer}>
         <Text style={{ color: "white", textAlign: "left", fontWeight: "bold" }}>

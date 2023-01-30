@@ -31,7 +31,7 @@ export default class ProfileButton extends React.Component<{ onPress: () => void
         <TouchableOpacity>
         <Image
           style={styles.CircleImage}
-          source={require("../../../assets/test-profile.png")}
+          source={require("../../../assets/samples/test-profile.png")}
         />
         </TouchableOpacity>
       </View>
