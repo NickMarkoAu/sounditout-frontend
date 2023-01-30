@@ -36,7 +36,7 @@ const TopBarComponent = () => {
   return (
     <View style={styles.TopBarContainer}>
         <Image style={styles.Logo}
-               source={require('../../../assets/logo.png')}
+               source={require('../../../assets/appidentity/logo.png')}
         />
       <Pressable style={styles.SendContainer}>
         <TouchableOpacity>

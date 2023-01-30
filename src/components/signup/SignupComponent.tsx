@@ -100,7 +100,7 @@ const SignupComponent = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
-        <Image source={require("../../../assets/logo.png")} style={styles.logo}/>
+        <Image source={require("../../../assets/appidentity/logo.png")} style={styles.logo}/>
         <View style={styles.inputContainer}>
           <FontAwesomeIcon icon={faUser} color="#F6BD60" size={30}/>
           <TextInput

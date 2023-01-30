@@ -46,7 +46,7 @@ const VideoPreviewComponent = ({navigation, videoKey}) => {
   return (
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={require("../../../../assets/test-song.png")}/>
+        <Image style={styles.image} source={require("../../../../assets/samples/test-song.png")}/>
         <TouchableOpacity style={styles.playIconContainer} onPress={() => navigation.navigate("Playlist", {videoKey})}>
           <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
         </TouchableOpacity>
