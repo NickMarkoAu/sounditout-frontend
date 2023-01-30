@@ -4,8 +4,9 @@ import ProfileButton from "../navigation/ProfileButton";
 import VideoPreviewComponent from "../video/preview/VideoPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
 import CommentBoxComponent from "../post/commentbox/CommentBoxComponent";
+import {Post} from "../../state/song-suggestion.model";
 
-const PostComponent = ({navigation}) => {
+const PostComponent = ({navigation, post}) => {
   const styles = StyleSheet.create({
     imageContainer: {
       width: "100%",
@@ -45,24 +46,27 @@ const PostComponent = ({navigation}) => {
       alignSelf: 'stretch',
     }
   });
+
+  const typedPost = post as Post;
   return (
+    typedPost &&
         <VStack style={styles.postContainer} space="2">
             <Box style={styles.postHeader}>
               <View style={styles.profileId}>
                 <ProfileButton onPress={() => {}} />
-                <Text style={{color: "white", marginLeft: 3}}>Nick Marko</Text>
+                <Text style={{color: "white", marginLeft: 3}}>{typedPost.user.name}</Text>
               </View>
-              <Text style={{color: "white"}}>Oct 31, 2022</Text>
+              <Text style={{color: "white"}}>{typedPost.date.toDateString()}</Text>
             </Box>
             <View style={styles.imageContainer}>
-              <Image source={require("../../../assets/test-profile.png")}
+              <Image source={{uri: typedPost.image.url}}
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <VideoPreviewComponent navigation={navigation} videoKey="rMbATaj7Il8"/>
+              <VideoPreviewComponent navigation={navigation} videoKey={typedPost.song.youtubeVideoId}/>
               <ActionButtonsComponent />
               <Text style={{color: "white"}}>
-                Happy Halloween!
+                {typedPost.content}
               </Text>
               <CommentBoxComponent />
             </View>

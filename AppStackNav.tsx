@@ -8,7 +8,7 @@ import { createAppContainer } from 'react-navigation';
 import Player from "./src/pages/Player";
 
 // @ts-ignore
-const StackNavigator = createStackNavigator({
+const AppStackNav = createStackNavigator({
   Feed: {
     screen: Feed,
     navigationOptions: {
@@ -47,4 +47,4 @@ const StackNavigator = createStackNavigator({
   },
 });
 
-export default createAppContainer(StackNavigator);
+export default createAppContainer(AppStackNav);

@@ -12,11 +12,7 @@ const Feed = ({navigation}) => {
       flex: 1,
       width: "100%",
       height: undefined,
-      alignSelf: "stretch",
       backgroundColor: '#0C1713',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: "visible"
     },
     text: {
       position: "absolute"

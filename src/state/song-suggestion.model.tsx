@@ -17,15 +17,17 @@ export interface User {
 
 export interface Post {
   id: string;
-  userId: string;
+  user: User;
   image: Image;
   song: Song;
   content: string;
   comments: Comment[];
+  date: Date;
 }
 
 export interface Image {
   id: string;
+  url: string;
 }
 
 export interface Comment {

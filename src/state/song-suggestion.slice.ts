@@ -1,9 +1,7 @@
 import {Post, User} from "./song-suggestion.model";
-import {ActionReducerMapBuilder, createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getPostsForUser} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
-import {NoInfer} from "react-redux";
-import {State} from "react-native-webview/lib/WebViewTypes";
 
 export interface SongSuggestionState {
   user: User;
@@ -53,3 +51,5 @@ export const getPostsForUserAction = createAsyncThunk<Post[], { user: User }>(
     }
   }
 );
+
+export const songSuggestionReducer = songSuggestionSlice.reducer;
