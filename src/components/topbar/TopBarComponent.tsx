@@ -7,32 +7,29 @@ const TopBarComponent = () => {
   const styles = StyleSheet.create({
     TopBarContainer: {
       position: "absolute",
+      left: 0,
       top: 35,
-      left: -12,
       width: "100%",
       borderStyle: "solid",
       borderBottomColor: "#5D2A42",
       borderBottomWidth: 2,
       padding: 12,
       flexDirection: "row",
-      flex: 2,
-      display: "flex",
+      flex: 1,
       justifyContent: "space-between",
       alignItems: 'center', //Centered vertically
       zIndex: 9999
     },
     Logo: {
-      height: 25,
+      width: "40%",
+      height: 30,
       resizeMode: "contain"
     },
     SendContainer: {
-      right: 0,
-      alignItems: "flex-end",
-      justifyContent: 'flex-end'
+
     },
     Send: {
-      alignSelf: 'flex-end',
-      textAlign: 'right'
+
     }
   });
 
