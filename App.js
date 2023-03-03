@@ -1,14 +1,12 @@
 import React from "react"
 import AppStackNav from "./AppStackNav"
 import AuthStackNav from "./AuthStackNav"
-import {createStore} from "@reduxjs/toolkit"
 import {Provider} from "react-redux"
-import {songSuggestionReducer} from "./src/state/song-suggestion.slice"
 import {useAppSelector} from "./src/state/hooks"
 import {selectCurrentUser} from "./src/state/song-suggestion.selector"
+import store from "./src/state/store"
 
 const AppWrapper = () => {
-  const store = createStore(songSuggestionReducer)
 
   return (
     <Provider store={store}>

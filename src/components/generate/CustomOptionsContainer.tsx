@@ -1,8 +1,12 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Slider from "@react-native-community/slider";
-import {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCoins, faLock} from "@fortawesome/free-solid-svg-icons";
+import {GenerateParams, PricingOptions} from "../../state/song-suggestion.model";
+import {useAppSelector} from "../../state/hooks";
+import {selectGenerateParams, selectPricingOptions} from "../../state/song-suggestion.selector";
+import {updateGenerateParamsAction} from "../../state/song-suggestion.slice";
+import {useDispatch} from "react-redux";
 
 const CustomOptionsContainer = ({}) => {
   const styles = StyleSheet.create({
@@ -55,16 +59,25 @@ const CustomOptionsContainer = ({}) => {
     }
   );
 
-  const [energyValue, setEnergyValue] = useState(0);
-  const [tempoValue, setTempoValue] = useState(0);
-  const [warmthValue, setWarmthValue] = useState(0); //TODO store these values in global state
+  const generateParams: GenerateParams = useAppSelector(selectGenerateParams);
+  const pricingOptions: PricingOptions = useAppSelector(selectPricingOptions);
 
-  const [isLocked, setLocked] = useState(true);
+  const energyValue = generateParams.energy;
+  const tempoValue = generateParams.tempo;
+  const warmthValue = generateParams.warmth;
 
-  const unlockCost = 1; //TODO make this data driven
+  const isLocked = generateParams.isLocked;
+
+  const unlockCost = pricingOptions.unlockCost;
+
+  const dispatch = useDispatch();
+
+  const updateGenerateParams = (generateParams: GenerateParams) => {
+    dispatch(updateGenerateParamsAction(generateParams));
+  }
 
   const unlock = () => {
-    setLocked(false);
+    updateGenerateParams({...generateParams, isLocked: false})
   }
 
   return (
@@ -94,7 +107,7 @@ const CustomOptionsContainer = ({}) => {
           maximumTrackTintColor="#F6BD60"
           step={10}
           value={energyValue}
-          onValueChange={(sliderValue) => setEnergyValue(sliderValue)}
+          onValueChange={(sliderValue) => updateGenerateParams({...generateParams, energy: sliderValue})}
         />
         <Text style={styles.sliderLabel}>
           WARMTH
@@ -109,7 +122,7 @@ const CustomOptionsContainer = ({}) => {
           maximumTrackTintColor="#F6BD60"
           step={10}
           value={warmthValue}
-          onValueChange={(sliderValue) => setWarmthValue(sliderValue)}
+          onValueChange={(sliderValue) => updateGenerateParams({...generateParams, warmth: sliderValue})}
         />
         <Text style={styles.sliderLabel}>
           TEMPO
@@ -123,7 +136,7 @@ const CustomOptionsContainer = ({}) => {
           maximumTrackTintColor="#F6BD60"
           step={10}
           value={tempoValue}
-          onValueChange={(sliderValue) => setTempoValue(sliderValue)}
+          onValueChange={(sliderValue) => updateGenerateParams({...generateParams, tempo: sliderValue})}
         />
       </View>
     </View>
