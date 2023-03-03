@@ -1,5 +1,5 @@
 import {StyleSheet, View} from "react-native";
-import {faCameraRetro, faCirclePlay, faMagnifyingGlass, faNewspaper} from "@fortawesome/free-solid-svg-icons";
+import {faCameraRetro, faCirclePlay, faMagnifyingGlass, faNewspaper, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import NavButton from "./NavButton";
 import ProfileButton from "./ProfileButton";
@@ -36,6 +36,7 @@ const NavigationComponent = ({navigation}) => {
         <NavButton onPress={() => navigation.navigate("Feed")} icon={faNewspaper} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Search")} icon={faMagnifyingGlass} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Camera")} icon={faCameraRetro} styles={styles} size={cameraIconSize}/>
+        <NavButton onPress={() => navigation.navigate("Generate")} icon={faSquarePlus} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Player")} icon={faCirclePlay} styles={styles} size={iconSize}/>
         <ProfileButton onPress={() => navigation.navigate("Profile")}/>
       </View>

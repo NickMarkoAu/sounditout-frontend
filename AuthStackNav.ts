@@ -1,6 +1,6 @@
 import {createAppContainer} from 'react-navigation';
-import Login from "./src/pages/Login";
-import Signup from "./src/pages/Signup";
+import Login from "./src/screens/Login";
+import Signup from "./src/screens/Signup";
 import {createStackNavigator} from "react-navigation-stack";
 
 const AuthStackNav = createStackNavigator({
