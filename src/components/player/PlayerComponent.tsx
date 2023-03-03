@@ -69,7 +69,7 @@ const PlayerComponent = ({navigation, videoKey}) => {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require("../../../assets/samples/test-profile.png")}
+          source={require("../../../assets/samples/test-profile.png")} //TODO get this from state
         />
       </View>
       <View style={styles.previewContainer}>

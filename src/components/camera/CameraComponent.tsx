@@ -14,14 +14,15 @@ const CameraComponent= ({ navigation }) => {
   // @ts-ignore
   const [type, setType] = useState(CameraType.back);
 
-  const permisionFunction = async () => {
+  const permissionFunction = async () => {
     // here is how you can get the camera permission
     const cameraPermission = await Camera.requestCameraPermissionsAsync();
+    console.log('Camera permission', cameraPermission.status);
 
     setCameraPermission(cameraPermission.status === 'granted');
 
-    const imagePermission = await ImagePicker.getMediaLibraryPermissionsAsync();
-    console.log(imagePermission.status);
+    const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    console.log('Image permission', imagePermission.status);
 
     setGalleryPermission(imagePermission.status === 'granted');
 
@@ -34,7 +35,7 @@ const CameraComponent= ({ navigation }) => {
   };
 
   useEffect(() => {
-    permisionFunction();
+    permissionFunction();
   }, []);
 
   const takePicture = async () => {

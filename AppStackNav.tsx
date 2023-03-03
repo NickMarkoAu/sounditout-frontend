@@ -1,11 +1,12 @@
 import { createStackNavigator } from 'react-navigation-stack';
-import Camera from './src/pages/Camera';
-import Feed from './src/pages/Feed';
-import Search from './src/pages/Search';
-import Profile from './src/pages/Profile';
-import Playlist from './src/pages/Playlist'
+import Camera from './src/screens/Camera';
+import Feed from './src/screens/Feed';
+import Search from './src/screens/Search';
+import Profile from './src/screens/Profile';
+import Playlist from './src/screens/Playlist'
 import { createAppContainer } from 'react-navigation';
-import Player from "./src/pages/Player";
+import Player from "./src/screens/Player";
+import Generate from './src/screens/Generate';
 
 // @ts-ignore
 const AppStackNav = createStackNavigator({
@@ -45,6 +46,12 @@ const AppStackNav = createStackNavigator({
       headerShown: false,
     },
   },
+  Generate: {
+    screen: Generate,
+    navigationOptions: {
+      headerShown: false,
+    }
+  }
 });
 
 export default createAppContainer(AppStackNav);
