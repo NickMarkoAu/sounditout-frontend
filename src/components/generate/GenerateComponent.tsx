@@ -2,12 +2,20 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCoins, faLock} from "@fortawesome/free-solid-svg-icons";
 import CustomOptionsContainer from "./CustomOptionsContainer";
+import {useAppDispatch, useAppSelector} from "../../state/hooks";
+import {selectCurrentUser, selectPricingOptions} from "../../state/song-suggestion.selector";
+import {PricingOptions, User, UserUploadedImage} from "../../state/song-suggestion.model";
+import {generateAction} from "../../state/song-suggestion.slice";
 
 const GenerateComponent = ({navigation, image}) => {
-  //TODO move this to state get from API request
-  const totalFreeTokens = 10;
-  const availableFreeTokens = 0;
-  const tokenCost = 1;
+  const pricingOptions: PricingOptions = useAppSelector(selectPricingOptions);
+  const currentUser: User = useAppSelector(selectCurrentUser);
+  const totalFreeTokens = pricingOptions?.freeTokens;
+  const availableFreeTokens = currentUser?.tokens?.freeTokens? currentUser.tokens.freeTokens : 0;
+  const availableTokens = currentUser?.tokens?.tokens? currentUser.tokens.tokens : 0;
+  const tokenCost = pricingOptions?.generateCost;
+
+  const dispatch = useAppDispatch();
 
   const styles = StyleSheet.create({
       container: {
@@ -56,7 +64,13 @@ const GenerateComponent = ({navigation, image}) => {
         flexDirection: 'row'
       }
     }
-  )
+  );
+
+  const generate = () => {
+    //TODO validate tokens and adjust balance or trigger in app payment
+    dispatch(generateAction({image}));
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
