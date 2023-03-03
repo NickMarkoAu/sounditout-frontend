@@ -1,11 +1,17 @@
 import {FlatList, SafeAreaView, StyleSheet, StatusBar, View} from "react-native";
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
-import {Post} from "../../state/song-suggestion.model";
-import {useAppSelector} from "../../state/hooks";
-import {selectPosts} from "../../state/song-suggestion.selector";
+import {Post, User} from "../../state/song-suggestion.model";
+import {useAppDispatch, useAppSelector} from "../../state/hooks";
+import {selectCurrentUser, selectPosts} from "../../state/song-suggestion.selector";
+import {useEffect} from "react";
+import {getPostsForUser} from "../post/post.api";
+import {getPostsForUserAction} from "../../state/song-suggestion.slice";
 
 const FeedComponent = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const user: User = useAppSelector(selectCurrentUser);
+
   const styles = StyleSheet.create({
     scrollView: {
       width: "100%"
@@ -22,6 +28,11 @@ const FeedComponent = ({navigation}) => {
   });
 
   const posts: Post[] = useAppSelector(selectPosts);
+  useEffect(() => {
+    if (posts.length === 0) {
+      dispatch(getPostsForUserAction({user}));
+    }
+  }, [posts.length, dispatch]);
   
   return (
     <SafeAreaView style={styles.container}>
