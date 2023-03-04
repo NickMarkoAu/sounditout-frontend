@@ -1,8 +1,11 @@
 import {Image, View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from "../../../state/hooks";
 
-const VideoPreviewComponent = ({navigation, videoKey}) => {
+const SongPreviewComponent = ({navigation, song}) => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     previewContainer: {
       width: "100%",
@@ -40,25 +43,27 @@ const VideoPreviewComponent = ({navigation, videoKey}) => {
       transform: [{translateX: -25}, {translateY: -25}],
     },
     playIcon: {
-      color: "#F6BD60",
+      color: colours.primary,
     },
   });
   return (
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
+        {/*TODO use the song image URL*/}
         <Image style={styles.image} source={require("../../../../assets/samples/test-song.png")}/>
-        <TouchableOpacity style={styles.playIconContainer} onPress={() => navigation.navigate("Playlist", {videoKey})}>
+        {/*TODO do we always want to go to the player? maybe pass the song action in as a prop*/}
+        <TouchableOpacity style={styles.playIconContainer} onPress={() => navigation.navigate("Playlist", {song: song})}>
           <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
         </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
         <Text style={{color: "white", textAlign: "left", fontWeight: "bold"}}>
-          Born To Be Wild (Easy Rider)
+          {song.name}
         </Text>
-        <Text style={{color: "white", textAlign: "left"}}>Steppenwolf</Text>
+        <Text style={{color: "white", textAlign: "left"}}>{song.artist}</Text>
       </View>
     </View>
   );
 };
 
-export default VideoPreviewComponent;
+export default SongPreviewComponent;

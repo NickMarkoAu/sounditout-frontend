@@ -4,15 +4,17 @@ import TopBarComponent from "../components/topbar/TopBarComponent";
 import React from "react";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import {StyleSheet, View} from "react-native";
+import {useTheme} from "../state/hooks";
 
 const Generate = ({navigation, image}) => {
+  const {colours} = useTheme;
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: "100%",
       height: undefined,
       alignSelf: "stretch",
-      backgroundColor: '#0C1713',
+      backgroundColor: colours.background,
       alignItems: 'center',
       overflow: "visible"
     },

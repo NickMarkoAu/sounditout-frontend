@@ -5,14 +5,17 @@ import TopBarComponent from "../components/topbar/TopBarComponent";
 import FeedComponent from "../components/feed/FeedComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import React from "react";
+import {useTheme} from "../state/hooks";
 
 const Feed = ({navigation}) => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       width: "100%",
       height: undefined,
-      backgroundColor: '#0C1713',
+      backgroundColor: colours.background,
     },
     text: {
       position: "absolute"

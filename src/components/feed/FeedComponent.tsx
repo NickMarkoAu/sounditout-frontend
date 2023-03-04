@@ -2,15 +2,15 @@ import {FlatList, SafeAreaView, StyleSheet, StatusBar, View} from "react-native"
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
 import {Post, User} from "../../state/song-suggestion.model";
-import {useAppDispatch, useAppSelector} from "../../state/hooks";
+import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentUser, selectPosts} from "../../state/song-suggestion.selector";
 import {useEffect} from "react";
-import {getPostsForUser} from "../post/post.api";
 import {getPostsForUserAction} from "../../state/song-suggestion.slice";
 
 const FeedComponent = ({navigation}) => {
   const dispatch = useAppDispatch();
   const user: User = useAppSelector(selectCurrentUser);
+  const {colours} = useTheme;
 
   const styles = StyleSheet.create({
     scrollView: {
@@ -39,7 +39,7 @@ const FeedComponent = ({navigation}) => {
       <FlatList style={styles.scrollView} data={posts}  renderItem={({item}) =>
         <View style={{overflow: "visible"}}>
           <PostComponent navigation={navigation} post={item}/>
-          <Divider bg="#F6BD60" style={{width: "100%"}}/>
+          <Divider bg={colours.primary} style={{width: "100%"}}/>
       </View>
       }/>
     </SafeAreaView>
