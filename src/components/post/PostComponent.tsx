@@ -1,7 +1,7 @@
 import { Box, VStack, Text } from 'native-base';
 import {Image, StyleSheet, View} from 'react-native';
 import ProfileButton from "../navigation/ProfileButton";
-import VideoPreviewComponent from "../video/preview/VideoPreviewComponent";
+import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
 import CommentBoxComponent from "../post/commentbox/CommentBoxComponent";
 import {Post} from "../../state/song-suggestion.model";
@@ -63,7 +63,7 @@ const PostComponent = ({navigation, post}) => {
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <VideoPreviewComponent navigation={navigation} videoKey={typedPost.song.youtubeVideoId}/>
+              <SongPreviewComponent navigation={navigation} videoKey={typedPost.song.youtubeVideoId}/>
               <ActionButtonsComponent />
               <Text style={{color: "white"}}>
                 {typedPost.content}

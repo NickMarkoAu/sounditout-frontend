@@ -3,8 +3,11 @@ import {faCameraRetro, faCirclePlay, faMagnifyingGlass, faNewspaper, faSquarePlu
 import React from "react";
 import NavButton from "./NavButton";
 import ProfileButton from "./ProfileButton";
+import {useTheme} from "../../state/hooks";
 
 const NavigationComponent = ({navigation}) => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     NavContainer: {
       position: "absolute",
@@ -13,9 +16,9 @@ const NavigationComponent = ({navigation}) => {
     },
     NavBar: {
       flexDirection: "row",
-      backgroundColor: '#0C1713',
+      backgroundColor: colours.background,
       borderStyle: "solid",
-      borderTopColor: "#5D2A42",
+      borderTopColor: colours.secondary,
       borderTopWidth: 3,
       width: '100%',
       justifyContent: 'space-evenly',

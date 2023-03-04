@@ -1,8 +1,11 @@
 import {View, StyleSheet, TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faHeart, faComment, faShareAlt, faBookmark} from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from "../../../state/hooks";
 
 const ActionButtonsComponent = () => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     actionButtonsContainer: {
       width: "100%",
@@ -17,7 +20,7 @@ const ActionButtonsComponent = () => {
       justifyContent: "center",
       flex: 1
     }, actionButtonIcon: {
-      color: "#F6BD60"
+      color: colours.primary
     },
     buttonCluster: {
       flexDirection: "row",

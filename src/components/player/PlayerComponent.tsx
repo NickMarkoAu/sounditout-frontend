@@ -3,10 +3,12 @@ import {View, StyleSheet, Image, TouchableOpacity} from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCirclePlay, faCirclePause, faFastForward, faFastBackward} from "@fortawesome/free-solid-svg-icons";
-import VideoPreviewComponent from "../video/preview/VideoPreviewComponent";
 import PreviewComponent from "./PreviewComponent";
+import {useTheme} from "../../state/hooks";
 
 const PlayerComponent = ({navigation, videoKey}) => {
+  const {colours} = useTheme;
+
   const [playing, setPlaying] = useState(false);
   const playerRef = useRef();
 
@@ -88,13 +90,13 @@ const PlayerComponent = ({navigation, videoKey}) => {
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity onPress={togglePlaying}>
-          <FontAwesomeIcon icon={faFastBackward} color="#F6BD60" size={60}/>
+          <FontAwesomeIcon icon={faFastBackward} color={colours.primary} size={60}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={togglePlaying}>
-          <FontAwesomeIcon icon={playing ? faCirclePause : faCirclePlay} color="#F6BD60" size={100}/>
+          <FontAwesomeIcon icon={playing ? faCirclePause : faCirclePlay} color={colours.primary} size={100}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={togglePlaying}>
-          <FontAwesomeIcon icon={faFastForward} color="#F6BD60" size={60}/>
+          <FontAwesomeIcon icon={faFastForward} color={colours.primary} size={60}/>
         </TouchableOpacity>
       </View>
     </View>

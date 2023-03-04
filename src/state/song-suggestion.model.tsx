@@ -58,5 +58,6 @@ export interface GenerateParams {
 export interface PricingOptions {
   generateCost: number,
   unlockCost: number,
-  freeTokens: number
+  freeTokens: number,
+  regenerateCost: number
 }

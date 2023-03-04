@@ -2,8 +2,11 @@ import {Image, View, StyleSheet, TextInput, TouchableOpacity, Text} from "react-
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import React from "react";
 import {faEnvelope, faLock, faUser, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from "../../state/hooks";
 
 const SignupComponent = ({navigation}) => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     logo: {
       width: "70%",
@@ -35,7 +38,7 @@ const SignupComponent = ({navigation}) => {
       flexDirection: "row",
       padding: 6,
       alignItems: 'center', //Centered vertically
-      backgroundColor: "#5D2A42",
+      backgroundColor: colours.secondary,
       borderRadius: 15
     },
     container: {
@@ -45,7 +48,7 @@ const SignupComponent = ({navigation}) => {
       marginBottom: 55,
       overflow: "visible",
       alignItems: 'center', //Centered vertically
-      backgroundColor: '#0C1713',
+      backgroundColor: colours.background,
     },
     loginButton: {
       width: "60%",
@@ -53,7 +56,7 @@ const SignupComponent = ({navigation}) => {
       marginBottom: 22,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F6BD60",
+      backgroundColor: colours.primary,
       borderRadius: 15,
     },
     servicesContainer: {
@@ -72,7 +75,7 @@ const SignupComponent = ({navigation}) => {
       flexDirection: "row",
     },
     resetButton: {
-      color: "#F6BD60",
+      color: colours.primary,
       fontSize: 16,
       marginLeft: 3
     },
@@ -85,7 +88,7 @@ const SignupComponent = ({navigation}) => {
       flex: 1,
       height: 3,
       width: "20%",
-      backgroundColor: '#5D2A42'
+      backgroundColor: colours.secondary
     },
     orText: {
       width: 50,
@@ -102,7 +105,7 @@ const SignupComponent = ({navigation}) => {
       <View style={styles.loginContainer}>
         <Image source={require("../../../assets/appidentity/logo.png")} style={styles.logo}/>
         <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faUser} color="#F6BD60" size={30}/>
+          <FontAwesomeIcon icon={faUser} color={colours.primary} size={30}/>
           <TextInput
             style={styles.input}
             placeholder="Full Name"
@@ -110,7 +113,7 @@ const SignupComponent = ({navigation}) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faCalendarAlt} color="#F6BD60" size={30}/>
+          <FontAwesomeIcon icon={faCalendarAlt} color={colours.primary} size={30}/>
           <TextInput
             style={styles.input}
             placeholder="Date of Birth"
@@ -118,7 +121,7 @@ const SignupComponent = ({navigation}) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faEnvelope} color="#F6BD60" size={30}/>
+          <FontAwesomeIcon icon={faEnvelope} color={colours.primary} size={30}/>
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -126,7 +129,7 @@ const SignupComponent = ({navigation}) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faLock} color="#F6BD60" size={30}/>
+          <FontAwesomeIcon icon={faLock} color={colours.primary} size={30}/>
           <TextInput
             secureTextEntry={true}
             style={styles.input}

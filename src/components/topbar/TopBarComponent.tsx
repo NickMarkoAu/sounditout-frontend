@@ -2,8 +2,11 @@ import {Image, Pressable, StyleSheet, TouchableOpacity, View} from "react-native
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from "../../state/hooks";
 
 const TopBarComponent = () => {
+  const {colours} = useTheme;
+
   const styles = StyleSheet.create({
     TopBarContainer: {
       position: "absolute",
@@ -11,7 +14,7 @@ const TopBarComponent = () => {
       top: 35,
       width: "100%",
       borderStyle: "solid",
-      borderBottomColor: "#5D2A42",
+      borderBottomColor: colours.secondary,
       borderBottomWidth: 2,
       padding: 12,
       flexDirection: "row",
@@ -40,7 +43,7 @@ const TopBarComponent = () => {
         />
       <Pressable style={styles.SendContainer}>
         <TouchableOpacity>
-          <FontAwesomeIcon icon={faPaperPlane} color="#F6BD60" size={20}/>
+          <FontAwesomeIcon icon={faPaperPlane} color={colours.primary} size={20}/>
         </TouchableOpacity>
       </Pressable>
     </View>

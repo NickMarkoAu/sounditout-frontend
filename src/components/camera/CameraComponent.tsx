@@ -4,8 +4,43 @@ import {Camera, CameraType} from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCameraRetro, faArrowCircleLeft, faImages, faRefresh} from "@fortawesome/free-solid-svg-icons";
+import {useTheme} from "../../state/hooks";
 
 const CameraComponent= ({ navigation }) => {
+  const {colours} = useTheme;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    cameraContainer: {
+      flex: 1,
+      flexDirection: 'row',
+    },
+    fixedRatio: {
+      flex: 1,
+    },
+    button: {
+      flex: 0.1,
+      padding: 10,
+      alignSelf: 'flex-end',
+      alignItems: 'center',
+    },
+    backButton: {
+      position: "absolute",
+      left: 20,
+      top: 60
+    },
+    actionButtonContainer: {
+      width: "100%",
+      position: "absolute",
+      bottom: 15,
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: 'center', //Centered vertically
+    }
+  });
+
   const [cameraPermission, requestPermissions] = Camera.useCameraPermissions();
 
   const [galleryPermission, setGalleryPermission] = useState(null);
@@ -15,19 +50,14 @@ const CameraComponent= ({ navigation }) => {
 
   const [type, setType] = useState(CameraType.back);
 
-  const requestPermissionAgain = () => {
-    Linking.openSettings();
-  }
-
   const permissionFunction = async () => {
-    // here is how you can get the camera permission
-    console.log('Camera permission', cameraPermission.status);
+    // console.log('Camera permission', cameraPermission.status);
     if(!cameraPermission || cameraPermission.status !== 'granted') {
       await requestPermissions();
     }
 
     const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    console.log('Image permission', imagePermission.status);
+    // console.log('Image permission', imagePermission.status);
 
     setGalleryPermission(imagePermission.status === 'granted');
 
@@ -46,7 +76,7 @@ const CameraComponent= ({ navigation }) => {
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
-      console.log(data.uri);
+      // console.log(data.uri);
       setImageUri(data.uri);
     }
   };
@@ -81,54 +111,24 @@ const CameraComponent= ({ navigation }) => {
         />
       </View>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <FontAwesomeIcon icon={faArrowCircleLeft} color="#F6BD60" size={50}/>
+        <FontAwesomeIcon icon={faArrowCircleLeft} color={colours.primary} size={50}/>
       </TouchableOpacity>
 
       <View style={styles.actionButtonContainer}>
         <TouchableOpacity onPress={pickImage}>
-          <FontAwesomeIcon icon={faImages} color="#F6BD60" size={60}/>
+          <FontAwesomeIcon icon={faImages} color={colours.primary} size={60}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={takePicture}>
-          <FontAwesomeIcon icon={faCameraRetro} color="#F6BD60" size={80}/>
+          <FontAwesomeIcon icon={faCameraRetro} color={colours.primary} size={80}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleCameraType}>
-          <FontAwesomeIcon icon={faRefresh} color="#F6BD60" size={60}/>
+          <FontAwesomeIcon icon={faRefresh} color={colours.primary} size={60}/>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  cameraContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  fixedRatio: {
-    flex: 1,
-  },
-  button: {
-    flex: 0.1,
-    padding: 10,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  backButton: {
-    position: "absolute",
-    left: 20,
-    top: 60
-  },
-  actionButtonContainer: {
-    width: "100%",
-    position: "absolute",
-    bottom: 15,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: 'center', //Centered vertically
-  }
-});
+
 
 export default CameraComponent;
