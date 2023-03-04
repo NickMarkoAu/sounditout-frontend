@@ -68,7 +68,7 @@ const CustomOptionsContainer = ({}) => {
 
   const isLocked = generateParams.isLocked;
 
-  const unlockCost = pricingOptions.unlockCost;
+  const unlockCost = pricingOptions?.unlockCost;
 
   const dispatch = useDispatch();
 

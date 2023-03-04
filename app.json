@@ -30,6 +30,9 @@
     },
     "web": {
       "favicon": "./assets/appidentity/favicon.png"
-    }
+    },
+    "plugins": [
+      "./plugins/withProguardRules.js"
+    ]
   }
 }

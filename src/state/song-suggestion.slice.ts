@@ -35,7 +35,11 @@ export const initialState: SongSuggestionState = {
     generateResult: null,
     isLoading: true
   },
-  pricing: null,
+  pricing: {
+    unlockCost: 1,
+    generateCost: 1,
+    freeTokens: 10
+  },
 }
 
 const songSuggestionSlice = createSlice({
