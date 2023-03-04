@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Button, Image, TouchableOpacity, Linking} from 'react-native';
 import {Camera, CameraType} from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCameraRetro, faArrowCircleLeft, faImages, faRefresh} from "@fortawesome/free-solid-svg-icons";
 
 const CameraComponent= ({ navigation }) => {
-  const [cameraPermission, setCameraPermission] = useState(null);
+  const [cameraPermission, requestPermissions] = Camera.useCameraPermissions();
+
   const [galleryPermission, setGalleryPermission] = useState(null);
 
   const [camera, setCamera] = useState(null);
   const [imageUri, setImageUri] = useState(null);
-  // @ts-ignore
+
   const [type, setType] = useState(CameraType.back);
+
+  const requestPermissionAgain = () => {
+    Linking.openSettings();
+  }
 
   const permissionFunction = async () => {
     // here is how you can get the camera permission
-    const cameraPermission = await Camera.requestCameraPermissionsAsync();
     console.log('Camera permission', cameraPermission.status);
-
-    setCameraPermission(cameraPermission.status === 'granted');
+    if(!cameraPermission || cameraPermission.status !== 'granted') {
+      await requestPermissions();
+    }
 
     const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     console.log('Image permission', imagePermission.status);
@@ -27,8 +32,8 @@ const CameraComponent= ({ navigation }) => {
     setGalleryPermission(imagePermission.status === 'granted');
 
     if (
-      imagePermission.status !== 'granted' &&
-      cameraPermission.status !== 'granted'
+      imagePermission.status !== 'granted' ||
+      cameraPermission?.status !== 'granted'
     ) {
       alert('Permission for media access needed.');
     }
@@ -59,8 +64,9 @@ const CameraComponent= ({ navigation }) => {
     });
 
     console.log(result);
-    if (!result.cancelled) {
-      setImageUri(result.uri);
+    if (!result.canceled) {
+      //TODO fix this set image URI
+      // setImageUri(result.assets.);
     }
   };
 
@@ -89,7 +95,6 @@ const CameraComponent= ({ navigation }) => {
           <FontAwesomeIcon icon={faRefresh} color="#F6BD60" size={60}/>
         </TouchableOpacity>
       </View>
-      {imageUri && <Image source={{ uri: imageUri }} style={{ flex: 1 }} />}
     </View>
   );
 }
