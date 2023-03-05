@@ -38,7 +38,8 @@ export const initialState: SongSuggestionState = {
   pricing: {
     unlockCost: 1,
     generateCost: 1,
-    freeTokens: 10
+    freeTokens: 10,
+    regenerateCost: 1
   },
 }
 

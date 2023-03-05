@@ -1,11 +1,19 @@
 import {Image, View, StyleSheet, TextInput, TouchableOpacity, Text} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import React from "react";
+import React, {useState} from "react";
 import {faEnvelope, faLock} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../state/hooks";
+import {Formik} from 'formik'
+import {login} from "../user/auth/auth.api";
+import {extractError} from "../../shared/error.utils";
 
 const LoginComponent = ({navigation}) => {
   const {colours} = useTheme;
+
+  const [loading, setLoading] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [responseCode, setResponseCode] = useState('null');
+  const [error, setError] = useState(null);
 
   const styles = StyleSheet.create({
     logo: {
@@ -82,7 +90,7 @@ const LoginComponent = ({navigation}) => {
     orContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom:22
+      marginBottom: 22
     },
     orLine: {
       flex: 1,
@@ -99,35 +107,71 @@ const LoginComponent = ({navigation}) => {
       marginBottom: 22,
       flexDirection: "row",
     }
-  })
+  });
+
+  const handleSubmit = (values) => {
+    setLoading(true);
+    login({
+      username: values.email,
+      password: values.password,
+      ...(newPassword && { newPassword })
+    })
+      .then((response) => {
+        setResponseCode(response.data.code);
+        setLoading(false);
+        setError(null);
+        if (!response.data?.code) {
+          navigation.navigate("Login");
+        }
+      })
+      .catch((e) => {
+        setError(extractError(e));
+        setLoading(false);
+      });
+  };
+
+  const handleChange = () => {
+
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
         <Image source={require("../../../assets/appidentity/logo.png")} style={styles.logo}/>
-        <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faEnvelope} color={colours.primary} size={30}/>
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#7f7f7f"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <FontAwesomeIcon icon={faLock} color={colours.primary} size={30}/>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#7f7f7f"
-          />
-        </View>
-        <TouchableOpacity style={styles.loginButton}>
-          <View>
-            <Text style={{color: "white", fontSize: 18}}>
-              Login
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <Formik
+          initialValues={{email: '', password: ''}}
+          onSubmit={(values) => handleSubmit(values)}>
+          {({handleChange, handleSubmit, values}) => (
+            <View>
+              <View style={styles.inputContainer}>
+                <FontAwesomeIcon icon={faEnvelope} color={colours.primary} size={30}/>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={values.email}
+                  placeholderTextColor="#7f7f7f"
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <FontAwesomeIcon icon={faLock} color={colours.primary} size={30}/>
+                <TextInput
+                  secureTextEntry={true}
+                  style={styles.input}
+                  placeholder="Password"
+                  value={values.password}
+                  placeholderTextColor="#7f7f7f"
+                />
+              </View>
+              <TouchableOpacity style={styles.loginButton} onPress={() => handleSubmit()}>
+                <View>
+                  <Text style={{color: "white", fontSize: 18}}>
+                    Login
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
         <View style={styles.forgotPasswordContainer}>
           <Text style={{color: "white", fontSize: 16}}>
             Forgot Password?
@@ -139,11 +183,11 @@ const LoginComponent = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.orContainer}>
-          <View style={styles.orLine} />
+          <View style={styles.orLine}/>
           <View>
             <Text style={styles.orText}>Or</Text>
           </View>
-          <View style={styles.orLine} />
+          <View style={styles.orLine}/>
         </View>
         <View style={styles.servicesContainer}>
           <Image source={require("../../../assets/streamingservices/spotify.png")} style={styles.serviceLogo}/>
