@@ -24,6 +24,8 @@
     "expo-image-picker": "~14.1.1",
     "expo-in-app-purchases": "~14.1.1",
     "expo-status-bar": "~1.4.4",
+    "formik": "^2.2.9",
+    "lodash": "^4.17.21",
     "native-base": "3.4.25",
     "react": "18.2.0",
     "react-dom": "18.2.0",

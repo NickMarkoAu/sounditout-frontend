@@ -1,3 +1,5 @@
+import {User} from "../components/user/user.model";
+
 export interface Song {
   id: number;
   userId: string;
@@ -11,19 +13,6 @@ export interface Song {
 export interface GenerateResult {
   songs: Song[];
   tags: String[];
-}
-
-export interface User {
-  id: string;
-  authToken: string;
-  name: string;
-  email: string;
-  tokens: UserTokens;
-}
-
-export interface UserTokens {
-  tokens: number;
-  freeTokens: number;
 }
 
 export interface Post {
