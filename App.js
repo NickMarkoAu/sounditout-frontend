@@ -7,9 +7,12 @@ import {selectCurrentUser} from "./src/state/song-suggestion.selector"
 import store from "./src/state/store"
 import * as SecureStore from "expo-secure-store"
 import {removeCurrentUserAction} from "./src/state/song-suggestion.slice"
+import { Buffer } from "buffer";
+import axiosConfig from "./src/configurations/axios-config"
+
 
 const AppWrapper = () => {
-
+  axiosConfig();
   return (
     <Provider store={store}>
         <App/>
@@ -24,6 +27,7 @@ const App = () => {
   useEffect(() => {
     const getToken = async () => {
       const token = await SecureStore.getItemAsync('secure_token');
+      console.log("Token in storage: ", token);
       setAuthToken(token);
     }
     getToken();
@@ -31,8 +35,9 @@ const App = () => {
 
   const parseJwt = (token) => {
     try {
-      return JSON.parse(atob(token.split(".")[1]));
+      return JSON.parse(Buffer.from(token.split(".")[1], "base64"));
     } catch (e) {
+      console.log(e);
       return null;
     }
   };
@@ -49,8 +54,8 @@ const App = () => {
     }
   }
   return (
-    <AppStackNav/>
-    // user && authToken ? <AppStackNav /> : <AuthStackNav/>
+    // <AppStackNav/>
+    user && authToken ? <AppStackNav /> : <AuthStackNav/>
   );
 }
 
