@@ -17,3 +17,7 @@ export interface InitAuthResponse {
   hasIdentityProvider: boolean;
   authoriseUrl?: string;
 }
+
+export interface AuthResponse {
+  jwtToken: string;
+}

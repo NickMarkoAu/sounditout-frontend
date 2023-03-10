@@ -111,10 +111,17 @@ const LoginComponent = ({navigation}) => {
     signUpContainer: {
       marginBottom: 22,
       flexDirection: "row",
+    },
+    formContainer: {
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
     }
   });
 
   const handleSubmit = (values) => {
+    console.log("submitting login", values)
     setLoading(true);
     login({
       username: values.email,
@@ -122,22 +129,20 @@ const LoginComponent = ({navigation}) => {
       ...(newPassword && { newPassword })
     })
       .then((response) => {
-        setResponseCode(response.data.code);
         setLoading(false);
-        setError(null);
-        if (!response.data?.code) {
-          //TODO I don't think we need to do this here
-          navigation.navigate("Login");
-        }
-        if(response.data?.code == 200) {
+        if(response.jwtToken) {
+          setError(null);
           //Set jwt token
-          SecureStore.setItemAsync('secure_token',response.data.jwttoken)
+          console.log("setting JWT token");
+          SecureStore.setItemAsync('secure_token',response.jwtToken)
             .then(() => {
               //update current user
-              const user : User = response.data.user;
+              const user : User = response.user;
               dispatch(updateCurrentUserAction(user));
               navigation.navigate("Feed");
             });
+        } else {
+          setError(response)
         }
       })
       .catch((e) => {
@@ -158,12 +163,13 @@ const LoginComponent = ({navigation}) => {
           initialValues={{email: '', password: ''}}
           onSubmit={(values) => handleSubmit(values)}>
           {({handleChange, handleSubmit, values}) => (
-            <View>
+            <View style={styles.formContainer}>
               <View style={styles.inputContainer}>
                 <FontAwesomeIcon icon={faEnvelope} color={colours.primary} size={30}/>
                 <TextInput
                   style={styles.input}
                   placeholder="Email"
+                  onChangeText={handleChange('email')}
                   value={values.email}
                   placeholderTextColor="#7f7f7f"
                 />
@@ -173,12 +179,13 @@ const LoginComponent = ({navigation}) => {
                 <TextInput
                   secureTextEntry={true}
                   style={styles.input}
+                  onChangeText={handleChange('password')}
                   placeholder="Password"
                   value={values.password}
                   placeholderTextColor="#7f7f7f"
                 />
               </View>
-              <TouchableOpacity style={styles.loginButton} onPress={() => handleSubmit()}>
+              <TouchableOpacity style={styles.loginButton} onPress={() => handleSubmit()} disabled={loading}>
                 <View>
                   <Text style={{color: "white", fontSize: 18}}>
                     Login
@@ -188,6 +195,13 @@ const LoginComponent = ({navigation}) => {
             </View>
           )}
         </Formik>
+        { error &&
+          //TODO Fix up this error messaging
+          <View>
+            <Text>
+              {Object.keys(error)}
+            </Text>
+          </View> }
         <View style={styles.forgotPasswordContainer}>
           <Text style={{color: "white", fontSize: 16}}>
             Forgot Password?
@@ -198,6 +212,7 @@ const LoginComponent = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {/*TODO add OAuth 2 later*/}
         <View style={styles.orContainer}>
           <View style={styles.orLine}/>
           <View>
