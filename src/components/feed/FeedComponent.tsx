@@ -1,11 +1,12 @@
 import {FlatList, SafeAreaView, StyleSheet, StatusBar, View} from "react-native";
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
-import {Post, User} from "../../state/song-suggestion.model";
+import {Post} from "../../state/song-suggestion.model";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentUser, selectPosts} from "../../state/song-suggestion.selector";
 import {useEffect} from "react";
 import {getPostsForUserAction} from "../../state/song-suggestion.slice";
+import {User} from "../user/user.model";
 
 const FeedComponent = ({navigation}) => {
   const dispatch = useAppDispatch();

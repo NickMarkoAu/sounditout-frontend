@@ -12,17 +12,19 @@ export interface Song {
 
 export interface GenerateResult {
   songs: Song[];
-  tags: String[];
+  tags: string[];
 }
 
 export interface Post {
   id: string;
   user: User;
-  image: UserUploadedImage;
-  song: Song;
-  content: string;
-  comments: Comment[];
+  image?: UserUploadedImage;
+  song?: Song;
+  content?: string;
+  comments?: Comment[];
   date: Date;
+  postPrivacy?: string;
+  draft: boolean;
 }
 
 export interface UserUploadedImage {

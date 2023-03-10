@@ -6,7 +6,7 @@ import {faCirclePlay, faCirclePause, faFastForward, faFastBackward} from "@forta
 import PreviewComponent from "./PreviewComponent";
 import {useTheme} from "../../state/hooks";
 
-const PlayerComponent = ({navigation, videoKey}) => {
+const PlayerComponent = ({navigation, song}) => {
   const {colours} = useTheme;
 
   const [playing, setPlaying] = useState(false);
@@ -75,17 +75,18 @@ const PlayerComponent = ({navigation, videoKey}) => {
         />
       </View>
       <View style={styles.previewContainer}>
-        <PreviewComponent />
+        <PreviewComponent song={song}/>
       </View>
       <View style={{height: 0}}>
         <View>
-          <YoutubePlayer
-            ref={playerRef}
-            height={1}
-            play={playing}
-            videoId={videoKey}
-            onChangeState={onStateChange}
-          />
+          {/*TODO replace this with whatever player since we are no longer using Youtube*/}
+          {/*<YoutubePlayer*/}
+          {/*  ref={playerRef}*/}
+          {/*  height={1}*/}
+          {/*  play={playing}*/}
+          {/*  videoId={videoKey}*/}
+          {/*  onChangeState={onStateChange}*/}
+          {/*/>*/}
         </View>
       </View>
       <View style={styles.buttons}>

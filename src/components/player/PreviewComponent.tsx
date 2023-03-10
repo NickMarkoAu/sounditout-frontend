@@ -1,9 +1,6 @@
-import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { HStack, VStack } from "native-base";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import { Image, View, Text, StyleSheet } from "react-native";
 
-const PreviewComponent = () => {
+const PreviewComponent = ({song}) => {
   const styles = StyleSheet.create({
     previewContainer: {
       width: "90%",
@@ -28,16 +25,17 @@ const PreviewComponent = () => {
       resizeMode: "cover",
     }
   });
+
   return (
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={require("../../../assets/samples/test-song.png")} />
+        <Image style={styles.image} source={song?.image} />
       </View>
       <View style={styles.textContainer}>
         <Text style={{ color: "white", textAlign: "left", fontWeight: "bold" }}>
-          Born To Be Wild (Easy Rider)
+          {song?.name}
         </Text>
-        <Text style={{ color: "white", textAlign: "left" }}>Steppenwolf</Text>
+        <Text style={{ color: "white", textAlign: "left" }}>{song?.artist}</Text>
       </View>
     </View>
   );

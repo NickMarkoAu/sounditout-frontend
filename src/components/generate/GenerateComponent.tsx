@@ -1,10 +1,11 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentUser, selectGenerate, selectPricingOptions} from "../../state/song-suggestion.selector";
-import {PricingOptions, User, UserUploadedImage} from "../../state/song-suggestion.model";
+import {PricingOptions, UserUploadedImage} from "../../state/song-suggestion.model";
 import {generateAction, GenerateState} from "../../state/song-suggestion.slice";
 import GenerateSettingsComponent from "./GenerateSettingsComponent";
 import ResultComponent from "./result/ResultComponent";
+import {User} from "../user/user.model";
 
 const GenerateComponent = ({navigation, image}) => {
   const {colours} = useTheme;

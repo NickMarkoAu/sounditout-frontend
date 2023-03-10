@@ -1,7 +1,6 @@
 export interface AuthCredentials {
   username: string;
   password: string;
-  newPassword?: string;
 }
 
 export interface ForgotPasswordConfirmation {

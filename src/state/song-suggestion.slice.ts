@@ -1,9 +1,10 @@
-import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions, User} from "./song-suggestion.model";
+import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions} from "./song-suggestion.model";
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getPostsForUser} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
 import {fetchPricing} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
+import {User} from "../components/user/user.model";
 
 export interface SongSuggestionState {
   user: User;
@@ -52,6 +53,12 @@ const songSuggestionSlice = createSlice({
     },
     updateGenerateParamsAction: (state, action: PayloadAction<GenerateParams>) => {
       state.generate.generateParams = action.payload;
+    },
+    updateCurrentUserAction: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+    },
+    removeCurrentUserAction: (state, action: PayloadAction<void>) => {
+      state.user = null;
     }
   },
   extraReducers: (builder) => {
@@ -126,6 +133,8 @@ export const generateAction = createAsyncThunk<GenerateResult, {image: UserUploa
 );
 
 export const{
-  updateGenerateParamsAction
+  updateGenerateParamsAction,
+  updateCurrentUserAction,
+  removeCurrentUserAction
 } = songSuggestionSlice.actions;
 export default songSuggestionSlice.reducer;

@@ -3,18 +3,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../../state/hooks";
 
-const SongPreviewComponent = ({navigation, song}) => {
+const SongPreviewComponent = ({onPress, navigation, song}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({
     previewContainer: {
-      width: "100%",
-      height: 90,
+      width: "90%",
+      height: 80,
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center",
-      paddingTop: 8,
-      flex: 1,
+      alignItems: "center"
     },
     imageContainer: {
       width: "25%",
@@ -46,21 +44,26 @@ const SongPreviewComponent = ({navigation, song}) => {
       color: colours.primary,
     },
   });
+
+  song = {
+    artist: "Ya Mum",
+    name: "GO fuck urself",
+    image: {uri: "https://i1.sndcdn.com/artworks-000462239079-kce8fl-t500x500.jpg"}
+  }
   return (
+    song &&
     <View style={styles.previewContainer}>
       <View style={styles.imageContainer}>
-        {/*TODO use the song image URL*/}
-        <Image style={styles.image} source={require("../../../../assets/samples/test-song.png")}/>
-        {/*TODO do we always want to go to the player? maybe pass the song action in as a prop*/}
-        <TouchableOpacity style={styles.playIconContainer} onPress={() => navigation.navigate("Playlist", {song: song})}>
+        <Image style={styles.image} source={song?.image}/>
+        <TouchableOpacity style={styles.playIconContainer} onPress={onPress}>
           <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
         </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
         <Text style={{color: "white", textAlign: "left", fontWeight: "bold"}}>
-          {song.name}
+          {song?.name}
         </Text>
-        <Text style={{color: "white", textAlign: "left"}}>{song.artist}</Text>
+        <Text style={{color: "white", textAlign: "left"}}>{song?.artist}</Text>
       </View>
     </View>
   );

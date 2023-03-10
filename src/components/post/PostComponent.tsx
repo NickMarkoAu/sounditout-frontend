@@ -63,7 +63,7 @@ const PostComponent = ({navigation, post}) => {
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <SongPreviewComponent navigation={navigation} videoKey={typedPost.song.youtubeVideoId}/>
+              <SongPreviewComponent navigation={navigation} song={typedPost.song} onPress={() => navigation.navigate("Playlist", {song: typedPost.song})}/>
               <ActionButtonsComponent />
               <Text style={{color: "white"}}>
                 {typedPost.content}
