@@ -7,6 +7,7 @@ import Playlist from './src/screens/Playlist'
 import { createAppContainer } from 'react-navigation';
 import Player from "./src/screens/Player";
 import Generate from './src/screens/Generate';
+import CreatePost from './src/screens/CreatePost';
 
 // @ts-ignore
 const AppStackNav = createStackNavigator({
@@ -48,6 +49,12 @@ const AppStackNav = createStackNavigator({
   },
   Generate: {
     screen: Generate,
+    navigationOptions: {
+      headerShown: false,
+    }
+  },
+  CreatePost: {
+    screen: CreatePost,
     navigationOptions: {
       headerShown: false,
     }

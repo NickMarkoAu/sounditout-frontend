@@ -6,6 +6,10 @@ import {useTheme} from "../../state/hooks";
 import {Formik} from 'formik'
 import {login} from "../user/auth/auth.api";
 import {extractError} from "../../shared/error.utils";
+import * as SecureStore from 'expo-secure-store';
+import {useDispatch} from "react-redux";
+import {updateCurrentUserAction} from "../../state/song-suggestion.slice";
+import {User} from "../user/user.model";
 
 const LoginComponent = ({navigation}) => {
   const {colours} = useTheme;
@@ -14,6 +18,7 @@ const LoginComponent = ({navigation}) => {
   const [newPassword, setNewPassword] = useState('');
   const [responseCode, setResponseCode] = useState('null');
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   const styles = StyleSheet.create({
     logo: {
@@ -121,7 +126,18 @@ const LoginComponent = ({navigation}) => {
         setLoading(false);
         setError(null);
         if (!response.data?.code) {
+          //TODO I don't think we need to do this here
           navigation.navigate("Login");
+        }
+        if(response.data?.code == 200) {
+          //Set jwt token
+          SecureStore.setItemAsync('secure_token',response.data.jwttoken)
+            .then(() => {
+              //update current user
+              const user : User = response.data.user;
+              dispatch(updateCurrentUserAction(user));
+              navigation.navigate("Feed");
+            });
         }
       })
       .catch((e) => {
