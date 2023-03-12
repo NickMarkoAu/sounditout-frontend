@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Slider from "@react-native-community/slider";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faCoins, faLock} from "@fortawesome/free-solid-svg-icons";
+import {faCompactDisc, faLock} from "@fortawesome/free-solid-svg-icons";
 import {GenerateParams, PricingOptions} from "../../state/song-suggestion.model";
 import {useAppSelector, useTheme} from "../../state/hooks";
 import {selectGenerateParams, selectPricingOptions} from "../../state/song-suggestion.selector";
@@ -91,7 +91,7 @@ const CustomOptionsContainer = ({}) => {
               <Text>
                 {unlockCost} Token
               </Text>
-            <FontAwesomeIcon style={styles.iconStyle} icon={faCoins} size={15}/>
+            <FontAwesomeIcon style={styles.iconStyle} icon={faCompactDisc} size={15}/>
           </TouchableOpacity>
         </View>
       }

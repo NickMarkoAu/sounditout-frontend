@@ -45,11 +45,11 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
     },
   });
 
-  song = {
-    artist: "Ya Mum",
-    name: "GO fuck urself",
-    image: {uri: "https://i1.sndcdn.com/artworks-000462239079-kce8fl-t500x500.jpg"}
-  }
+  // song = {
+  //   artist: "Ya Mum",
+  //   name: "GO fuck urself",
+  //   image: {uri: "https://i1.sndcdn.com/artworks-000462239079-kce8fl-t500x500.jpg"}
+  // }
   return (
     song &&
     <View style={styles.previewContainer}>

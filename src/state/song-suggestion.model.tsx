@@ -7,7 +7,6 @@ export interface Song {
   name: string;
   artist: string;
   tags: string[];
-  youtubeVideoId: string;
 }
 
 export interface GenerateResult {
@@ -25,11 +24,14 @@ export interface Post {
   date: Date;
   postPrivacy?: string;
   draft: boolean;
+  tags: string[];
 }
 
 export interface UserUploadedImage {
   id: string;
   url: string;
+  imageContent: string;
+  tags: string[];
 }
 
 export interface Comment {
@@ -51,4 +53,11 @@ export interface PricingOptions {
   unlockCost: number,
   freeTokens: number,
   regenerateCost: number
+}
+
+// this matches Spring's Page wrapper in response
+export interface Page<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
 }

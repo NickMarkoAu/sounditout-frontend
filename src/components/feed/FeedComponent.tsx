@@ -1,17 +1,19 @@
-import {FlatList, SafeAreaView, StyleSheet, StatusBar, View} from "react-native";
+import {FlatList, SafeAreaView, StyleSheet, StatusBar, View, RefreshControl} from "react-native";
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
 import {Post} from "../../state/song-suggestion.model";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
-import {selectCurrentUser, selectPosts} from "../../state/song-suggestion.selector";
-import {useEffect} from "react";
+import {selectCurrentUser, selectLoading, selectPosts} from "../../state/song-suggestion.selector";
 import {getPostsForUserAction} from "../../state/song-suggestion.slice";
 import {User} from "../user/user.model";
+import {useEffect, useState} from "react";
 
 const FeedComponent = ({navigation}) => {
   const dispatch = useAppDispatch();
   const user: User = useAppSelector(selectCurrentUser);
+  const posts: Post[] = useAppSelector(selectPosts);
   const {colours} = useTheme;
+  const isLoading = useAppSelector(selectLoading);
 
   const styles = StyleSheet.create({
     scrollView: {
@@ -28,16 +30,25 @@ const FeedComponent = ({navigation}) => {
     },
   });
 
-  const posts: Post[] = useAppSelector(selectPosts);
-  useEffect(() => {
+  useEffect(()=> {
     if (posts.length === 0) {
       dispatch(getPostsForUserAction({user}));
     }
-  }, [posts.length, dispatch]);
-  
+  }, []);
+
+  const onRefresh = () => {
+    dispatch(getPostsForUserAction({user}));
+  }
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList style={styles.scrollView} data={posts}  renderItem={({item}) =>
+      <FlatList style={styles.scrollView} data={posts}
+                refreshControl={<RefreshControl
+                  colors={["#9Bd35A", "#689F38"]}
+                  refreshing={isLoading}
+                  onRefresh={onRefresh} />}
+                  renderItem={({item}) =>
         <View style={{overflow: "visible"}}>
           <PostComponent navigation={navigation} post={item}/>
           <Divider bg={colours.primary} style={{width: "100%"}}/>

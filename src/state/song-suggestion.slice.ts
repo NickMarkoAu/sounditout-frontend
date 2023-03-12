@@ -1,4 +1,4 @@
-import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions} from "./song-suggestion.model";
+import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions, Page} from "./song-suggestion.model";
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getPostsForUser} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
@@ -34,7 +34,7 @@ export const initialState: SongSuggestionState = {
       isLocked: true,
     },
     generateResult: null,
-    isLoading: true
+    isLoading: false
   },
   pricing: {
     unlockCost: 1,
@@ -64,7 +64,7 @@ const songSuggestionSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPostsForUserAction.fulfilled, (state, action) => {
-        state.posts = action.payload;
+        state.posts = action.payload.content;
         state.isLoading = false;
       })
       .addCase(getPostsForUserAction.rejected, (state, action) => {
@@ -72,6 +72,7 @@ const songSuggestionSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getPostsForUserAction.pending, (state, action) => {
+        state.posts = [];
         state.isLoading = true;
       })
       .addCase(getPricingAction.fulfilled, (state, action) => {
@@ -99,7 +100,7 @@ const songSuggestionSlice = createSlice({
   }
 });
 
-export const getPostsForUserAction = createAsyncThunk<Post[], { user: User }>(
+export const getPostsForUserAction = createAsyncThunk<Page<Post>, { user: User }>(
   'posts/getPostsForUser',
   async ({ user }, { rejectWithValue }) => {
     try {

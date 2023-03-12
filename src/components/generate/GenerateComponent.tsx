@@ -7,7 +7,7 @@ import GenerateSettingsComponent from "./GenerateSettingsComponent";
 import ResultComponent from "./result/ResultComponent";
 import {User} from "../user/user.model";
 
-const GenerateComponent = ({navigation, image}) => {
+const GenerateComponent = ({navigation, imageUri}) => {
   const {colours} = useTheme;
 
   const pricingOptions: PricingOptions = useAppSelector(selectPricingOptions);
@@ -75,7 +75,7 @@ const GenerateComponent = ({navigation, image}) => {
 
   const generate = () => {
     //TODO validate tokens and adjust balance or trigger in app payment
-    dispatch(generateAction({image}));
+    dispatch(generateAction({image: imageUri}));
   }
 
   return (
@@ -88,11 +88,17 @@ const GenerateComponent = ({navigation, image}) => {
           What does this moment sound like?
         </Text>
       </View>
-      { (generating || generateResult) &&
+      {
+        generating &&
+        <View>
+        {/*  TODO replace with a loading thing */}
+        </View>
+      }
+      { (!generating && generateResult) &&
         <ResultComponent navigation={navigation} generating={generating} generateResult={generateResult}/>
       }
       { (!generating && !generateResult) &&
-        <GenerateSettingsComponent availableFreeTokens={availableFreeTokens} tokenCost={tokenCost} totalFreeTokens={totalFreeTokens} styles={styles}/>
+        <GenerateSettingsComponent imageUri={imageUri} availableFreeTokens={availableFreeTokens} tokenCost={tokenCost} totalFreeTokens={totalFreeTokens} styles={styles}/>
       }
     </View>
   );
