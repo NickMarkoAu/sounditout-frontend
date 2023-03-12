@@ -4,9 +4,11 @@ import ProfileButton from "../navigation/ProfileButton";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
 import CommentBoxComponent from "../post/commentbox/CommentBoxComponent";
-import {Post} from "../../state/song-suggestion.model";
+import {useTheme} from "../../state/hooks";
 
 const PostComponent = ({navigation, post}) => {
+  const {colours, fonts} = useTheme;
+
   const styles = StyleSheet.create({
     imageContainer: {
       width: "100%",
@@ -44,33 +46,53 @@ const PostComponent = ({navigation, post}) => {
       height: undefined,
       flex: 1,
       alignSelf: 'stretch',
+    },
+    dateStyle: {
+      marginLeft: 8,
+      color: colours.text_primary
+    },
+    nameStyle: {
+      color: colours.text_primary,
+      fontFamily: fonts.primary,
+      marginLeft: 3
     }
   });
 
-  const typedPost = post as Post;
+  const showProfile = () => {
+    //TODO make this go to the user profile
+  }
+
+  const navigateToPlaylist = () => {
+    navigation.navigate("Playlist", {song: post?.song})
+  }
+
+  const getImageSource = () => {
+    return `data:image/jpeg;base64,${post.image.imageContent}`
+  }
+
   return (
-    typedPost &&
-        <VStack style={styles.postContainer} space="2">
-            <Box style={styles.postHeader}>
+     post &&
+         <VStack style={styles.postContainer} space="2">
+            <View style={styles.postHeader}>
               <View style={styles.profileId}>
-                <ProfileButton onPress={() => {}} />
-                <Text style={{color: "white", marginLeft: 3}}>{typedPost.user.name}</Text>
+                <ProfileButton onPress={showProfile}/>
+                <Text style={styles.nameStyle}>{post?.user?.name}</Text>
               </View>
-              <Text style={{color: "white"}}>{typedPost.date.toDateString()}</Text>
-            </Box>
+              <Text style={styles.dateStyle}>{post.date}</Text>
+            </View>
             <View style={styles.imageContainer}>
-              <Image source={{uri: typedPost.image.url}}
+              <Image source={{uri: getImageSource()}}
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <SongPreviewComponent navigation={navigation} song={typedPost.song} onPress={() => navigation.navigate("Playlist", {song: typedPost.song})}/>
+              <SongPreviewComponent navigation={navigation} song={post?.song} onPress={navigateToPlaylist}/>
               <ActionButtonsComponent />
               <Text style={{color: "white"}}>
-                {typedPost.content}
+                {post?.content}
               </Text>
               <CommentBoxComponent />
             </View>
-        </VStack>
+         </VStack>
   );
 }
 

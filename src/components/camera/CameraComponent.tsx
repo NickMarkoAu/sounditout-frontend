@@ -76,7 +76,7 @@ const CameraComponent= ({ navigation }) => {
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
-      // console.log(data.uri);
+      navigation.navigate("Generate", imageUri);
       setImageUri(data.uri);
     }
   };
@@ -95,8 +95,8 @@ const CameraComponent= ({ navigation }) => {
 
     console.log(result);
     if (!result.canceled) {
-      //TODO fix this set image URI
-      // setImageUri(result.assets.);
+      setImageUri(result.assets[0].uri);
+      navigation.navigate("Generate", imageUri);
     }
   };
 

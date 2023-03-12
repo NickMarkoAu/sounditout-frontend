@@ -1,9 +1,14 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import CustomOptionsContainer from "./CustomOptionsContainer";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faCoins} from "@fortawesome/free-solid-svg-icons";
+import {faCompactDisc} from "@fortawesome/free-solid-svg-icons";
 
-const GenerateSettingsComponent = ({availableFreeTokens, totalFreeTokens, tokenCost, styles}) => {
+const GenerateSettingsComponent = ({availableFreeTokens, totalFreeTokens, tokenCost, styles, imageUri}) => {
+
+  const generate = () => {
+    //TODO
+  }
+
   return (
     <View>
       <View>
@@ -17,7 +22,7 @@ const GenerateSettingsComponent = ({availableFreeTokens, totalFreeTokens, tokenC
             </Text> :
             <View style={styles.iconButtonStyle}><Text>
               Generate {tokenCost}
-            </Text><FontAwesomeIcon icon={faCoins} size={15}/></View>
+            </Text><FontAwesomeIcon icon={faCompactDisc} size={15}/></View>
           }
         </TouchableOpacity>
       </View>

@@ -39,7 +39,6 @@ const NavigationComponent = ({navigation}) => {
         <NavButton onPress={() => navigation.navigate("Feed")} icon={faNewspaper} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Search")} icon={faMagnifyingGlass} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Camera")} icon={faCameraRetro} styles={styles} size={cameraIconSize}/>
-        <NavButton onPress={() => navigation.navigate("CreatePost")} icon={faSquarePlus} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Player")} icon={faCirclePlay} styles={styles} size={iconSize}/>
         <ProfileButton onPress={() => navigation.navigate("Profile")}/>
       </View>

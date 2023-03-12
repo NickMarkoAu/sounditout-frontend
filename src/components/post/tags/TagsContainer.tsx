@@ -4,7 +4,7 @@ import {useTheme} from "../../../state/hooks";
 
 const TagsContainer = ({post}) => {
   const {colours} = useTheme;
-  const tags = post?.tags;
+  const tags = post?.image?.tags;
   const styles = StyleSheet.create({
     container: {
       marginLeft: 16,

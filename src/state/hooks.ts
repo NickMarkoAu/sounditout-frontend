@@ -5,4 +5,4 @@ import {Theme, theme} from "../configurations/theme/theme";
 
 export const useAppSelector: TypedUseSelectorHook<SongSuggestionState> = useSelector;
 export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useTheme: { colours: { secondary: string; text_primary: string; background: string; primary: string } } = theme;
+export const useTheme: Theme = theme;

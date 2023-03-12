@@ -6,7 +6,7 @@ import React from "react";
 import {StyleSheet, View} from "react-native";
 import {useTheme} from "../state/hooks";
 
-const Player = ({navigation}) => {
+const Player = ({navigation, song}) => {
   const {colours} = useTheme;
 
   //TODO add song key here
@@ -27,8 +27,8 @@ const Player = ({navigation}) => {
     <View style={styles.container}>
       <StatusBar style="light"/>
       <TopBarComponent/>
-      //TODO make this data driven
-      <PlayerComponent navigation={navigation} videoKey="rMbATaj7Il8"/>
+      {/*//TODO make this data driven*/}
+      <PlayerComponent navigation={navigation} song={song}/>
       <NavigationComponent navigation={navigation}/>
     </View>
   );

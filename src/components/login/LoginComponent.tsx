@@ -10,13 +10,13 @@ import * as SecureStore from 'expo-secure-store';
 import {useDispatch} from "react-redux";
 import {updateCurrentUserAction} from "../../state/song-suggestion.slice";
 import {User} from "../user/user.model";
+import {Checkbox} from "native-base";
 
 const LoginComponent = ({navigation}) => {
   const {colours} = useTheme;
 
   const [loading, setLoading] = useState(false);
   const [newPassword, setNewPassword] = useState('');
-  const [responseCode, setResponseCode] = useState('null');
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
@@ -54,6 +54,18 @@ const LoginComponent = ({navigation}) => {
       backgroundColor: colours.secondary,
       borderRadius: 15
     },
+    checkboxContainer: {
+      width: '80%',
+      marginBottom: 22,
+      marginLeft: 16,
+      flexDirection: "row",
+      padding: 6,
+      borderRadius: 15
+    },
+    checkbox: {
+      backgroundColor: colours.primary,
+      borderWidth: 0,
+    },
     container: {
       width: "100%",
       height: "100%",
@@ -66,7 +78,6 @@ const LoginComponent = ({navigation}) => {
     loginButton: {
       width: "60%",
       height: 50,
-      marginBottom: 22,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: colours.primary,
@@ -84,6 +95,7 @@ const LoginComponent = ({navigation}) => {
       resizeMode: "contain",
     },
     forgotPasswordContainer: {
+      marginTop: 16,
       marginBottom: 22,
       flexDirection: "row",
     },
@@ -117,6 +129,18 @@ const LoginComponent = ({navigation}) => {
       justifyContent: "center",
       alignItems: "center",
       flexDirection: "column",
+    },
+    text: {
+      color: colours.text_primary,
+      fontSize: 16
+    },
+    errorContainer: {
+      paddingTop: 16,
+    },
+    errorText: {
+      color: colours.text_error,
+      fontSize: 16,
+      fontWeight: "bold"
     }
   });
 
@@ -132,15 +156,20 @@ const LoginComponent = ({navigation}) => {
         setLoading(false);
         if(response.jwtToken) {
           setError(null);
-          //Set jwt token
-          console.log("setting JWT token");
-          SecureStore.setItemAsync('secure_token',response.jwtToken)
-            .then(() => {
-              //update current user
-              const user : User = response.user;
-              dispatch(updateCurrentUserAction(user));
-              navigation.navigate("Feed");
-            });
+          //set keep logged in
+          SecureStore.setItemAsync('keepLoggedIn', values.keepLoggedIn).then(() => {
+            //set user
+            //Set jwt token
+            console.log("setting JWT token");
+            SecureStore.setItemAsync('secure_token', response.jwtToken)
+              .then(() => {
+                //update current user
+                const user: User = response.user;
+                SecureStore.setItemAsync('user', JSON.stringify(user)).then(() => {
+                  dispatch(updateCurrentUserAction(user));
+                });
+              });
+          });
         } else {
           setError(response)
         }
@@ -160,9 +189,9 @@ const LoginComponent = ({navigation}) => {
       <View style={styles.loginContainer}>
         <Image source={require("../../../assets/appidentity/logo.png")} style={styles.logo}/>
         <Formik
-          initialValues={{email: '', password: ''}}
+          initialValues={{email: '', password: '', keepLoggedIn: "false"}}
           onSubmit={(values) => handleSubmit(values)}>
-          {({handleChange, handleSubmit, values}) => (
+          {({handleChange, handleSubmit, values, setFieldValue}) => (
             <View style={styles.formContainer}>
               <View style={styles.inputContainer}>
                 <FontAwesomeIcon icon={faEnvelope} color={colours.primary} size={30}/>
@@ -185,6 +214,18 @@ const LoginComponent = ({navigation}) => {
                   placeholderTextColor="#7f7f7f"
                 />
               </View>
+              <View style={styles.checkboxContainer}>
+                <Checkbox
+                  size={"md"}
+                  style={styles.checkbox}
+                  value={values.keepLoggedIn}
+                  isChecked={values.keepLoggedIn === 'true'}
+                  onChange={nextValue => setFieldValue('keepLoggedIn', nextValue.toString())}>
+                    <Text style={styles.text}>
+                      Keep me logged in
+                    </Text>
+                </Checkbox>
+              </View>
               <TouchableOpacity style={styles.loginButton} onPress={() => handleSubmit()} disabled={loading}>
                 <View>
                   <Text style={{color: "white", fontSize: 18}}>
@@ -196,14 +237,13 @@ const LoginComponent = ({navigation}) => {
           )}
         </Formik>
         { error &&
-          //TODO Fix up this error messaging
-          <View>
-            <Text>
-              {Object.keys(error)}
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>
+              Login Error: {Object.keys(error)}
             </Text>
           </View> }
         <View style={styles.forgotPasswordContainer}>
-          <Text style={{color: "white", fontSize: 16}}>
+          <Text style={styles.text}>
             Forgot Password?
           </Text>
           <TouchableOpacity>

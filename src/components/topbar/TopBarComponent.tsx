@@ -1,14 +1,17 @@
-import {Image, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
-import {useTheme} from "../../state/hooks";
+import {faCompactDisc} from "@fortawesome/free-solid-svg-icons";
+import {useAppSelector, useTheme} from "../../state/hooks";
+import {selectCurrentUser} from "../../state/song-suggestion.selector";
 
 const TopBarComponent = () => {
   const {colours} = useTheme;
+  const user = useAppSelector(selectCurrentUser);
+  const totalTokens = user.tokens.tokens + user.tokens.freeTokens;
 
   const styles = StyleSheet.create({
-    TopBarContainer: {
+    topBarContainer: {
       position: "absolute",
       left: 0,
       top: 35,
@@ -23,29 +26,44 @@ const TopBarComponent = () => {
       alignItems: 'center', //Centered vertically
       zIndex: 9999
     },
-    Logo: {
+    logo: {
       width: "40%",
       height: 30,
       resizeMode: "contain"
     },
-    SendContainer: {
-
+    tokenButton: {
+      padding: 4,
+      justifyContent: "space-around",
+      gap: 4,
+      alignItems: "center",
+      backgroundColor: colours.primary,
+      borderRadius: 10,
+      display: 'flex',
+      flexDirection: 'row',
+      marginLeft: 8,
+      opacity: 1
     },
-    Send: {
-
+    text: {
+      color: colours.text_dark,
+      fontWeight: "bold"
     }
   });
 
+  const tokensModal = () => {
+    //TODO create a popup modal for purchasing tokens and show it here
+  }
+
   return (
-    <View style={styles.TopBarContainer}>
-        <Image style={styles.Logo}
+    <View style={styles.topBarContainer}>
+        <Image style={styles.logo}
                source={require('../../../assets/appidentity/logo.png')}
         />
-      <Pressable style={styles.SendContainer}>
-        <TouchableOpacity>
-          <FontAwesomeIcon icon={faPaperPlane} color={colours.primary} size={20}/>
+        <TouchableOpacity style={styles.tokenButton} onPress={tokensModal}>
+          <FontAwesomeIcon icon={faCompactDisc} color={colours.text_dark} size={15}/>
+          <Text style={styles.text}>
+            {totalTokens}
+          </Text>
         </TouchableOpacity>
-      </Pressable>
     </View>
   );
 }

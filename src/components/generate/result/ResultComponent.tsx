@@ -2,7 +2,7 @@ import {FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View, Text, useCol
 import {PricingOptions, Song} from "../../../state/song-suggestion.model";
 import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faCoins, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import {faCompactDisc, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import {useAppSelector, useTheme} from "../../../state/hooks";
 import {selectPricingOptions} from "../../../state/song-suggestion.selector";
 
@@ -57,12 +57,16 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
     //TODO add song to post here and navigate to post completion page
   }
 
+  const previewSong = (song) => {
+
+  }
+
   return (
     <View>
       <SafeAreaView style={styles.container}>
         <FlatList style={styles.scrollView} data={songs} renderItem={({item}) =>
           <View style={{overflow: "visible"}}>
-            <SongPreviewComponent navigation={navigation} song={item}/>
+            <SongPreviewComponent navigation={navigation} song={item} onPress={previewSong}/>
             <TouchableOpacity onPress={selectSong}>
               <FontAwesomeIcon icon={faSquarePlus} size={25}/>
             </TouchableOpacity>
@@ -77,7 +81,7 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
           <Text>
             {regenerateCost} Token
           </Text>
-          <FontAwesomeIcon icon={faCoins} size={15}/>
+          <FontAwesomeIcon icon={faCompactDisc} size={15}/>
         </TouchableOpacity>
       </View>
     </View>

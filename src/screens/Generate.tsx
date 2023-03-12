@@ -6,7 +6,7 @@ import NavigationComponent from "../components/navigation/NavigationComponent";
 import {StyleSheet, View} from "react-native";
 import {useTheme} from "../state/hooks";
 
-const Generate = ({navigation, image}) => {
+const Generate = ({navigation, imageUri}) => {
   const {colours} = useTheme;
   const styles = StyleSheet.create({
     container: {
@@ -26,7 +26,7 @@ const Generate = ({navigation, image}) => {
     <View style={styles.container}>
       <StatusBar style="light"/>
       <TopBarComponent/>
-      <GenerateComponent navigation={navigation} image={image}/>
+      <GenerateComponent navigation={navigation} imageUri={imageUri}/>
       <NavigationComponent navigation={navigation}/>
     </View>
   );
