@@ -11,26 +11,27 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
   const regenerateCost = pricing.regenerateCost;
   const songs: Song[] = generateResult.songs;
 
-  const {colours} = useTheme;
+  const {colours, fonts} = useTheme;
+
+  console.log("Loading result component");
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      marginTop: 88,
       width: "100%",
-      height: undefined,
-      alignSelf: 'stretch',
-      marginBottom: 55,
-      overflow: "visible"
+    },
+    outerContainer: {
+      height: "55%"
     },
     scrollView: {
-      width: "100%"
+
     },
     text: {
-      color: 'white'
+      fontFamily: fonts.primary,
+      color: colours.text_primary
     },
     button: {
-      width: "30%",
+      paddingHorizontal: 8,
       height: 35,
       justifyContent: "center",
       alignItems: "center",
@@ -46,6 +47,19 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center"
+    },
+    songPreviewContainer: {
+      flexDirection: "row",
+      alignItems: "center"
+    },
+    moreSuggestionsContainer: {
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "center",
+      marginTop: 8
+    },
+    buttonText: {
+      marginRight: 4
     }
   });
 
@@ -63,22 +77,24 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
 
   return (
     <View>
+      <View style={styles.outerContainer}>
       <SafeAreaView style={styles.container}>
         <FlatList style={styles.scrollView} data={songs} renderItem={({item}) =>
-          <View style={{overflow: "visible"}}>
+          <View style={styles.songPreviewContainer}>
             <SongPreviewComponent navigation={navigation} song={item} onPress={previewSong}/>
             <TouchableOpacity onPress={selectSong}>
-              <FontAwesomeIcon icon={faSquarePlus} size={25}/>
+              <FontAwesomeIcon color={colours.primary} icon={faSquarePlus} size={25}/>
             </TouchableOpacity>
           </View>
         }/>
       </SafeAreaView>
-      <View>
+      </View>
+      <View style={styles.moreSuggestionsContainer}>
         <Text style={styles.text}>
           Want more suggestions?
         </Text>
         <TouchableOpacity style={styles.button} onPress={regenerate}>
-          <Text>
+          <Text style={styles.buttonText}>
             {regenerateCost} Token
           </Text>
           <FontAwesomeIcon icon={faCompactDisc} size={15}/>

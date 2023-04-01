@@ -41,70 +41,62 @@ const CameraComponent= ({ navigation }) => {
     }
   });
 
-  const [cameraPermission, requestPermissions] = Camera.useCameraPermissions();
 
   const [galleryPermission, setGalleryPermission] = useState(null);
-
   const [camera, setCamera] = useState(null);
   const [imageUri, setImageUri] = useState(null);
 
+  const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
-
-  const permissionFunction = async () => {
-    // console.log('Camera permission', cameraPermission.status);
-    if(!cameraPermission || cameraPermission.status !== 'granted') {
-      await requestPermissions();
-    }
-
-    const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    // console.log('Image permission', imagePermission.status);
-
-    setGalleryPermission(imagePermission.status === 'granted');
-
-    if (
-      imagePermission.status !== 'granted' ||
-      cameraPermission?.status !== 'granted'
-    ) {
-      alert('Permission for media access needed.');
-    }
-  };
-
   useEffect(() => {
-    permissionFunction();
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setGalleryPermission(imagePermission.status === 'granted');
+      setHasPermission(status === 'granted');
+    })();
   }, []);
 
   const takePicture = async () => {
     if (camera) {
-      const data = await camera.takePictureAsync(null);
-      navigation.navigate("Generate", imageUri);
-      setImageUri(data.uri);
+      const photo = await camera.takePictureAsync()
+      setImageUri(photo.uri);
+      console.log(photo.uri);
     }
   };
+
+  useEffect(() => {
+    console.log(imageUri);
+    if(imageUri !== null)
+    navigation.navigate("Generate", {imageUri});
+  }, [imageUri]);
 
   function toggleCameraType() {
     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-    });
-
-    console.log(result);
-    if (!result.canceled) {
+    }).then((result) => {
       setImageUri(result.assets[0].uri);
-      navigation.navigate("Generate", imageUri);
-    }
+    });
   };
 
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.cameraContainer}>
         <Camera
-          ref={(ref) => setCamera(ref)}
+          ref={ref => setCamera(ref)}
           style={styles.fixedRatio}
           type={type}
           ratio="16:9"

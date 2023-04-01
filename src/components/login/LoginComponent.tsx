@@ -23,7 +23,7 @@ const LoginComponent = ({navigation}) => {
   const styles = StyleSheet.create({
     logo: {
       width: "70%",
-      height: 50,
+      height: 75,
       resizeMode: "contain",
       marginBottom: 22
     },

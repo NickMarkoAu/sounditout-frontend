@@ -28,7 +28,7 @@ const TopBarComponent = () => {
     },
     logo: {
       width: "40%",
-      height: 30,
+      height: 40,
       resizeMode: "contain"
     },
     tokenButton: {

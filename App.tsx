@@ -30,6 +30,7 @@ const App = () => {
   const [decodedJwt, setDecodedJwt] = useState(null);
   const getToken = async () => {
     const token = await SecureStore.getItemAsync('secure_token');
+    console.log("Token", token);
     setAuthToken(token);
   }
 
@@ -42,6 +43,7 @@ const App = () => {
 
   const getKeepLoggedIn = async () => {
     const keepLogged = await SecureStore.getItemAsync('keepLoggedIn');
+    console.log("Keep logged in", keepLogged);
     setKeepLoggedIn(keepLogged === 'true');
   }
 
@@ -59,6 +61,7 @@ const App = () => {
   const removeToken = () => {
     setAuthToken(null);
     setKeepLoggedIn(false);
+    setDecodedJwt(null);
     SecureStore.deleteItemAsync('keepLoggedIn').then(() => {
       SecureStore.deleteItemAsync('secure_token')
         .then(
@@ -75,7 +78,8 @@ const App = () => {
   },[authToken])
 
   const getStoredUser = async () => {
-    const storedUser = await SecureStore.getItemAsync('user')
+    const storedUser = await SecureStore.getItemAsync('user');
+    console.log("Get stored user", storedUser);
     dispatch(updateCurrentUserAction(JSON.parse(storedUser)));
   }
 
@@ -85,14 +89,17 @@ const App = () => {
 
     //if token is expired and keep logged in, refresh the token, otherwise remove it
   if (decodedJwt !== null && decodedJwt.exp * 1000 < Date.now()) {
-    if(keepLoggedIn) {
+    console.log("JWT expired");
+    if(keepLoggedIn !== null && keepLoggedIn) {
       refreshToken(authToken).then(response => {
+        console.log("Refreshing token");
         SecureStore.setItemAsync('secure_token', authToken).then(() => {
           const user: User = response.user;
           dispatch(updateCurrentUserAction(user));
         })
       })
     } else {
+      console.log("removing token");
       removeToken();
     }
   }

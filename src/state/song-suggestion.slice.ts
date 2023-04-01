@@ -122,11 +122,11 @@ export const getPricingAction = createAsyncThunk<PricingOptions, void>(
   }
 );
 
-export const generateAction = createAsyncThunk<GenerateResult, {image: UserUploadedImage}>(
-  'generate',
-  async ({image}, {rejectWithValue}) => {
+export const generateAction = createAsyncThunk<GenerateResult, {imageUri: string}>(
+  'generate/generateSuggestions',
+  async ({imageUri}, {rejectWithValue}) => {
     try {
-      return await generateSuggestions(image);
+      return generateSuggestions(imageUri);
     } catch (e) {
       return rejectWithValue(convertToSerializedError(e));
     }
