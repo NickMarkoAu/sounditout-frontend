@@ -6,7 +6,9 @@ import NavigationComponent from "../components/navigation/NavigationComponent";
 import {StyleSheet, View} from "react-native";
 import {useTheme} from "../state/hooks";
 
-const Generate = ({navigation, imageUri}) => {
+const Generate = ({navigation}) => {
+  const imageUri = navigation.state.params.imageUri;
+
   const {colours} = useTheme;
   const styles = StyleSheet.create({
     container: {

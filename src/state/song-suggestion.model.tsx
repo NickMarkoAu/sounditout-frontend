@@ -12,6 +12,7 @@ export interface Song {
 export interface GenerateResult {
   songs: Song[];
   tags: string[];
+  error: string;
 }
 
 export interface Post {

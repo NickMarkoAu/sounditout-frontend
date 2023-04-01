@@ -1,14 +1,14 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
+import { useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentUser, selectGenerate, selectPricingOptions} from "../../state/song-suggestion.selector";
 import {PricingOptions, UserUploadedImage} from "../../state/song-suggestion.model";
-import {generateAction, GenerateState} from "../../state/song-suggestion.slice";
+import { GenerateState} from "../../state/song-suggestion.slice";
 import GenerateSettingsComponent from "./GenerateSettingsComponent";
 import ResultComponent from "./result/ResultComponent";
 import {User} from "../user/user.model";
 
 const GenerateComponent = ({navigation, imageUri}) => {
-  const {colours} = useTheme;
+  const {colours, fonts} = useTheme;
 
   const pricingOptions: PricingOptions = useAppSelector(selectPricingOptions);
   const currentUser: User = useAppSelector(selectCurrentUser);
@@ -21,12 +21,17 @@ const GenerateComponent = ({navigation, imageUri}) => {
 
   const generating = generateState?.isLoading;
   const generateResult = generateState?.generateResult;
+  const error = generateResult?.error;
 
-  const dispatch = useAppDispatch();
+  console.log("state: ", generateState);
+  console.log("result: ", generateResult);
+  console.log("error: ", error);
+  console.log("generating: ", generating);
 
   const styles = StyleSheet.create({
       container: {
-        marginTop: 110
+        marginTop: 110,
+        alignItems: "center"
       },
       imageContainer: {
         backgroundColor: '#333333',
@@ -50,7 +55,8 @@ const GenerateComponent = ({navigation, imageUri}) => {
         marginBottom: 12
       },
       text: {
-        color: 'white'
+        fontFamily: fonts.primary,
+        color: colours.text_primary
       },
       buttonContainer: {
         justifyContent: "center",
@@ -73,15 +79,10 @@ const GenerateComponent = ({navigation, imageUri}) => {
     }
   );
 
-  const generate = () => {
-    //TODO validate tokens and adjust balance or trigger in app payment
-    dispatch(generateAction({image: imageUri}));
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={require("../../../assets/samples/test-profile.png")}/>
+        <Image style={styles.image} source={{uri: imageUri}}/>
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.text}>
@@ -91,15 +92,18 @@ const GenerateComponent = ({navigation, imageUri}) => {
       {
         generating &&
         <View>
+          <Text>
+            Loading
+          </Text>
         {/*  TODO replace with a loading thing */}
         </View>
       }
-      { (!generating && generateResult) &&
-        <ResultComponent navigation={navigation} generating={generating} generateResult={generateResult}/>
+      { (!generating && error === null && generateResult !== null) &&
+          <ResultComponent navigation={navigation} generating={generating} generateResult={generateResult}/>
       }
       { (!generating && !generateResult) &&
         <GenerateSettingsComponent imageUri={imageUri} availableFreeTokens={availableFreeTokens} tokenCost={tokenCost} totalFreeTokens={totalFreeTokens} styles={styles}/>
-      }
+          }
     </View>
   );
 }

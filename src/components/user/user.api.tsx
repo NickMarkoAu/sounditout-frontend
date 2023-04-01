@@ -1,4 +1,4 @@
-import {Post, PricingOptions, User} from "../../state/song-suggestion.model";
+import {Post, PricingOptions} from "../../state/song-suggestion.model";
 import axios from "axios";
 import Config from "react-native-config";
 
