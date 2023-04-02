@@ -6,6 +6,8 @@ import { GenerateState} from "../../state/song-suggestion.slice";
 import GenerateSettingsComponent from "./GenerateSettingsComponent";
 import ResultComponent from "./result/ResultComponent";
 import {User} from "../user/user.model";
+import AnimatedLoader from "react-native-animated-loader";
+
 
 const GenerateComponent = ({navigation, imageUri}) => {
   const {colours, fonts} = useTheme;
@@ -22,11 +24,6 @@ const GenerateComponent = ({navigation, imageUri}) => {
   const generating = generateState?.isLoading;
   const generateResult = generateState?.generateResult;
   const error = generateResult?.error;
-
-  console.log("state: ", generateState);
-  console.log("result: ", generateResult);
-  console.log("error: ", error);
-  console.log("generating: ", generating);
 
   const styles = StyleSheet.create({
       container: {
@@ -75,6 +72,14 @@ const GenerateComponent = ({navigation, imageUri}) => {
       iconButtonStyle: {
         display: 'flex',
         flexDirection: 'row'
+      },
+      loadingContainer: {
+        height: "55%",
+        marginTop: 16
+      },
+      loadingAnimation: {
+        marginTop: 25,
+        height: 30
       }
     }
   );
@@ -91,15 +96,17 @@ const GenerateComponent = ({navigation, imageUri}) => {
       </View>
       {
         generating &&
-        <View>
-          <Text>
-            Loading
-          </Text>
-        {/*  TODO replace with a loading thing */}
+        <View style={styles.loadingContainer}>
+          <AnimatedLoader
+            visible={true}
+            source={require("../../../assets/animation/loading.json")}
+            animationStyle={styles.loadingAnimation}
+            speed={1}
+          />
         </View>
       }
       { (!generating && error === null && generateResult !== null) &&
-          <ResultComponent navigation={navigation} generating={generating} generateResult={generateResult}/>
+          <ResultComponent navigation={navigation} generateResult={generateResult}/>
       }
       { (!generating && !generateResult) &&
         <GenerateSettingsComponent imageUri={imageUri} availableFreeTokens={availableFreeTokens} tokenCost={tokenCost} totalFreeTokens={totalFreeTokens} styles={styles}/>

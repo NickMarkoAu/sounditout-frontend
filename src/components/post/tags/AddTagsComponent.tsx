@@ -1,8 +1,18 @@
-import {StyleSheet, TextInput, View} from "react-native";
-import {useTheme} from "../../../state/hooks";
+import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+import {updatePost} from "../../../state/song-suggestion.slice";
+import {Post} from "../../../state/song-suggestion.model";
+import {selectCurrentPost} from "../../../state/song-suggestion.selector";
 
-const AddTagsComponent = () => {
+const AddTagsComponent = ({post}) => {
   const {colours} = useTheme;
+  const [tagInputValue, setTagInputValue] = useState("");
+  const dispatch = useAppDispatch();
+  const tags = post?.image?.tags;
+
   const styles = StyleSheet.create({
     addTagContainer: {
       borderColor: colours.secondary,
@@ -23,12 +33,27 @@ const AddTagsComponent = () => {
     }
   });
 
+  const updateTags = (text) => {
+    //check if space was the last char, if it was then add the tag
+    setTagInputValue(text);
+    console.log("updating tag text", text + "|");
+    if(text.endsWith(" ")) {
+      //add tag
+      console.log("adding tag");
+      const newTags = [...tags, text];
+      dispatch(updatePost({...post, image: {...post?.image, tags: newTags}}))
+      setTagInputValue("");
+    }
+  }
+
   return (
     <View style={styles.addTagContainer}>
       <TextInput
+        value={tagInputValue}
         style={styles.input}
         placeholder="Add tags..."
         placeholderTextColor="#7f7f7f"
+        onChangeText={(text) => updateTags(text)}
       />
     </View>
   )

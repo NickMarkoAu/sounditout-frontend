@@ -1,8 +1,18 @@
 import {Image, StyleSheet, TextInput, View} from "react-native";
-import {useTheme} from "../../state/hooks";
+import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
+import {useEffect, useState} from "react";
+import {updatePost} from "../../state/song-suggestion.slice";
+import {Post} from "../../state/song-suggestion.model";
+import {selectCurrentPost} from "../../state/song-suggestion.selector";
 
 const PostHeadlineComponent = ({image}) => {
   const {colours} = useTheme;
+  const [imageContent, setImageContent] = useState(null);
+  const [caption, setCaption] = useState("");
+  const dispatch = useAppDispatch();
+
+  const post: Post = useAppSelector(selectCurrentPost);
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -43,20 +53,45 @@ const PostHeadlineComponent = ({image}) => {
     }
   });
 
-  image = {url: {
-    uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png"}
+  const getImageSource = () => {
+    if(image == null) {
+      console.log("image is null");
+      return null;
+    }
+    if(image.imageContent == null) {
+      console.log("imageContent is null");
+      return null;
+    }
+    return `data:image/jpeg;base64,${image.imageContent}`
   }
+
+  useEffect(() => {
+    setImageContent(getImageSource());
+  }, [image]);
+
+  useEffect(() => {
+    // debounce updating the post until after user has finished editing
+    const timeoutId = setTimeout(() => {
+      dispatch(updatePost({...post, content: caption}));
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [caption]);
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={image?.url} style={styles.image} />
+        <Image source={{uri: imageContent}} style={styles.image} />
       </View>
       <View style={styles.headlineContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Add comment..."
+          placeholder="Add caption..."
           placeholderTextColor="#7f7f7f"
+          value={caption}
+          onChangeText={(text) => setCaption(text)}
         />
       </View>
     </View>

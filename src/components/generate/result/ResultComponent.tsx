@@ -1,15 +1,21 @@
 import {FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View, Text, useColorScheme} from "react-native";
-import {PricingOptions, Song} from "../../../state/song-suggestion.model";
+import {Post, PricingOptions, Song, UserUploadedImage} from "../../../state/song-suggestion.model";
 import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCompactDisc, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
-import {useAppSelector, useTheme} from "../../../state/hooks";
-import {selectPricingOptions} from "../../../state/song-suggestion.selector";
+import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
+import {selectCurrentPost, selectCurrentUser, selectPricingOptions} from "../../../state/song-suggestion.selector";
+import { User } from "../../user/user.model";
+import {updatePost} from "../../../state/song-suggestion.slice";
 
-const ResultComponent = ({navigation, generating, generateResult}) => {
+const ResultComponent = ({navigation, generateResult}) => {
   const pricing: PricingOptions = useAppSelector(selectPricingOptions);
   const regenerateCost = pricing.regenerateCost;
   const songs: Song[] = generateResult.songs;
+  const image: UserUploadedImage = generateResult.image;
+  const currentUser: User = useAppSelector(selectCurrentUser);
+  const currentPost: Post = useAppSelector(selectCurrentPost);
+  const dispatch = useAppDispatch();
 
   const {colours, fonts} = useTheme;
 
@@ -67,12 +73,15 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
     //TODO regenerate api call here
   }
 
-  const selectSong = () => {
-    //TODO add song to post here and navigate to post completion page
+  const selectSong = (song) => {
+    //initial create post
+    console.log("initial create post");
+    dispatch(updatePost({...currentPost, song, user: currentUser, image}));
+    navigation.navigate("CreatePost");
   }
 
   const previewSong = (song) => {
-
+    //TODO add song preview here
   }
 
   return (
@@ -82,7 +91,7 @@ const ResultComponent = ({navigation, generating, generateResult}) => {
         <FlatList style={styles.scrollView} data={songs} renderItem={({item}) =>
           <View style={styles.songPreviewContainer}>
             <SongPreviewComponent navigation={navigation} song={item} onPress={previewSong}/>
-            <TouchableOpacity onPress={selectSong}>
+            <TouchableOpacity onPress={() => selectSong(item)}>
               <FontAwesomeIcon color={colours.primary} icon={faSquarePlus} size={25}/>
             </TouchableOpacity>
           </View>

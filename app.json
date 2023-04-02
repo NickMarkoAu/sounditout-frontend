@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "EchoCap",
-    "slug": "EchoCap",
+    "name": "SoundItOut",
+    "slug": "SoundItOut",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appidentity/icon.png",
