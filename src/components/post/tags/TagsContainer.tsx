@@ -1,10 +1,15 @@
 import {StyleSheet, Text, View} from "react-native";
 import TagComponent from "./TagComponent";
-import {useTheme} from "../../../state/hooks";
+import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
+import {selectCurrentPost} from "../../../state/song-suggestion.selector";
+import {updatePost} from "../../../state/song-suggestion.slice";
 
 const TagsContainer = ({post}) => {
   const {colours} = useTheme;
   const tags = post?.image?.tags;
+  const currentPost = useAppSelector(selectCurrentPost);
+  const dispatch = useAppDispatch();
+
   const styles = StyleSheet.create({
     container: {
       marginLeft: 16,
@@ -28,6 +33,12 @@ const TagsContainer = ({post}) => {
     }
   });
 
+  const deleteTag = (index) => {
+    const newTags = [...tags];
+    newTags.splice(index, 1);
+    dispatch(updatePost({...currentPost, image: {...currentPost.image, tags: newTags}}));
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
@@ -36,7 +47,7 @@ const TagsContainer = ({post}) => {
       <View style={styles.tagsContainer}>
         {tags?.map((tag, index) => {
           const key = tag + index;
-          return (<TagComponent key={key} tag={tag} />)
+          return (<TagComponent key={key} tag={tag} deleteTag={() => deleteTag(index)}/>)
         })}
       </View>
     </View>

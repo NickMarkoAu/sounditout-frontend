@@ -1,4 +1,4 @@
-import {useTheme} from "../state/hooks";
+import {useAppSelector, useTheme} from "../state/hooks";
 import {StyleSheet, View} from "react-native";
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {StatusBar} from "expo-status-bar";
@@ -6,9 +6,12 @@ import TopBarComponent from "../components/topbar/TopBarComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import React from "react";
 import CreatePostComponent from "../components/post/CreatePostComponent";
+import {selectCurrentPost} from "../state/song-suggestion.selector";
 
-const CreatePost = ({navigation, post}) => {
+const CreatePost = ({navigation}) => {
   const {colours} = useTheme;
+
+  const post = useAppSelector(selectCurrentPost);
 
   const styles = StyleSheet.create({
     container: {

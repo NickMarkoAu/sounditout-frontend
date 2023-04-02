@@ -8,6 +8,8 @@ export const selectLoading = (state: SongSuggestionState): boolean => state.isLo
 
 export const selectCurrentUser = (state: SongSuggestionState): User => state.user;
 
+export const selectCurrentPost = (state: SongSuggestionState): Post => state.currentPost;
+
 export const selectGenerate = (state: SongSuggestionState): GenerateState => state.generate;
 
 export const selectGenerateParams = (state: SongSuggestionState): GenerateParams => state.generate.generateParams;

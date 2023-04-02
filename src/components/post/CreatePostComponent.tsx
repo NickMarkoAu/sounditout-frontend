@@ -5,11 +5,14 @@ import AddTagsComponent from "./tags/AddTagsComponent";
 import PrivacySelectComponent from "./PrivacySelectComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCheckSquare} from "@fortawesome/free-solid-svg-icons";
-import {useTheme} from "../../state/hooks";
+import {useAppDispatch, useTheme} from "../../state/hooks";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
+import {createPostAction} from "../../state/song-suggestion.slice";
 
 const CreatePostComponent = ({post, navigation}) => {
   const {colours} = useTheme;
+  const dispatch = useAppDispatch();
+
   const styles = StyleSheet.create({
     container: {
       marginTop: 88,
@@ -29,19 +32,21 @@ const CreatePostComponent = ({post, navigation}) => {
   })
 
   const submitPost = () => {
-    //TODO submit the post and navigate to feed with post at the top
+    dispatch(createPostAction({post}));
+    navigation.navigate("Feed");
   }
   const previewSong = () => {
 
   }
+
   return (
-    <View style={styles.container}>
-      <PostHeadlineComponent image={post?.image}/>
+    post && <View style={styles.container}>
+      <PostHeadlineComponent image={post.image}/>
       <View style={styles.preview}>
         <SongPreviewComponent onPress={previewSong} navigation={navigation} song={post?.song} />
       </View>
       <TagsContainer post={post} />
-      <AddTagsComponent />
+      <AddTagsComponent post={post}/>
       <View style={styles.submit}>
         <PrivacySelectComponent />
         <TouchableOpacity style={styles.submitButton} onPress={submitPost} >

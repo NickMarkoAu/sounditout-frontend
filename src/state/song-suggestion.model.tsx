@@ -13,10 +13,11 @@ export interface GenerateResult {
   songs: Song[];
   tags: string[];
   error: string;
+  image: UserUploadedImage;
 }
 
 export interface Post {
-  id: string;
+  id?: string;
   user: User;
   image?: UserUploadedImage;
   song?: Song;

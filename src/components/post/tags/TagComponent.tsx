@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../../state/hooks";
 
-const TagComponent = ({tag}) => {
+const TagComponent = ({tag, deleteTag}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({
@@ -25,9 +25,6 @@ const TagComponent = ({tag}) => {
     }
   });
 
-  const deleteTag = () => {
-    //TODO store post in state, delete tag from tags list here?
-  }
   return (
     <View style={styles.tagContainer}>
       <Text style={styles.tagText}>

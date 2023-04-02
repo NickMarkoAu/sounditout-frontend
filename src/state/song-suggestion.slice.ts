@@ -1,6 +1,6 @@
 import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions, Page} from "./song-suggestion.model";
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getPostsForUser} from "../components/post/post.api";
+import {createPost, getPostsForUser} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
 import {fetchPricing} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
@@ -13,6 +13,7 @@ export interface SongSuggestionState {
   isLoading: boolean;
   generate: GenerateState;
   pricing: PricingOptions;
+  currentPost?: Post;
 }
 
 export interface GenerateState {
@@ -59,6 +60,9 @@ const songSuggestionSlice = createSlice({
     },
     removeCurrentUserAction: (state, action: PayloadAction<void>) => {
       state.user = null;
+    },
+    updatePost: (state, action: PayloadAction<Post>) => {
+      state.currentPost = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -73,6 +77,19 @@ const songSuggestionSlice = createSlice({
       })
       .addCase(getPostsForUserAction.pending, (state, action) => {
         state.posts = [];
+        state.isLoading = true;
+      })
+      .addCase(createPostAction.fulfilled, (state, action) => {
+        state.currentPost = null;
+        //add new post to the top of the feed
+        state.posts = [action.payload, ...state.posts];
+        state.isLoading = false;
+      })
+      .addCase(createPostAction.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(createPostAction.pending, (state, action) => {
         state.isLoading = true;
       })
       .addCase(getPricingAction.fulfilled, (state, action) => {
@@ -111,6 +128,17 @@ export const getPostsForUserAction = createAsyncThunk<Page<Post>, { user: User }
   }
 );
 
+export const createPostAction = createAsyncThunk<Post, { post: Post}>(
+  'posts/createPost',
+  async ({post }, { rejectWithValue }) => {
+    try {
+      return createPost(post);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
 export const getPricingAction = createAsyncThunk<PricingOptions, void>(
   'pricing',
   async (_, {rejectWithValue}) => {
@@ -136,6 +164,7 @@ export const generateAction = createAsyncThunk<GenerateResult, {imageUri: string
 export const{
   updateGenerateParamsAction,
   updateCurrentUserAction,
-  removeCurrentUserAction
+  removeCurrentUserAction,
+  updatePost
 } = songSuggestionSlice.actions;
 export default songSuggestionSlice.reducer;

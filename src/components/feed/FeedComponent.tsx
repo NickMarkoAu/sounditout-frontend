@@ -21,7 +21,7 @@ const FeedComponent = ({navigation}) => {
     },
     container: {
       flex: 1,
-      marginTop: 88,
+      marginTop: 100,
       width: "100%",
       height: undefined,
       alignSelf: 'stretch',
@@ -31,7 +31,7 @@ const FeedComponent = ({navigation}) => {
   });
 
   useEffect(()=> {
-    if (posts.length === 0) {
+    if (!posts || posts.length === 0) {
       dispatch(getPostsForUserAction({user}));
     }
   }, []);
