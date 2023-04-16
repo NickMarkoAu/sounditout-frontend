@@ -6,7 +6,8 @@ import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentUser, selectLoading, selectPosts} from "../../state/song-suggestion.selector";
 import {getPostsForUserAction} from "../../state/song-suggestion.slice";
 import {User} from "../user/user.model";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
+import AnimatedLoader from "react-native-animated-loader";
 
 const FeedComponent = ({navigation}) => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,14 @@ const FeedComponent = ({navigation}) => {
       marginBottom: 55,
       overflow: "visible"
     },
+    loadingContainer: {
+      height: "55%",
+      marginTop: 16
+    },
+    loadingAnimation: {
+      marginTop: 25,
+      height: 30
+    }
   });
 
   useEffect(()=> {
@@ -40,12 +49,11 @@ const FeedComponent = ({navigation}) => {
     dispatch(getPostsForUserAction({user}));
   }
 
-
   return (
     <SafeAreaView style={styles.container}>
       <FlatList style={styles.scrollView} data={posts}
                 refreshControl={<RefreshControl
-                  colors={["#9Bd35A", "#689F38"]}
+                  colors={[colours.primary, colours.secondary]}
                   refreshing={isLoading}
                   onRefresh={onRefresh} />}
                   renderItem={({item}) =>

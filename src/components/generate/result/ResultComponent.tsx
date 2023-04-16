@@ -1,12 +1,12 @@
 import {FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View, Text, useColorScheme} from "react-native";
-import {Post, PricingOptions, Song, UserUploadedImage} from "../../../state/song-suggestion.model";
+import {Post, PostPrivacy, PricingOptions, Song, UserUploadedImage} from "../../../state/song-suggestion.model";
 import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCompactDisc, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
 import {selectCurrentPost, selectCurrentUser, selectPricingOptions} from "../../../state/song-suggestion.selector";
 import { User } from "../../user/user.model";
-import {updatePost} from "../../../state/song-suggestion.slice";
+import {setCurrentlyPlayingSong, updatePost} from "../../../state/song-suggestion.slice";
 
 const ResultComponent = ({navigation, generateResult}) => {
   const pricing: PricingOptions = useAppSelector(selectPricingOptions);
@@ -76,12 +76,14 @@ const ResultComponent = ({navigation, generateResult}) => {
   const selectSong = (song) => {
     //initial create post
     console.log("initial create post");
-    dispatch(updatePost({...currentPost, song, user: currentUser, image}));
+    //TODO set up default privacy in user and use selector here
+    const defaultPrivacy = PostPrivacy.PUBLIC
+    dispatch(updatePost({...currentPost, song, user: currentUser, image, privacy: defaultPrivacy}));
     navigation.navigate("CreatePost");
   }
 
-  const previewSong = (song) => {
-    //TODO add song preview here
+  const previewSong = (item) => {
+    dispatch(setCurrentlyPlayingSong(item));
   }
 
   return (
@@ -90,7 +92,7 @@ const ResultComponent = ({navigation, generateResult}) => {
       <SafeAreaView style={styles.container}>
         <FlatList style={styles.scrollView} data={songs} renderItem={({item}) =>
           <View style={styles.songPreviewContainer}>
-            <SongPreviewComponent navigation={navigation} song={item} onPress={previewSong}/>
+            <SongPreviewComponent navigation={navigation} song={item} onPress={() => previewSong(item)}/>
             <TouchableOpacity onPress={() => selectSong(item)}>
               <FontAwesomeIcon color={colours.primary} icon={faSquarePlus} size={25}/>
             </TouchableOpacity>

@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {updatePost} from "../../state/song-suggestion.slice";
 import {Post} from "../../state/song-suggestion.model";
 import {selectCurrentPost} from "../../state/song-suggestion.selector";
+import {getImageSource} from "../../shared/image.utils";
 
 const PostHeadlineComponent = ({image}) => {
   const {colours} = useTheme;
@@ -53,20 +54,8 @@ const PostHeadlineComponent = ({image}) => {
     }
   });
 
-  const getImageSource = () => {
-    if(image == null) {
-      console.log("image is null");
-      return null;
-    }
-    if(image.imageContent == null) {
-      console.log("imageContent is null");
-      return null;
-    }
-    return `data:image/jpeg;base64,${image.imageContent}`
-  }
-
   useEffect(() => {
-    setImageContent(getImageSource());
+    setImageContent(getImageSource(image));
   }, [image]);
 
   useEffect(() => {

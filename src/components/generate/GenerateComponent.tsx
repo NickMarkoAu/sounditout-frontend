@@ -8,7 +8,6 @@ import ResultComponent from "./result/ResultComponent";
 import {User} from "../user/user.model";
 import AnimatedLoader from "react-native-animated-loader";
 
-
 const GenerateComponent = ({navigation, imageUri}) => {
   const {colours, fonts} = useTheme;
 

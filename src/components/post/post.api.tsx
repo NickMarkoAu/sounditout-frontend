@@ -1,4 +1,4 @@
-import {Page, Post} from "../../state/song-suggestion.model";
+import {Page, Post, UserComment} from "../../state/song-suggestion.model";
 import axios from 'axios';
 import {User} from "../user/user.model";
 
@@ -24,6 +24,18 @@ export const createPost = async (post: Post) => {
   } catch (e) {
     console.log(e);
     console.log("create post error: ", e.response.data);
+    return e.response.data;
+  }
+}
+
+export const submitComment = async (comment: UserComment) => {
+  try {
+    const response = await axios.post(`/api/comment/create`, comment);
+    console.log("submit comment response: ", response.data);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    console.log("submit comment error: ", e.response.data);
     return e.response.data;
   }
 }
