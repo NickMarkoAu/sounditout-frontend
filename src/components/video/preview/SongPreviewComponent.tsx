@@ -1,10 +1,18 @@
-import {Image, View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../../state/hooks";
+import {SongMetadata} from "../../../state/song-suggestion.model";
+import {useEffect, useRef, useState} from "react";
+import {getSongMetadata} from "../song.api";
+import LottieView from "lottie-react-native";
+
 
 const SongPreviewComponent = ({onPress, navigation, song}) => {
   const {colours} = useTheme;
+  const [metadata, setMetadata] = useState<SongMetadata>(song?.songMetadata);
+  const [songLoading, setSongLoading] = useState<boolean>(true);
+  const animation = useRef(null);
 
   const styles = StyleSheet.create({
     previewContainer: {
@@ -42,23 +50,50 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
     },
     playIcon: {
       color: colours.primary,
+      opacity: 0.85
     },
+    animation: {
+      height: 35
+    }
   });
 
-  // song = {
-  //   artist: "Ya Mum",
-  //   name: "GO fuck urself",
-  //   image: {uri: "https://i1.sndcdn.com/artworks-000462239079-kce8fl-t500x500.jpg"}
-  // }
+  useEffect(() => {
+    if(!metadata) {
+      setSongLoading(true)
+      getMetadata();
+    }
+  },[song]);
+
+  const getMetadata = () => {
+    if(song) {
+      getSongMetadata(song.id).then((data) => {
+        setMetadata(data);
+        setSongLoading(false);
+      });
+    }
+  }
+
   return (
     song &&
     <View style={styles.previewContainer}>
+      {songLoading &&
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={song?.image}/>
-        <TouchableOpacity style={styles.playIconContainer} onPress={onPress}>
-          <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
-        </TouchableOpacity>
+        <LottieView
+          autoPlay
+          ref={animation}
+          style={styles.animation}
+          source={require("../../../../assets/animation/loading_small.json")}
+        />
       </View>
+      }
+      {!songLoading && metadata &&
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{uri: metadata?.albumArtUrl}}/>
+          <TouchableOpacity style={styles.playIconContainer} onPress={onPress}>
+            <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
+          </TouchableOpacity>
+        </View>
+      }
       <View style={styles.textContainer}>
         <Text style={{color: "white", textAlign: "left", fontWeight: "bold"}}>
           {song?.name}

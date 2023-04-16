@@ -1,8 +1,16 @@
-import {GenerateParams, GenerateResult, UserUploadedImage, Post, PricingOptions, Page} from "./song-suggestion.model";
+import {
+  GenerateParams,
+  GenerateResult,
+  Post,
+  PricingOptions,
+  Page,
+  Song,
+  UserComment
+} from "./song-suggestion.model";
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, getPostsForUser} from "../components/post/post.api";
+import {createPost, getPostsForUser, submitComment} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
-import {fetchPricing} from "../components/user/user.api";
+import {fetchPricing, refreshUser} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
 import {User} from "../components/user/user.model";
 
@@ -14,6 +22,9 @@ export interface SongSuggestionState {
   generate: GenerateState;
   pricing: PricingOptions;
   currentPost?: Post;
+  newPostLoading: boolean;
+  playerVisible: boolean;
+  currentlyPlayingSong?: Song;
 }
 
 export interface GenerateState {
@@ -43,7 +54,75 @@ export const initialState: SongSuggestionState = {
     freeTokens: 10,
     regenerateCost: 1
   },
+  newPostLoading: false,
+  playerVisible: false
 }
+
+export const getPostsForUserAction = createAsyncThunk<Page<Post>, { user: User }>(
+  'posts/getPostsForUser',
+  async ({ user }, { rejectWithValue }) => {
+    try {
+      return getPostsForUser(user);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const createPostAction = createAsyncThunk<Post, { post: Post}>(
+  'posts/createPost',
+  async ({post }, { rejectWithValue }) => {
+    try {
+      return createPost(post);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const submitCommentAction = createAsyncThunk<UserComment, { comment: UserComment }>(
+  'posts/submitComment',
+  async ({comment }, { rejectWithValue }) => {
+    try {
+      return submitComment(comment);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const getPricingAction = createAsyncThunk<PricingOptions, void>(
+  'pricing',
+  async (_, {rejectWithValue}) => {
+    try {
+      return await fetchPricing();
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const generateAction = createAsyncThunk<GenerateResult, {imageUri: string}>(
+  'generate/generateSuggestions',
+  async ({imageUri}, {rejectWithValue}) => {
+    try {
+      return generateSuggestions(imageUri);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const refreshUserAction = createAsyncThunk<User, { userId: number }>(
+  'user/refreshUser',
+  async ({userId}, {rejectWithValue}) => {
+    try {
+      return await refreshUser(userId);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
 
 const songSuggestionSlice = createSlice({
   name: 'songSuggestion',
@@ -63,6 +142,16 @@ const songSuggestionSlice = createSlice({
     },
     updatePost: (state, action: PayloadAction<Post>) => {
       state.currentPost = action.payload;
+    },
+    setCurrentlyPlayingSong: (state, action: PayloadAction<Song>) => {
+      state.currentlyPlayingSong = action.payload;
+      state.playerVisible = true;
+      console.log("Set visible to true");
+    },
+    unloadCurrentlyPlayingSong: (state, action: PayloadAction) => {
+      state.currentlyPlayingSong = null;
+      state.playerVisible = false;
+      console.log("Set visible to false");
     }
   },
   extraReducers: (builder) => {
@@ -83,6 +172,14 @@ const songSuggestionSlice = createSlice({
         state.currentPost = null;
         //add new post to the top of the feed
         state.posts = [action.payload, ...state.posts];
+        //clear generated results
+        state.generate.generateResult = null;
+        state.generate.generateParams = {
+          energy: 0,
+          tempo: 0,
+          warmth: 0,
+          isLocked: true,
+        };
         state.isLoading = false;
       })
       .addCase(createPostAction.rejected, (state, action) => {
@@ -113,58 +210,43 @@ const songSuggestionSlice = createSlice({
       })
       .addCase(generateAction.pending, (state, action) => {
         state.generate.isLoading = true;
+      })
+      .addCase(submitCommentAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(submitCommentAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const posts = state.posts;
+        const comment: UserComment = action.payload;
+        const post: Post = posts.find(p => p.id === comment.post.id);
+        console.log("adding comment to post: ", post);
+        post?.comments.push(comment);
+      })
+      .addCase(submitCommentAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(refreshUserAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(refreshUserAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(refreshUserAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   }
 });
 
-export const getPostsForUserAction = createAsyncThunk<Page<Post>, { user: User }>(
-  'posts/getPostsForUser',
-  async ({ user }, { rejectWithValue }) => {
-    try {
-      return getPostsForUser(user);
-    } catch (e) {
-      return rejectWithValue(convertToSerializedError(e));
-    }
-  }
-);
-
-export const createPostAction = createAsyncThunk<Post, { post: Post}>(
-  'posts/createPost',
-  async ({post }, { rejectWithValue }) => {
-    try {
-      return createPost(post);
-    } catch (e) {
-      return rejectWithValue(convertToSerializedError(e));
-    }
-  }
-);
-
-export const getPricingAction = createAsyncThunk<PricingOptions, void>(
-  'pricing',
-  async (_, {rejectWithValue}) => {
-    try {
-      return await fetchPricing();
-    } catch (e) {
-      return rejectWithValue(convertToSerializedError(e));
-    }
-  }
-);
-
-export const generateAction = createAsyncThunk<GenerateResult, {imageUri: string}>(
-  'generate/generateSuggestions',
-  async ({imageUri}, {rejectWithValue}) => {
-    try {
-      return generateSuggestions(imageUri);
-    } catch (e) {
-      return rejectWithValue(convertToSerializedError(e));
-    }
-  }
-);
 
 export const{
   updateGenerateParamsAction,
   updateCurrentUserAction,
   removeCurrentUserAction,
-  updatePost
+  updatePost,
+  setCurrentlyPlayingSong,
+  unloadCurrentlyPlayingSong
 } = songSuggestionSlice.actions;
 export default songSuggestionSlice.reducer;

@@ -1,13 +1,19 @@
-import { Box, VStack, Text } from 'native-base';
+import { VStack, Text } from 'native-base';
 import {Image, StyleSheet, View} from 'react-native';
-import ProfileButton from "../navigation/ProfileButton";
+import ProfileButton from "../user/profile/ProfileButton";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
-import CommentBoxComponent from "../post/commentbox/CommentBoxComponent";
-import {useTheme} from "../../state/hooks";
+import CommentBoxComponent from "../post/comments/CommentBoxComponent";
+
+import {useAppDispatch, useTheme} from "../../state/hooks";
+import {setCurrentlyPlayingSong} from "../../state/song-suggestion.slice";
+import CommentsComponent from "./comments/CommentsComponent";
+import {getImageSource} from "../../shared/image.utils";
+import ProfileId from "../user/profile/ProfileId";
 
 const PostComponent = ({navigation, post}) => {
   const {colours, fonts} = useTheme;
+  const dispatch = useAppDispatch();
 
   const styles = StyleSheet.create({
     imageContainer: {
@@ -36,10 +42,6 @@ const PostComponent = ({navigation, post}) => {
       alignItems: 'center',
       marginLeft: 20
     },
-    profileId: {
-      flexDirection: 'row',
-      alignItems: 'center'
-    },
     infoContainer: {
       width: "90%",
       marginLeft: 20,
@@ -51,46 +53,47 @@ const PostComponent = ({navigation, post}) => {
       marginLeft: 8,
       color: colours.text_primary
     },
-    nameStyle: {
-      color: colours.text_primary,
-      fontFamily: fonts.primary,
-      marginLeft: 3
+    textStyle: {
+      color: "white",
+    },
+    textContainer: {
+      marginTop: 8,
+      marginLeft: 8
     }
   });
 
-  const showProfile = () => {
-    //TODO make this go to the user profile
+  const playSong = () => {
+    dispatch(setCurrentlyPlayingSong(post?.song));
   }
 
-  const navigateToPlaylist = () => {
-    navigation.navigate("Playlist", {song: post?.song})
-  }
-
-  const getImageSource = () => {
-    return `data:image/jpeg;base64,${post.image.imageContent}`
-  }
-
+  //TODO add an empty post component with a loading spinner
   return (
      post &&
          <VStack style={styles.postContainer} space="2">
             <View style={styles.postHeader}>
-              <View style={styles.profileId}>
-                <ProfileButton onPress={showProfile}/>
-                <Text style={styles.nameStyle}>{post?.user?.name}</Text>
-              </View>
+              <ProfileId user={post.user} />
               <Text style={styles.dateStyle}>{post.date}</Text>
             </View>
             <View style={styles.imageContainer}>
-              <Image source={{uri: getImageSource()}}
+              <Image source={{uri: post.image.presignedUrl}}
                      style={styles.image}/>
             </View>
             <View style={styles.infoContainer}>
-              <SongPreviewComponent navigation={navigation} song={post?.song} onPress={navigateToPlaylist}/>
+              <SongPreviewComponent navigation={navigation} song={post?.song} onPress={playSong}/>
+              {post?.likes && post.likes > 0 &&
+                <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>
+                  {post?.likes} likes
+                </Text>
+              </View>}
+              <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>
+                  {post?.content}
+                </Text>
+              </View>
               <ActionButtonsComponent />
-              <Text style={{color: "white"}}>
-                {post?.content}
-              </Text>
-              <CommentBoxComponent />
+              <CommentsComponent post={post} />
+              <CommentBoxComponent post={post}/>
             </View>
          </VStack>
   );

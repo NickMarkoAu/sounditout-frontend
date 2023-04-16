@@ -1,8 +1,11 @@
 import {Image, Pressable, View, StyleSheet, TouchableOpacity} from "react-native";
-import {useTheme} from "../../state/hooks";
+import {useAppDispatch, useTheme} from "../../../state/hooks";
+import {getImageSource} from "../../../shared/image.utils";
+import {refreshUserAction} from "../../../state/song-suggestion.slice";
 
-const ProfileButton = ({onPress}) => {
+const ProfileButton = ({onPress, user}) => {
   const {colours} = useTheme;
+  const dispatch = useAppDispatch();
 
   const styles = StyleSheet.create({
     IconBehave: {
@@ -26,6 +29,13 @@ const ProfileButton = ({onPress}) => {
     }
   });
 
+  const onImageError = () => {
+    console.log("Image error, user id is: ", user?.id)
+    if(user && user.id) {
+      dispatch(refreshUserAction({userId: user.id}));
+    }
+  }
+
     return (
       <Pressable onPress={onPress} style={styles.IconBehave}
                        android_ripple={{borderless: true, radius: 50}}>
@@ -33,7 +43,8 @@ const ProfileButton = ({onPress}) => {
         <TouchableOpacity>
         <Image
           style={styles.CircleImage}
-          source={require("../../../assets/samples/test-profile.png")}
+          source={{uri: user.profileImage.presignedUrl}}
+          onError={onImageError}
         />
         </TouchableOpacity>
       </View>

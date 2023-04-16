@@ -8,7 +8,9 @@ import {selectCurrentUser} from "../../state/song-suggestion.selector";
 const TopBarComponent = () => {
   const {colours} = useTheme;
   const user = useAppSelector(selectCurrentUser);
-  const totalTokens = user.tokens.tokens + user.tokens.freeTokens;
+  console.log("User", user);
+
+  const totalTokens = user?.tokens?.tokens + user?.tokens?.freeTokens;
 
   const styles = StyleSheet.create({
     topBarContainer: {

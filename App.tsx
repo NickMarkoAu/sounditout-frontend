@@ -12,12 +12,17 @@ import axiosConfig from "./src/configurations/axios-config"
 import {refreshToken} from "./src/components/user/auth/auth.api"
 import {User} from "./src/components/user/user.model"
 import {NotoSans_400Regular, Unbounded_400Regular, useFonts} from "@expo-google-fonts/dev";
+import MiniPlayerComponent from "./src/components/player/MiniPlayerComponent";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 const AppWrapper = () => {
   axiosConfig();
   return (
     <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <MiniPlayerComponent />
         <App/>
+      </GestureHandlerRootView>
     </Provider>
   );
 }
@@ -83,7 +88,7 @@ const App = () => {
     dispatch(updateCurrentUserAction(JSON.parse(storedUser)));
   }
 
-  if(!user) {
+  if(!user || !user.id) {
     getStoredUser();
   }
 

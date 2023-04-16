@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCaretSquareDown} from "@fortawesome/free-solid-svg-icons";
 import {selectCurrentPost} from "../../state/song-suggestion.selector";
-import {Post} from "../../state/song-suggestion.model";
+import {Post, PostPrivacy} from "../../state/song-suggestion.model";
 import {updatePost} from "../../state/song-suggestion.slice";
 
 const {colours} = useTheme;
@@ -20,10 +20,9 @@ export const ArrowIcon = () => {
 const PrivacySelectComponent = () => {
   const [open, setOpen] = useState(false);
   //TODO set up default privacy in user and use selector here
-  const defaultPrivacy = "Public";
+  const defaultPrivacy = PostPrivacy.PUBLIC
   const [privacyValue, setPrivacyValue] = useState(defaultPrivacy);
-  //TODO get these options from backend
-  const privacyOptions = [{label: "Public", value:"Public", selected: true}, {label: "Friends", value:"Friends"}, {label: "Private", value:"Private"}];
+  const privacyOptions = [{label: "Public", value:PostPrivacy.PUBLIC, selected: true}, {label: "Friends", value:PostPrivacy.FRIENDS}, {label: "Private", value:PostPrivacy.PRIVATE}];
   const post : Post = useAppSelector(selectCurrentPost);
   const dispatch = useAppDispatch();
 
@@ -49,7 +48,7 @@ const PrivacySelectComponent = () => {
 
   useEffect(() => {
     console.log("Changing privacy to", privacyValue);
-    dispatch(updatePost({...post, postPrivacy: privacyValue}));
+    dispatch(updatePost({...post, privacy: privacyValue}));
   }, [privacyValue]);
 
   return (

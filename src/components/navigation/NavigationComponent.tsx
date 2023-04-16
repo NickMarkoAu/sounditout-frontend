@@ -2,12 +2,14 @@ import {StyleSheet, View} from "react-native";
 import {faCameraRetro, faCirclePlay, faMagnifyingGlass, faNewspaper, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import NavButton from "./NavButton";
-import ProfileButton from "./ProfileButton";
-import {useTheme} from "../../state/hooks";
+import ProfileButton from "../user/profile/ProfileButton";
+import {useAppSelector, useTheme} from "../../state/hooks";
+import {User} from "../user/user.model";
+import {selectCurrentUser} from "../../state/song-suggestion.selector";
 
 const NavigationComponent = ({navigation}) => {
   const {colours} = useTheme;
-
+  const user: User = useAppSelector(selectCurrentUser);
   const styles = StyleSheet.create({
     NavContainer: {
       position: "absolute",
@@ -30,7 +32,7 @@ const NavigationComponent = ({navigation}) => {
     }
   });
 
-
+  console.log("User nav profile image", user.profileImage.presignedUrl)
   const cameraIconSize = 35;
   const iconSize = 25;
   return (
@@ -40,7 +42,7 @@ const NavigationComponent = ({navigation}) => {
         <NavButton onPress={() => navigation.navigate("Search")} icon={faMagnifyingGlass} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Camera")} icon={faCameraRetro} styles={styles} size={cameraIconSize}/>
         <NavButton onPress={() => navigation.navigate("Player")} icon={faCirclePlay} styles={styles} size={iconSize}/>
-        <ProfileButton onPress={() => navigation.navigate("Profile")}/>
+        <ProfileButton onPress={() => navigation.navigate("Profile")} user={user}/>
       </View>
     </View>
   );
