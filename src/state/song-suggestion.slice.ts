@@ -5,10 +5,10 @@ import {
   PricingOptions,
   Page,
   Song,
-  UserComment
+  UserComment, Reaction, SavedPost
 } from "./song-suggestion.model";
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, getPostsForUser, submitComment} from "../components/post/post.api";
+import {createPost, getPostsForUser, likePost, savePost, submitComment} from "../components/post/post.api";
 import {convertToSerializedError} from "../shared/asnyc";
 import {fetchPricing, refreshUser} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
@@ -85,6 +85,28 @@ export const submitCommentAction = createAsyncThunk<UserComment, { comment: User
   async ({comment }, { rejectWithValue }) => {
     try {
       return submitComment(comment);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const likePostAction = createAsyncThunk<Reaction, { reaction: Reaction }>(
+  'posts/likePost',
+  async ({reaction }, { rejectWithValue }) => {
+    try {
+        return likePost(reaction);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const savePostAction = createAsyncThunk<SavedPost, { post: SavedPost }>(
+  'posts/savePost',
+  async ({post }, { rejectWithValue }) => {
+    try {
+      return savePost(post);
     } catch (e) {
       return rejectWithValue(convertToSerializedError(e));
     }
@@ -234,6 +256,44 @@ const songSuggestionSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(refreshUserAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(likePostAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(likePostAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const posts = state.posts;
+        const post: Post = posts.find(p => p.id === action.payload.post.id);
+        //toggle
+        if(post?.liked) {
+          post.likes--;
+          post.liked = false;
+        } else {
+          post.likes++;
+          post.liked = true;
+        }
+      })
+      .addCase(likePostAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(savePostAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(savePostAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const posts = state.posts;
+        const post: Post = posts.find(p => p.id === action.payload.post.id);
+        //toggle
+        if(post?.saved) {
+          post.saved = false;
+        } else {
+          post.saved = true;
+        }
+      })
+      .addCase(savePostAction.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

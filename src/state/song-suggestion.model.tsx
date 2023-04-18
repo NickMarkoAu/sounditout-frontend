@@ -32,16 +32,41 @@ export interface Post {
   song?: Song;
   content?: string;
   comments?: UserComment[];
+  likes: number;
   date: Date;
   privacy?: PostPrivacy;
   draft: boolean;
   tags: string[];
+  liked?: boolean;
+  saved?: boolean;
+}
+
+export interface SavedPost {
+  post: Post;
+  user: User;
+}
+
+export interface Reaction {
+  id?: number;
+  user: User;
+  post: Post;
+  reactionType: ReactionType;
 }
 
 export enum PostPrivacy {
   PUBLIC = "PUBLIC",
   PRIVATE = "PRIVATE",
   FRIENDS = "FRIENDS"
+}
+
+export enum ReactionType {
+  LIKE = "LIKE",
+  LOVE = "LOVE",
+  HAHA = "HAHA",
+  WOW = "WOW",
+  SAD = "SAD",
+  ANGRY = "ANGRY"
+
 }
 
 export interface UserUploadedImage {
