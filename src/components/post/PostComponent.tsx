@@ -1,19 +1,22 @@
 import { VStack, Text } from 'native-base';
 import {Image, StyleSheet, View} from 'react-native';
-import ProfileButton from "../user/profile/ProfileButton";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import ActionButtonsComponent from "../post/actionbuttons/ActionButtonsComponent";
 import CommentBoxComponent from "../post/comments/CommentBoxComponent";
-
-import {useAppDispatch, useTheme} from "../../state/hooks";
-import {setCurrentlyPlayingSong} from "../../state/song-suggestion.slice";
+import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
+import {likePostAction, setCurrentlyPlayingSong} from "../../state/song-suggestion.slice";
 import CommentsComponent from "./comments/CommentsComponent";
-import {getImageSource} from "../../shared/image.utils";
 import ProfileId from "../user/profile/ProfileId";
+import React from 'react';
+import DoubleClick from 'react-native-double-tap';
+import {Reaction, ReactionType} from "../../state/song-suggestion.model";
+import {User} from "../user/user.model";
+import {selectCurrentUser} from "../../state/song-suggestion.selector";
 
 const PostComponent = ({navigation, post}) => {
   const {colours, fonts} = useTheme;
   const dispatch = useAppDispatch();
+  const user: User = useAppSelector(selectCurrentUser);
 
   const styles = StyleSheet.create({
     imageContainer: {
@@ -66,6 +69,16 @@ const PostComponent = ({navigation, post}) => {
     dispatch(setCurrentlyPlayingSong(post?.song));
   }
 
+  const likePost = () => {
+    post.liked = false;
+    const reaction: Reaction = {
+      user,
+      post,
+      reactionType: ReactionType.LIKE
+    }
+    dispatch(likePostAction({reaction}));
+  }
+
   //TODO add an empty post component with a loading spinner
   return (
      post &&
@@ -75,23 +88,22 @@ const PostComponent = ({navigation, post}) => {
               <Text style={styles.dateStyle}>{post.date}</Text>
             </View>
             <View style={styles.imageContainer}>
+              <DoubleClick
+                doubleTap={likePost}
+                delay={200}
+              >
               <Image source={{uri: post.image.presignedUrl}}
                      style={styles.image}/>
+              </DoubleClick>
             </View>
             <View style={styles.infoContainer}>
               <SongPreviewComponent navigation={navigation} song={post?.song} onPress={playSong}/>
-              {post?.likes && post.likes > 0 &&
-                <View style={styles.textContainer}>
-                <Text style={styles.textStyle}>
-                  {post?.likes} likes
-                </Text>
-              </View>}
               <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>
                   {post?.content}
                 </Text>
               </View>
-              <ActionButtonsComponent />
+              <ActionButtonsComponent post={post}/>
               <CommentsComponent post={post} />
               <CommentBoxComponent post={post}/>
             </View>
