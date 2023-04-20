@@ -1,13 +1,13 @@
-import {Page, Post, Reaction, SavedPost, UserComment} from "../../state/song-suggestion.model";
+import {UserContentRequest, Page, Post, Reaction, SavedPost, UserComment} from "../../state/song-suggestion.model";
 import axios from 'axios';
 import {User} from "../user/user.model";
 
 //TODO fix errors so they actually return as an error in the reducer
-export const getPostsForUser = async (user: User) => {
-  const pageNumber = 0;
+export const getPostsForUser = async (feedRequest : UserContentRequest) => {
+  const pageNumber = feedRequest.page;
   const pageSize = 20;
   try {
-    const response = await axios.post<Page<Post>>(`/api/posts/feed?page=${pageNumber}&size=${pageSize}`, user);
+    const response = await axios.post<Page<Post>>(`/api/posts/feed?page=${pageNumber}&size=${pageSize}`, feedRequest.user);
     return response.data;
   } catch (e) {
     console.log(e);
