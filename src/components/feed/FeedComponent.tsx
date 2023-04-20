@@ -1,10 +1,10 @@
 import {FlatList, SafeAreaView, StyleSheet, StatusBar, View, RefreshControl} from "react-native";
 import PostComponent from "../post/PostComponent";
 import {Divider} from "native-base";
-import {Post} from "../../state/song-suggestion.model";
+import {UserContentRequest, Post} from "../../state/song-suggestion.model";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
-import {selectCurrentUser, selectLoading, selectPosts} from "../../state/song-suggestion.selector";
-import {getPostsForUserAction} from "../../state/song-suggestion.slice";
+import {selectCurrentUser, selectLoading, selectPosts, selectPostsPage} from "../../state/song-suggestion.selector";
+import {clearPosts, getPostsForUserAction} from "../../state/song-suggestion.slice";
 import {User} from "../user/user.model";
 import {useEffect} from "react";
 import AnimatedLoader from "react-native-animated-loader";
@@ -15,6 +15,7 @@ const FeedComponent = ({navigation}) => {
   const posts: Post[] = useAppSelector(selectPosts);
   const {colours} = useTheme;
   const isLoading = useAppSelector(selectLoading);
+  const page = useAppSelector(selectPostsPage);
 
   const styles = StyleSheet.create({
     scrollView: {
@@ -41,17 +42,26 @@ const FeedComponent = ({navigation}) => {
 
   useEffect(()=> {
     if (!posts || posts.length === 0) {
-      dispatch(getPostsForUserAction({user}));
+      const feedRequest: UserContentRequest = {user, page}
+      dispatch(getPostsForUserAction({feedRequest}));
     }
   }, []);
 
   const onRefresh = () => {
-    dispatch(getPostsForUserAction({user}));
+    const feedRequest: UserContentRequest = {user, page:0}
+    dispatch(clearPosts());
+    dispatch(getPostsForUserAction({feedRequest}));
+  }
+
+  const loadMorePosts = () => {
+    const feedRequest: UserContentRequest = {user, page: page}
+    dispatch(getPostsForUserAction({feedRequest}));
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList style={styles.scrollView} data={posts}
+                onEndReached={loadMorePosts}
                 refreshControl={<RefreshControl
                   colors={[colours.primary, colours.secondary]}
                   refreshing={isLoading}

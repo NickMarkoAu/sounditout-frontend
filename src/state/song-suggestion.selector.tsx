@@ -1,8 +1,14 @@
 import {GenerateState, SongSuggestionState} from "./song-suggestion.slice";
-import {GenerateParams, Post, PricingOptions, Song} from "./song-suggestion.model";
+import {GenerateParams, Post, PricingOptions, Song, UserProfile} from "./song-suggestion.model";
 import {User} from "../components/user/user.model";
 
-export const selectPosts = (state: SongSuggestionState): Post[] => state.posts;
+export const selectPosts = (state: SongSuggestionState): Post[] => state.feed.posts;
+
+export const selectPostsPage = (state: SongSuggestionState): number => state.feed.currentPageLoaded;
+
+export const selectCurrentProfile = (state: SongSuggestionState): UserProfile => state.profile.profile;
+
+export const selectProfilePage = (state: SongSuggestionState): number => state.profile.currentPageLoaded;
 
 export const selectLoading = (state: SongSuggestionState): boolean => state.isLoading;
 

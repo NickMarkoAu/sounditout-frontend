@@ -7,7 +7,8 @@ export interface Theme {
     background: string,
     text_primary: string,
     text_error: string,
-    text_dark: string
+    text_dark: string,
+    grey: string
   },
   fonts: {
     primary: string;
@@ -18,6 +19,7 @@ export const theme = {
   colours: {
     primary: "#F6BD60",
     secondary: "#5D2A42",
+    grey: "#727272",
     background: "#0C171C",
     text_primary: "#FFFFFF",
     text_error: "#F9061B",

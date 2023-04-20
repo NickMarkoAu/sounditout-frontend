@@ -97,6 +97,23 @@ export interface PricingOptions {
   regenerateCost: number
 }
 
+export interface UserContentRequest {
+  user: User;
+  page: number;
+}
+
+export interface UserProfile {
+  user: User;
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+  isFollowing: boolean;
+  isOwn: boolean;
+  posts: Page<Post>;
+  headlineSong: Song;
+  bio: string;
+}
+
 // this matches Spring's Page wrapper in response
 export interface Page<T> {
   content: T[];
