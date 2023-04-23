@@ -8,7 +8,7 @@ export default class NavButton extends React.Component<{ onPress: () => void, ic
     const {colours} = useTheme
     return (
       <TouchableOpacity onPress={this.props.onPress} style={this.props.styles.IconBehave}>
-          <FontAwesomeIcon icon={this.props.icon} color={colours.primary} size={this.props.size}/>
+        <FontAwesomeIcon icon={this.props.icon} color={colours.primary} size={this.props.size}/>
       </TouchableOpacity>
     );
   }

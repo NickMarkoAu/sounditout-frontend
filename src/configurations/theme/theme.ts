@@ -1,5 +1,3 @@
-import {Unbounded_400Regular, NotoSans_400Regular, useFonts} from "@expo-google-fonts/dev";
-
 export interface Theme {
   colours: {
     primary: string,
@@ -12,6 +10,7 @@ export interface Theme {
   },
   fonts: {
     primary: string;
+    secondary: string;
   }
 }
 

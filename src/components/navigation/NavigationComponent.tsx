@@ -27,14 +27,14 @@ const NavigationComponent = ({navigation}) => {
       alignItems: 'center', //Centered vertically
       flex: 1
     },
-    IconBehave: {
+    icon: {
       padding: 8
     }
   });
 
-  console.log("User nav profile image", user.profileImage.presignedUrl)
   const cameraIconSize = 35;
   const iconSize = 25;
+  console.log("User on nav buttons", user);
   return (
     <View style={styles.NavContainer}>
       <View style={styles.NavBar}>
@@ -42,7 +42,7 @@ const NavigationComponent = ({navigation}) => {
         <NavButton onPress={() => navigation.navigate("Search")} icon={faMagnifyingGlass} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Camera")} icon={faCameraRetro} styles={styles} size={cameraIconSize}/>
         <NavButton onPress={() => navigation.navigate("Player")} icon={faCirclePlay} styles={styles} size={iconSize}/>
-        <ProfileButton onPress={() => navigation.navigate("Profile")} user={user}/>
+        <ProfileButton onPress={() => navigation.navigate("Profile", {user})} user={user}/>
       </View>
     </View>
   );
