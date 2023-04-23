@@ -1,4 +1,4 @@
-import {View, StyleSheet, SafeAreaView} from "react-native";
+import {StyleSheet, SafeAreaView, View, ScrollView} from "react-native";
 import ProfileIdComponent from "./profileid/ProfileIdComponent";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import {UserContentRequest, UserProfile} from "../../state/song-suggestion.model";
@@ -17,11 +17,20 @@ const ProfileComponent = ({user, navigation}) => {
     profileContainer: {
       flex: 1,
       marginTop: 100,
-      width: "100%",
       height: undefined,
       alignSelf: 'stretch',
       marginBottom: 55,
-      overflow: "visible"
+      zIndex: 1
+    },
+    songPreviewContainer: {
+      marginLeft: 16,
+      marginTop: 8
+    },
+    actionButtonContainer: {
+      marginTop: 8
+    },
+    profilePostsContainer: {
+      marginTop: 0
     }
   });
 
@@ -31,21 +40,31 @@ const ProfileComponent = ({user, navigation}) => {
 
   useEffect(()=> {
     if(!profile) {
-      const profileRequest: UserContentRequest = {user, page:0};
-      dispatch(getUserProfileAction({profileRequest}));
+      console.log("User for profile", user);
+      if(user) {
+        const profileRequest: UserContentRequest = {user, page: 0};
+        console.log("profileRequest: ", profileRequest);
+        dispatch(getUserProfileAction({profileRequest}));
+      }
     }
-  }, []);
+  }, [user]);
 
   return (
-    <SafeAreaView style={styles.profileContainer}>
+    <ScrollView style={styles.profileContainer}>
       <ProfileIdComponent profile={profile} />
-      <SongPreviewComponent
-        navigation={navigation}
-        onPress={playSong}
-        song={profile.headlineSong} />
-      <ProfileActionButtons profile={profile} />
-      <ProfilePosts profile={profile} />
-    </SafeAreaView>
+      <View style={styles.songPreviewContainer}>
+        <SongPreviewComponent
+          navigation={navigation}
+          onPress={playSong}
+          song={profile?.headlineSong} />
+        </View>
+      <View style={styles.actionButtonContainer}>
+        <ProfileActionButtons profile={profile} />
+      </View>
+      <View style={styles.profilePostsContainer}>
+        <ProfilePosts profile={profile} />
+      </View>
+    </ScrollView>
   )
 }
 

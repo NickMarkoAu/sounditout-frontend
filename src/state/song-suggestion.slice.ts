@@ -178,6 +178,17 @@ export const getUserProfileAction = createAsyncThunk<UserProfile, { profileReque
   }
 );
 
+export const toggleFollowUserAction = createAsyncThunk<UserProfile, { user: User }>(
+  'user/toggleFollowUser',
+  async ({user}, {rejectWithValue}) => {
+    try {
+      return await toggleFollowUser(user);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
 const songSuggestionSlice = createSlice({
   name: 'songSuggestion',
   initialState,

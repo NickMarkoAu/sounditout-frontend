@@ -107,11 +107,16 @@ export interface UserProfile {
   followersCount: number;
   followingCount: number;
   postsCount: number;
-  isFollowing: boolean;
-  isOwn: boolean;
-  posts: Page<Post>;
+  following: boolean;
+  own: boolean;
+  posts: Post[];
   headlineSong: Song;
   bio: string;
+}
+
+export enum ProfileViewMode {
+  IMAGE = "IMAGE",
+  SONG = "SONG"
 }
 
 // this matches Spring's Page wrapper in response

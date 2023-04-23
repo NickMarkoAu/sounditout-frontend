@@ -4,12 +4,12 @@ import {useTheme} from "../state/hooks";
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {StatusBar} from "expo-status-bar";
 import TopBarComponent from "../components/topbar/TopBarComponent";
-import FeedComponent from "../components/feed/FeedComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import ProfileComponent from "../components/profile/ProfileComponent";
 
-const Profile = ({navigation, user}) => {
+const Profile = ({navigation}) => {
   const {colours} = useTheme;
+  const user = navigation.state.params.user;
 
   const styles = StyleSheet.create({
     container: {
@@ -22,7 +22,6 @@ const Profile = ({navigation, user}) => {
       position: "absolute"
     }
   })
-
 
   return (
     <NativeBaseProvider>
