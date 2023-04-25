@@ -79,7 +79,7 @@ const ProfileIdComponent = ({profile}) => {
         <View style={styles.profileStatsContainer}>
           <View style={styles.profileStatContainer}>
             <Text style={styles.profileStat}>
-              {profile?.postsCount}
+              {profile?.postsCount || 0}
             </Text>
             <Text style={styles.profileStatLabel}>
               Posts
@@ -87,7 +87,7 @@ const ProfileIdComponent = ({profile}) => {
           </View>
           <View style={styles.profileStatContainer}>
             <Text style={styles.profileStat}>
-              {profile?.followersCount}
+              {profile?.followersCount || 0}
             </Text>
             <Text style={styles.profileStatLabel}>
               Followers
@@ -95,7 +95,7 @@ const ProfileIdComponent = ({profile}) => {
           </View>
           <View style={styles.profileStatContainer}>
             <Text style={styles.profileStat}>
-              {profile?.followingCount}
+              {profile?.followingCount || 0}
             </Text>
             <Text style={styles.profileStatLabel}>
               Following

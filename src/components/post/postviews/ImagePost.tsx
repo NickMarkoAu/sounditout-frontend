@@ -1,6 +1,6 @@
 import {View, StyleSheet, Image} from "react-native";
 
-const ProfileImagePost = ({post}) => {
+const ImagePost = ({post}) => {
   const styles = StyleSheet.create({
     container: {
       width: "32%",
@@ -22,4 +22,4 @@ const ProfileImagePost = ({post}) => {
   )
 }
 
-export default ProfileImagePost;
+export default ImagePost;

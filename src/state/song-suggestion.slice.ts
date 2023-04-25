@@ -14,7 +14,9 @@ import {fetchPricing, refreshUser} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
 import {User} from "../components/user/user.model";
 import Profile from "../screens/Profile";
-import {getUserProfile} from "../components/profile/profile.api";
+import {getUserProfile, toggleFollowUser} from "../components/profile/profile.api";
+import {getRecentSearches, search} from "../components/search/search.api";
+import {SearchRequest, SearchResponse} from "../components/search/search.model";
 
 //TODO break this up into multiple slices
 export interface SongSuggestionState {
@@ -29,6 +31,7 @@ export interface SongSuggestionState {
   playerVisible: boolean;
   currentlyPlayingSong?: Song;
   profile: UserProfileState;
+  search?: SearchState;
 }
 
 export interface UserProfileState {
@@ -45,6 +48,11 @@ export interface GenerateState {
 export interface FeedState {
   posts: Post[];
   currentPageLoaded: number;
+}
+
+export interface SearchState {
+  recentSearches: SearchResponse[];
+  searchResults: SearchResponse;
 }
 
 export const initialState: SongSuggestionState = {
@@ -76,6 +84,10 @@ export const initialState: SongSuggestionState = {
   profile: {
     profile: null,
     currentPageLoaded: 0
+  },
+  search: {
+    recentSearches: [],
+    searchResults: null
   }
 }
 
@@ -189,6 +201,28 @@ export const toggleFollowUserAction = createAsyncThunk<UserProfile, { user: User
   }
 );
 
+export const getRecentSearchesAction = createAsyncThunk<SearchResponse[], { user: User }>(
+  'search/getRecentSearches',
+  async ({user}, {rejectWithValue}) => {
+    try {
+      return await getRecentSearches(user);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const searchAction = createAsyncThunk<SearchResponse, { searchRequest: SearchRequest }>(
+  'search/search',
+  async ({searchRequest}, {rejectWithValue}) => {
+    try {
+      return await search(searchRequest);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
 const songSuggestionSlice = createSlice({
   name: 'songSuggestion',
   initialState,
@@ -221,6 +255,10 @@ const songSuggestionSlice = createSlice({
     clearPosts(state, action: PayloadAction) {
       state.feed.posts = [];
       state.feed.currentPageLoaded = 0;
+    },
+    updateCurrentProfile(state, action: PayloadAction<UserProfile>) {
+      state.profile.profile = action.payload;
+      state.profile.currentPageLoaded = 0;
     }
   },
   extraReducers: (builder) => {
@@ -358,6 +396,29 @@ const songSuggestionSlice = createSlice({
       .addCase(getUserProfileAction.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(getRecentSearchesAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getRecentSearchesAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.search.recentSearches = action.payload;
+      })
+      .addCase(getRecentSearchesAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(searchAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(searchAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.search.searchResults = action.payload;
+        state.search.recentSearches.push(action.payload);
+      })
+      .addCase(searchAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   }
 });
@@ -370,6 +431,7 @@ export const{
   updatePost,
   setCurrentlyPlayingSong,
   unloadCurrentlyPlayingSong,
-  clearPosts
+  clearPosts,
+  updateCurrentProfile
 } = songSuggestionSlice.actions;
 export default songSuggestionSlice.reducer;

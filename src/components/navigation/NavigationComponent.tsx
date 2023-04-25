@@ -34,7 +34,6 @@ const NavigationComponent = ({navigation}) => {
 
   const cameraIconSize = 35;
   const iconSize = 25;
-  console.log("User on nav buttons", user);
   return (
     <View style={styles.NavContainer}>
       <View style={styles.NavBar}>

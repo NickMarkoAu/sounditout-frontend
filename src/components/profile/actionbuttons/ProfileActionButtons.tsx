@@ -1,9 +1,13 @@
 import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
 import {useAppDispatch, useTheme} from "../../../state/hooks";
+import {toggleFollowUserAction} from "../../../state/song-suggestion.slice";
+import {useState} from "react";
+import {UserProfile} from "../../../state/song-suggestion.model";
+import {User} from "../../user/user.model";
 
 const ProfileActionButtons = ({profile}) => {
   const isOwn = profile?.own;
-  const isFollowing = profile?.following;
+  const [isFollowing, setIsFollowing] = useState(profile?.following);
   const {colours} = useTheme;
   const dispatch = useAppDispatch();
 
@@ -39,10 +43,18 @@ const ProfileActionButtons = ({profile}) => {
       flexGrow: 1,
       margin: 8
     },
+    followed: {
+      backgroundColor: colours.grey
+    },
+    buttonText: {
+
+    }
   });
 
   const toggleFollow = () => {
-    dispatch(toggleFollowUserAction(profile?.user));
+    setIsFollowing(!isFollowing);
+    const user: User = profile.user;
+    dispatch(toggleFollowUserAction({user}));
   }
 
   return (
@@ -53,7 +65,7 @@ const ProfileActionButtons = ({profile}) => {
             Edit Profile
           </Text>
         </TouchableOpacity> :
-          <TouchableOpacity style={styles.button} onPress={toggleFollow}>
+          <TouchableOpacity style={[styles.button, isFollowing && styles.followed]} onPress={toggleFollow}>
             <Text style={styles.buttonText}>
               {isFollowing ? "Following" : "Follow"}
             </Text>
