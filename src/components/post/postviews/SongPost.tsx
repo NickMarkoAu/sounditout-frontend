@@ -9,7 +9,7 @@ import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {setCurrentlyPlayingSong} from "../../../state/song-suggestion.slice";
 import {useDispatch} from "react-redux";
 
-const ProfileSongPost = ({post}) => {
+const SongPost = ({post}) => {
   const {colours} = useTheme;
   const song = post?.song;
   const [metadata, setMetadata] = useState<SongMetadata>(song?.songMetadata);
@@ -115,4 +115,4 @@ const ProfileSongPost = ({post}) => {
   );
 }
 
-export default ProfileSongPost;
+export default SongPost;

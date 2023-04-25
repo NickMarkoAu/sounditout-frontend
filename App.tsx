@@ -14,6 +14,8 @@ import {User} from "./src/components/user/user.model"
 import {NotoSans_400Regular, Unbounded_400Regular, useFonts} from "@expo-google-fonts/dev";
 import MiniPlayerComponent from "./src/components/player/MiniPlayerComponent";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
+import { createClient } from '@segment/analytics-react-native';
+import * as Sentry from "@sentry/react-native";
 
 const AppWrapper = () => {
   axiosConfig();
@@ -108,6 +110,16 @@ const App = () => {
       removeToken();
     }
   }
+
+  const segmentClient = createClient({
+    writeKey: "gF6JVvlLEugvgkgqF0rjK0buliHR2hi6",
+    trackAppLifecycleEvents: true,
+    //additional config options
+  });
+
+  Sentry.init({
+    dsn: "https://d0f1c01414be48869f4ca670e1ebc292@app.glitchtip.com/3028"
+  })
 
   return (
     user && authToken ? <AppStackNav/> : <AuthStackNav/>

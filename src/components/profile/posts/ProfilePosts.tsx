@@ -4,8 +4,8 @@ import {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {useTheme} from "../../../state/hooks";
 import {faCameraRetro, faMusic} from "@fortawesome/free-solid-svg-icons";
-import ProfileImagePosts from "./ProfileImagePosts";
-import ProfileSongPosts from "./ProfileSongPosts";
+import ImagePosts from "../../post/postviews/ImagePosts";
+import SongPosts from "../../post/postviews/SongPosts";
 
 const ProfilePosts = ({profile}) => {
   const [viewMode, setViewMode] = useState(ProfileViewMode.IMAGE);
@@ -58,9 +58,9 @@ const ProfilePosts = ({profile}) => {
         </TouchableOpacity>
       </View>
       {viewMode === ProfileViewMode.IMAGE ?
-        <ProfileImagePosts posts={profile?.posts}/>
+        <ImagePosts posts={profile?.posts}/>
         :
-        <ProfileSongPosts posts={profile?.posts}/>
+        <SongPosts posts={profile?.posts}/>
       }
     </View>
   )
