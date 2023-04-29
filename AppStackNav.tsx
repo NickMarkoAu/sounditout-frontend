@@ -8,6 +8,7 @@ import { createAppContainer } from 'react-navigation';
 import Player from "./src/screens/Player";
 import Generate from './src/screens/Generate';
 import CreatePost from './src/screens/CreatePost';
+import EditProfile from "./src/screens/EditProfile";
 
 // @ts-ignore
 const AppStackNav = createStackNavigator({
@@ -55,6 +56,12 @@ const AppStackNav = createStackNavigator({
   },
   CreatePost: {
     screen: CreatePost,
+    navigationOptions: {
+      headerShown: false,
+    }
+  },
+  EditProfile: {
+    screen: EditProfile,
     navigationOptions: {
       headerShown: false,
     }

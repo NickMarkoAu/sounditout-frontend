@@ -26,7 +26,7 @@ const SearchComponent = ({navigation}) => {
       marginTop: 100,
       height: undefined,
       alignSelf: 'stretch',
-      marginBottom: 55,
+      marginBottom: 40,
       zIndex: 1
     },
     searchBarContainer: {

@@ -32,7 +32,8 @@
       "favicon": "./assets/appidentity/favicon.png"
     },
     "plugins": [
-      "./plugins/withProguardRules.js"
+      "./plugins/withProguardRules.js",
+      "sentry-expo"
     ]
   }
 }

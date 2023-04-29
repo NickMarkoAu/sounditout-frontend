@@ -22,9 +22,9 @@ const onRequestError = async (error) => {
 
 const axiosConfig = () => {
   // force axios to save cookie from every request
-  axios.defaults.baseURL = 'https://1e9c-52-64-179-221.ngrok-free.app';
+  axios.defaults.baseURL = 'https://0c4c-52-64-179-221.ngrok-free.app';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
-  //Only here for using ngrok as backend
+  //Only here for using ngrok as backend proxy
   axios.defaults.headers.common['ngrok-skip-browser-warning'] = '69420';
   axios.interceptors.request.use(onRequest, onRequestError)
   //TODO enable this if we want to use it

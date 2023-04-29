@@ -15,9 +15,10 @@ const GenerateSettingsComponent = ({availableFreeTokens, totalFreeTokens, tokenC
 
   return (
     <View>
-      <View>
-        <CustomOptionsContainer/>
-      </View>
+      {/*TODO add this back in when custom options are more robust*/}
+      {/*<View>*/}
+      {/*  <CustomOptionsContainer/>*/}
+      {/*</View>*/}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={generate}>
           {availableFreeTokens > 0 ?

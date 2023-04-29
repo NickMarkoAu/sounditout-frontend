@@ -19,7 +19,7 @@ const ProfileComponent = ({user, navigation}) => {
       marginTop: 100,
       height: undefined,
       alignSelf: 'stretch',
-      marginBottom: 55,
+      marginBottom: 40,
       zIndex: 1
     },
     songPreviewContainer: {
@@ -59,7 +59,7 @@ const ProfileComponent = ({user, navigation}) => {
           song={profile?.headlineSong} />
         </View>
       <View style={styles.actionButtonContainer}>
-        <ProfileActionButtons profile={profile} />
+        <ProfileActionButtons profile={profile} navigation={navigation} />
       </View>
       <View style={styles.profilePostsContainer}>
         <ProfilePosts profile={profile} />
