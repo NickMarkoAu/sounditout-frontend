@@ -5,11 +5,12 @@ import {useState} from "react";
 import {UserProfile} from "../../../state/song-suggestion.model";
 import {User} from "../../user/user.model";
 
-const ProfileActionButtons = ({profile}) => {
+const ProfileActionButtons = ({profile, navigation}) => {
   const isOwn = profile?.own;
   const [isFollowing, setIsFollowing] = useState(profile?.following);
   const {colours} = useTheme;
   const dispatch = useAppDispatch();
+  const user: User = profile?.user;
 
   const styles = StyleSheet.create({
     container: {
@@ -53,14 +54,13 @@ const ProfileActionButtons = ({profile}) => {
 
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
-    const user: User = profile.user;
     dispatch(toggleFollowUserAction({user}));
   }
 
   return (
     <View style={styles.container}>
       {isOwn ?
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("EditProfile", {user})}>
           <Text style={styles.buttonText}>
             Edit Profile
           </Text>

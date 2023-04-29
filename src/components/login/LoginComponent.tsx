@@ -70,7 +70,7 @@ const LoginComponent = ({navigation}) => {
       width: "100%",
       height: "100%",
       alignSelf: 'stretch',
-      marginBottom: 55,
+      marginBottom: 40,
       overflow: "visible",
       alignItems: 'center', //Centered vertically
       backgroundColor: colours.background,
@@ -253,18 +253,19 @@ const LoginComponent = ({navigation}) => {
           </TouchableOpacity>
         </View>
         {/*TODO add OAuth 2 later*/}
-        <View style={styles.orContainer}>
-          <View style={styles.orLine}/>
-          <View>
-            <Text style={styles.orText}>Or</Text>
-          </View>
-          <View style={styles.orLine}/>
-        </View>
-        <View style={styles.servicesContainer}>
-          <Image source={require("../../../assets/streamingservices/spotify.png")} style={styles.serviceLogo}/>
-          <Image source={require("../../../assets/streamingservices/apple_music.png")} style={styles.serviceLogo}/>
-          <Image source={require("../../../assets/streamingservices/youtube_music.png")} style={styles.serviceLogo}/>
-        </View>
+        {/*<View style={styles.orContainer}>*/}
+        {/*  <View style={styles.orLine}/>*/}
+        {/*  <View>*/}
+        {/*    <Text style={styles.orText}>Or</Text>*/}
+        {/*  </View>*/}
+        {/*  <View style={styles.orLine}/>*/}
+        {/*</View>*/}
+        {/*TODO add this back in eventually when we know which services we will let people log in with*/}
+        {/*<View style={styles.servicesContainer}>*/}
+        {/*  <Image source={require("../../../assets/streamingservices/spotify.png")} style={styles.serviceLogo}/>*/}
+        {/*  <Image source={require("../../../assets/streamingservices/apple_music.png")} style={styles.serviceLogo}/>*/}
+        {/*  <Image source={require("../../../assets/streamingservices/youtube_music.png")} style={styles.serviceLogo}/>*/}
+        {/*</View>*/}
         <View style={styles.signUpContainer}>
           <Text style={{color: "white", fontSize: 16}}>
             Don't have an account?

@@ -27,7 +27,7 @@ const FeedComponent = ({navigation}) => {
       width: "100%",
       height: undefined,
       alignSelf: 'stretch',
-      marginBottom: 55,
+      marginBottom: 40,
       overflow: "visible"
     },
     loadingContainer: {
