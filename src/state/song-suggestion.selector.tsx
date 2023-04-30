@@ -2,6 +2,7 @@ import {GenerateState, SongSuggestionState} from "./song-suggestion.slice";
 import {GenerateParams, Post, PricingOptions, Song, UserProfile} from "./song-suggestion.model";
 import {User} from "../components/user/user.model";
 import {SearchResponse} from "../components/search/search.model";
+import {AppInfo} from "./appinfo/app-info.model";
 
 export const selectPosts = (state: SongSuggestionState): Post[] => state.feed.posts;
 
@@ -30,3 +31,5 @@ export const selectCurrentlyPlayingSong = (state: SongSuggestionState): Song => 
 export const selectRecentSearches = (state: SongSuggestionState): SearchResponse[] => state.search.recentSearches;
 
 export const selectSearchResults = (state: SongSuggestionState): SearchResponse => state.search.searchResults;
+
+export const selectAppInfo = (state: SongSuggestionState): AppInfo => state.appInfo;

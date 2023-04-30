@@ -1,16 +1,24 @@
 import {View, StyleSheet, Image, Text, TextInput, TouchableOpacity} from "react-native";
 import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
 import {UserContentRequest, UserProfile} from "../../../state/song-suggestion.model";
-import {selectCurrentProfile} from "../../../state/song-suggestion.selector";
+import {selectCurrentProfile, selectCurrentUser} from "../../../state/song-suggestion.selector";
 import {useEffect, useState} from "react";
-import {getUserProfileAction, setCurrentlyPlayingSong} from "../../../state/song-suggestion.slice";
+import {
+  getUserProfileAction,
+  setCurrentlyPlayingSong,
+  updateProfileAction,
+  updateProfilePictureAction
+} from "../../../state/song-suggestion.slice";
 import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {User} from "../../user/user.model";
 
-const EditProfileComponent = ({user, navigation}) => {
+const EditProfileComponent = ({navigation}) => {
   const {colours, fonts} = useTheme;
-  const profile: UserProfile = useAppSelector(selectCurrentProfile);
+  const user: User = useAppSelector(selectCurrentUser);
+  const loadedProfile: UserProfile = useAppSelector(selectCurrentProfile);
+  let profile: UserProfile = null;
   const dispatch = useAppDispatch();
   const [name, setName] = useState(user?.name);
   const [bio, setBio] = useState(profile?.bio);
@@ -131,6 +139,7 @@ const EditProfileComponent = ({user, navigation}) => {
       position: 'absolute',
       top: 8,
       left: 8,
+      zIndex: 2
     },
     backButton: {}
   });
@@ -139,15 +148,21 @@ const EditProfileComponent = ({user, navigation}) => {
     if (!profile) {
       console.log("User for profile", user);
       if (user) {
-        const profileRequest: UserContentRequest = {user, page: 0};
-        console.log("profileRequest: ", profileRequest);
-        dispatch(getUserProfileAction({profileRequest}));
+        if(user.id === loadedProfile?.user?.id) {
+          profile = loadedProfile;
+          setBio(profile?.bio);
+          setName(user?.name);
+        } else {
+          const profileRequest: UserContentRequest = {user, page: 0};
+          console.log("profileRequest: ", profileRequest);
+          dispatch(getUserProfileAction({profileRequest}));
+        }
       }
     }
-  }, [user]);
+  }, [user, loadedProfile, profile]);
 
   const changeSong = () => {
-
+    navigation.navigate("SelectHeadlineSong");
   }
 
   const playSong = () => {
@@ -155,23 +170,39 @@ const EditProfileComponent = ({user, navigation}) => {
   }
 
   const saveProfile = () => {
+    const updatedUser: User = {
+      ...user,
+      name: name
+    }
+    const updatedProfile: UserProfile = {
+      ...profile,
+      bio: bio,
+      user: updatedUser
+    }
+    dispatch(updateProfileAction({profile: updatedProfile}));
+    navigation.navigate("Profile", {user: updatedUser});
+  }
 
+  const changeProfilePicture = (imageUri) => {
+    console.log("changeProfilePicture: ", imageUri);
+    dispatch(updateProfilePictureAction({imageUri}));
+    navigation.navigate("Profile", {user});
   }
 
   return (
     <View style={styles.editProfileContainer}>
-      <View style={styles.backButtonContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backButtonContainer} onPress={() => navigation.goBack()}>
+      <View style={styles.backButton}>
           <FontAwesomeIcon icon={faArrowLeft} size={24} color={colours.primary}/>
-        </TouchableOpacity>
       </View>
+      </TouchableOpacity>
       <View style={styles.profileImageContainer}>
-        <View style={styles.circle}>
+        <TouchableOpacity style={styles.circle} onPress={() => navigation.navigate("Camera", {onComplete: (imageUri) => changeProfilePicture(imageUri)})}>
           <Image
             style={styles.image}
             source={{uri: user?.profileImage?.presignedUrl}}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.fieldContainer}>
         <Text style={styles.inputLabel}>
@@ -183,7 +214,7 @@ const EditProfileComponent = ({user, navigation}) => {
             style={styles.input}
             placeholder="Add tags..."
             placeholderTextColor="#7f7f7f"
-            onChangeText={(text) => setName(text)}
+            onChangeText={setName}
           />
         </View>
       </View>
@@ -213,9 +244,9 @@ const EditProfileComponent = ({user, navigation}) => {
             numberOfLines={8}
             value={bio}
             style={styles.multiInput}
-            placeholder="Add tags..."
+            placeholder="Add a bio..."
             placeholderTextColor="#7f7f7f"
-            onChangeText={(text) => setBio(text)}
+            onChangeText={setBio}
           />
         </View>
       </View>

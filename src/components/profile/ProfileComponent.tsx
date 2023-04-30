@@ -1,17 +1,26 @@
-import {StyleSheet, SafeAreaView, View, ScrollView} from "react-native";
+import {StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity} from "react-native";
 import ProfileIdComponent from "./profileid/ProfileIdComponent";
 import SongPreviewComponent from "../video/preview/SongPreviewComponent";
 import {UserContentRequest, UserProfile} from "../../state/song-suggestion.model";
-import {useAppDispatch, useAppSelector} from "../../state/hooks";
+import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {selectCurrentProfile} from "../../state/song-suggestion.selector";
-import {getUserProfileAction, setCurrentlyPlayingSong} from "../../state/song-suggestion.slice";
+import {
+  getUserProfileAction,
+  removeCurrentUserAction,
+  setCurrentlyPlayingSong
+} from "../../state/song-suggestion.slice";
 import ProfileActionButtons from "./actionbuttons/ProfileActionButtons";
 import ProfilePosts from "./posts/ProfilePosts";
 import {useEffect} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import * as SecureStore from "expo-secure-store";
 
 const ProfileComponent = ({user, navigation}) => {
   const dispatch = useAppDispatch();
   const profile: UserProfile = useAppSelector(selectCurrentProfile);
+  const {colours} = useTheme;
+  const isOwn = profile?.own;
 
   const styles = StyleSheet.create({
     profileContainer: {
@@ -31,7 +40,14 @@ const ProfileComponent = ({user, navigation}) => {
     },
     profilePostsContainer: {
       marginTop: 0
-    }
+    },
+    backButtonContainer: {
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      zIndex: 2
+    },
+    backButton: {}
   });
 
   const playSong = () => {
@@ -39,18 +55,27 @@ const ProfileComponent = ({user, navigation}) => {
   }
 
   useEffect(()=> {
-    if(!profile) {
-      console.log("User for profile", user);
-      if(user) {
+    if(user) {
         const profileRequest: UserContentRequest = {user, page: 0};
         console.log("profileRequest: ", profileRequest);
         dispatch(getUserProfileAction({profileRequest}));
       }
-    }
-  }, [user]);
+  }, []);
+
+  const logout = () => {
+    console.log("Logging out");
+    SecureStore.deleteItemAsync('secure_token');
+    dispatch(removeCurrentUserAction());
+  }
 
   return (
     <ScrollView style={styles.profileContainer}>
+      {isOwn ?
+      <TouchableOpacity style={styles.backButtonContainer} onPress={logout}>
+        <View style={styles.backButton} >
+          <FontAwesomeIcon icon={faSignOutAlt} size={20} color={colours.primary}/>
+        </View>
+      </TouchableOpacity> : null}
       <ProfileIdComponent profile={profile} />
       <View style={styles.songPreviewContainer}>
         <SongPreviewComponent

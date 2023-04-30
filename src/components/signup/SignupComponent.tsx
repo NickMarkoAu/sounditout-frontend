@@ -1,16 +1,21 @@
 import {Image, View, StyleSheet, TextInput, TouchableOpacity, Text} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import React from "react";
+import React, {useEffect} from "react";
 import {faEnvelope, faLock, faUser, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
-import {useTheme} from "../../state/hooks";
+import {useAppSelector, useTheme} from "../../state/hooks";
+import {selectAppInfo} from "../../state/song-suggestion.selector";
+import {AppInfo} from "../../state/appinfo/app-info.model";
 
 const SignupComponent = ({navigation}) => {
   const {colours} = useTheme;
+  const inviteCode = navigation.state.params.inviteCode;
+  const appInfo: AppInfo = useAppSelector(selectAppInfo);
+  const alphaMode = appInfo?.alphaMode || true;
 
   const styles = StyleSheet.create({
     logo: {
-      width: "70%",
-      height: 50,
+      width: "80%",
+      height: 75,
       resizeMode: "contain",
       marginBottom: 22
     },
@@ -100,6 +105,14 @@ const SignupComponent = ({navigation}) => {
       flexDirection: "row",
     }
   })
+
+  useEffect(() => {
+    //if they have somehow made it to this page in alpha mode and don't have a valid invite code, redirect back to the invite code page
+    if(alphaMode && !inviteCode) {
+      navigation.navigate("InviteCode");
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
@@ -137,23 +150,22 @@ const SignupComponent = ({navigation}) => {
             placeholderTextColor="#7f7f7f"
           />
         </View>
+        <View style={styles.inputContainer}>
+          <FontAwesomeIcon icon={faLock} color={colours.primary} size={30}/>
+          <TextInput
+            secureTextEntry={true}
+            style={styles.input}
+            placeholder="Confirm Password"
+            placeholderTextColor="#7f7f7f"
+          />
+        </View>
         <TouchableOpacity style={styles.loginButton}>
           <View>
             <Text style={{color: "white", fontSize: 18}}>
-              Login
+              Create Account
             </Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.forgotPasswordContainer}>
-          <Text style={{color: "white", fontSize: 16}}>
-            Forgot Password?
-          </Text>
-          <TouchableOpacity>
-            <Text style={styles.resetButton}>
-              Reset
-            </Text>
-          </TouchableOpacity>
-        </View>
         {/*<View style={styles.orContainer}>*/}
         {/*  <View style={styles.orLine} />*/}
         {/*  <View>*/}

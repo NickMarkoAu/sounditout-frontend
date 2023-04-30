@@ -10,7 +10,7 @@ export const fetchPricing = async () => {
 
 export const refreshUser = async (userId: number) => {
   try {
-    const response = await axios.get<User>(`/api/user/` + userId);
+    const response = await axios.get<User>(`/api/user/get/` + userId);
     return response.data;
   } catch (e) {
     console.log(e);

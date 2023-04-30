@@ -5,10 +5,9 @@ import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {StatusBar} from "expo-status-bar";
 import TopBarComponent from "../components/topbar/TopBarComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
-import ProfileComponent from "../components/profile/ProfileComponent";
-import EditProfileComponent from "../components/profile/editprofile/EditProfileComponent";
+import SelectHeadlineSongComponent from "../components/profile/editprofile/SelectHeadlineSongComponent";
 
-const EditProfile = ({navigation}) => {
+const SelectHeadlineSong = ({navigation}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({
@@ -28,11 +27,11 @@ const EditProfile = ({navigation}) => {
       <View style={styles.container}>
         <StatusBar style="light"/>
         <TopBarComponent/>
-        <EditProfileComponent navigation={navigation}/>
+        <SelectHeadlineSongComponent navigation={navigation}/>
         <NavigationComponent navigation={navigation} />
       </View>
     </NativeBaseProvider>
   )
 }
 
-export default EditProfile;
+export default SelectHeadlineSong;
