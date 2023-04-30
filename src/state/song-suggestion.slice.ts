@@ -14,12 +14,17 @@ import {fetchPricing, refreshUser} from "../components/user/user.api";
 import {generateSuggestions} from "../components/generate/generate.api";
 import {User} from "../components/user/user.model";
 import Profile from "../screens/Profile";
-import {getUserProfile, toggleFollowUser} from "../components/profile/profile.api";
+import {getUserProfile, toggleFollowUser, updateProfile, updateProfilePicture} from "../components/profile/profile.api";
 import {getRecentSearches, search} from "../components/search/search.api";
 import {SearchRequest, SearchResponse} from "../components/search/search.model";
+import {getAppInfo} from "./appinfo/app-info.api";
+import {AppInfo} from "./appinfo/app-info.model";
+import {validateInviteCode} from "../components/signup/signup.api";
+import {getUserFromToken} from "../components/user/auth/auth.api";
 
 //TODO break this up into multiple slices
 export interface SongSuggestionState {
+  appInfo: AppInfo;
   user: User;
   error: any;
   isLoading: boolean;
@@ -32,6 +37,7 @@ export interface SongSuggestionState {
   currentlyPlayingSong?: Song;
   profile: UserProfileState;
   search?: SearchState;
+  signup?: SignupState;
 }
 
 export interface UserProfileState {
@@ -55,7 +61,12 @@ export interface SearchState {
   searchResults: SearchResponse;
 }
 
+export interface SignupState {
+  inviteCodeValid?: boolean;
+}
+
 export const initialState: SongSuggestionState = {
+  appInfo: null,
   user: null,
   feed: {
     posts: [],
@@ -88,7 +99,8 @@ export const initialState: SongSuggestionState = {
   search: {
     recentSearches: [],
     searchResults: null
-  }
+  },
+  signup: null
 }
 
 export const getPostsForUserAction = createAsyncThunk<Page<Post>, { feedRequest: UserContentRequest }>(
@@ -217,6 +229,61 @@ export const searchAction = createAsyncThunk<SearchResponse, { searchRequest: Se
   async ({searchRequest}, {rejectWithValue}) => {
     try {
       return await search(searchRequest);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const updateProfileAction = createAsyncThunk<UserProfile, { profile: UserProfile }>(
+  'user/updateProfile',
+  async ({profile}, {rejectWithValue}) => {
+    try {
+      return await updateProfile(profile);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const updateProfilePictureAction = createAsyncThunk<UserProfile, {imageUri: string}>(
+  'user/updateProfilePicture',
+  async ({imageUri}, {rejectWithValue}) => {
+    try {
+      return await updateProfilePicture(imageUri);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const getAppInfoAction = createAsyncThunk<AppInfo, void>(
+  'app/getAppInfo',
+  async (_, {rejectWithValue}) => {
+    try {
+      return await getAppInfo();
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const validateInviteCodeAction = createAsyncThunk<boolean, {inviteCode: string}>(
+  'app/validateInviteCode',
+  async ({inviteCode}, {rejectWithValue}) => {
+    try {
+      return await validateInviteCode(inviteCode);
+    } catch (e) {
+      return rejectWithValue(convertToSerializedError(e));
+    }
+  }
+);
+
+export const getUserFromTokenAction = createAsyncThunk<User, {token: string}>(
+  'app/getUserByToken',
+  async ({token}, {rejectWithValue}) => {
+    try {
+      return await getUserFromToken(token);
     } catch (e) {
       return rejectWithValue(convertToSerializedError(e));
     }
@@ -417,6 +484,62 @@ const songSuggestionSlice = createSlice({
         state.search.recentSearches.push(action.payload);
       })
       .addCase(searchAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateProfileAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfileAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.profile.profile = action.payload;
+      })
+      .addCase(updateProfileAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateProfilePictureAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfilePictureAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user.profileImage = action.payload.user.profileImage;
+        state.profile.profile = action.payload;
+      })
+      .addCase(updateProfilePictureAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAppInfoAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getAppInfoAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appInfo = action.payload;
+      })
+      .addCase(getAppInfoAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(validateInviteCodeAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(validateInviteCodeAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.signup = {...state.signup, inviteCodeValid : true};
+      })
+      .addCase(validateInviteCodeAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getUserFromTokenAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserFromTokenAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(getUserFromTokenAction.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

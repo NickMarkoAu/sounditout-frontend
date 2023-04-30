@@ -2,7 +2,7 @@ import {Image, View, StyleSheet, TextInput, TouchableOpacity, Text} from "react-
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import React, {useState} from "react";
 import {faEnvelope, faLock} from "@fortawesome/free-solid-svg-icons";
-import {useTheme} from "../../state/hooks";
+import {useAppSelector, useTheme} from "../../state/hooks";
 import {Formik} from 'formik'
 import {login} from "../user/auth/auth.api";
 import {extractError} from "../../shared/error.utils";
@@ -11,6 +11,8 @@ import {useDispatch} from "react-redux";
 import {updateCurrentUserAction} from "../../state/song-suggestion.slice";
 import {User} from "../user/user.model";
 import {Checkbox} from "native-base";
+import {selectAppInfo} from "../../state/song-suggestion.selector";
+import {AppInfo} from "../../state/appinfo/app-info.model";
 
 const LoginComponent = ({navigation}) => {
   const {colours} = useTheme;
@@ -19,6 +21,8 @@ const LoginComponent = ({navigation}) => {
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const appInfo: AppInfo = useAppSelector(selectAppInfo);
+  const alphaMode = appInfo?.alphaMode || true;
 
   const styles = StyleSheet.create({
     logo: {
@@ -165,9 +169,7 @@ const LoginComponent = ({navigation}) => {
               .then(() => {
                 //update current user
                 const user: User = response.user;
-                SecureStore.setItemAsync('user', JSON.stringify(user)).then(() => {
-                  dispatch(updateCurrentUserAction(user));
-                });
+                dispatch(updateCurrentUserAction(user));
               });
           });
         } else {
@@ -189,7 +191,7 @@ const LoginComponent = ({navigation}) => {
       <View style={styles.loginContainer}>
         <Image source={require("../../../assets/appidentity/logo.png")} style={styles.logo}/>
         <Formik
-          initialValues={{email: '', password: '', keepLoggedIn: "false"}}
+          initialValues={{email: '', password: '', keepLoggedIn: "true"}}
           onSubmit={(values) => handleSubmit(values)}>
           {({handleChange, handleSubmit, values, setFieldValue}) => (
             <View style={styles.formContainer}>
@@ -270,7 +272,7 @@ const LoginComponent = ({navigation}) => {
           <Text style={{color: "white", fontSize: 16}}>
             Don't have an account?
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <TouchableOpacity onPress={() => alphaMode ? navigation.navigate("InviteCode") : navigation.navigate("Signup")}>
             <Text style={styles.resetButton}>
               Sign up here
             </Text>

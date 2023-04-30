@@ -27,3 +27,37 @@ export const toggleFollowUser = async (user: User) => {
     return e.response.data;
   }
 }
+
+export const updateProfile = async (profile: UserProfile) => {
+  try {
+    const response = await axios.post(`/api/profile/user/update`, profile);
+    console.log("update profile response: ", response.data);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    console.log("update profile error: ", e.response.data);
+    return e.response.data;
+  }
+}
+
+export const updateProfilePicture = async (imageUri: string) => {
+  console.log("calling update profile picture with uri", imageUri);
+  let formData = new FormData();
+  try {
+    let filename = imageUri.split('/').pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+    formData.append('file', JSON.parse(JSON.stringify({uri: imageUri, name: filename, type})));
+    const headers = {headers: {
+      'accept': 'application/json',
+      'Content-Type': `multipart/form-data;`,
+    }};
+    const response = await axios.post(`/api/profile/user/update/picture`, formData, headers);
+    console.log("update profile picture response: ", response.data);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    console.log("update profile picture error", e.response.data);
+    return e.response.data;
+  }
+}

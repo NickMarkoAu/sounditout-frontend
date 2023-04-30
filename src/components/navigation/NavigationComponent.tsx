@@ -15,6 +15,7 @@ const NavigationComponent = ({navigation}) => {
       position: "absolute",
       alignItems: "center",
       bottom: 0,
+      zIndex: 9999,
     },
     NavBar: {
       flexDirection: "row",
@@ -39,7 +40,7 @@ const NavigationComponent = ({navigation}) => {
       <View style={styles.NavBar}>
         <NavButton onPress={() => navigation.navigate("Feed")} icon={faNewspaper} styles={styles} size={iconSize}/>
         <NavButton onPress={() => navigation.navigate("Search")} icon={faMagnifyingGlass} styles={styles} size={iconSize}/>
-        <NavButton onPress={() => navigation.navigate("Camera")} icon={faCameraRetro} styles={styles} size={iconSize}/>
+        <NavButton onPress={() => navigation.navigate("Camera", {onComplete: (imageUri) => navigation.navigate("Generate", {imageUri})})} icon={faCameraRetro} styles={styles} size={iconSize}/>
         {/*<NavButton onPress={() => navigation.navigate("Player")} icon={faCirclePlay} styles={styles} size={iconSize}/>*/}
         <ProfileButton onPress={() => navigation.navigate("Profile", {user})} user={user}/>
       </View>

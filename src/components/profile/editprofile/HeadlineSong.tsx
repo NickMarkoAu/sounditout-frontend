@@ -1,17 +1,17 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
-import {useTheme} from "../../../state/hooks";
-import {SongMetadata} from "../../../state/song-suggestion.model";
 import {useEffect, useRef, useState} from "react";
-import {getSongMetadata} from "../song.api";
+import {Song, SongMetadata, UserProfile} from "../../../state/song-suggestion.model";
+import {getSongMetadata} from "../../video/song.api";
 import LottieView from "lottie-react-native";
+import {useAppDispatch} from "../../../state/hooks";
+import {updateProfileAction} from "../../../state/song-suggestion.slice";
 
-const SongPreviewComponent = ({onPress, navigation, song}) => {
-  const {colours} = useTheme;
+const HeadlineSong = ({post, profile, navigation}) => {
+  const song: Song = post?.song;
   const [metadata, setMetadata] = useState<SongMetadata>(song?.songMetadata);
   const [songLoading, setSongLoading] = useState<boolean>(true);
   const animation = useRef(null);
+  const dispatch = useAppDispatch();
 
   const styles = StyleSheet.create({
     previewContainer: {
@@ -19,7 +19,8 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
       height: 80,
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center"
+      alignItems: "center",
+      padding: 4
     },
     imageContainer: {
       width: "25%",
@@ -39,26 +40,16 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
       aspectRatio: 1,
       resizeMode: "cover",
     },
-    playIconContainer: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      alignItems: "center",
-      justifyContent: "center",
-      transform: [{translateX: -25}, {translateY: -25}],
-    },
-    playIcon: {
-      color: colours.primary,
-      opacity: 0.85
-    },
     animation: {
       height: 35
     }
   });
 
   useEffect(() => {
+    if(!metadata) {
       setSongLoading(true)
       getMetadata();
+    }
   },[song]);
 
   const getMetadata = () => {
@@ -70,25 +61,28 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
     }
   }
 
+  const selectSong = () => {
+    const updatedProfile: UserProfile = {...profile, headlineSong: song};
+    dispatch(updateProfileAction({profile: updatedProfile}));
+    navigation.navigate("EditProfile", {user: profile?.user});
+  }
+
   return (
     song &&
-    <View style={styles.previewContainer}>
+    <TouchableOpacity style={styles.previewContainer} onPress={selectSong}>
       {songLoading &&
-      <View style={styles.imageContainer}>
-        <LottieView
-          autoPlay
-          ref={animation}
-          style={styles.animation}
-          source={require("../../../../assets/animation/loading_small.json")}
-        />
-      </View>
+        <View style={styles.imageContainer}>
+          <LottieView
+            autoPlay
+            ref={animation}
+            style={styles.animation}
+            source={require("../../../../assets/animation/loading_small.json")}
+          />
+        </View>
       }
       {!songLoading && metadata &&
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{uri: metadata?.albumArtUrl}}/>
-          <TouchableOpacity style={styles.playIconContainer} onPress={onPress}>
-            <FontAwesomeIcon size={50} style={styles.playIcon} icon={faPlayCircle}/>
-          </TouchableOpacity>
         </View>
       }
       <View style={styles.textContainer}>
@@ -97,8 +91,8 @@ const SongPreviewComponent = ({onPress, navigation, song}) => {
         </Text>
         <Text style={{color: "white", textAlign: "left"}}>{song?.artist}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
-};
+}
 
-export default SongPreviewComponent;
+export default HeadlineSong;

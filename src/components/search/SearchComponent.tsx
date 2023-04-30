@@ -2,7 +2,7 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native"
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faSearch, faTimes, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {faClock} from "@fortawesome/free-regular-svg-icons";
 import {SearchRequest, SearchType} from "./search.model";
 import {getRecentSearchesAction, searchAction, updatePost} from "../../state/song-suggestion.slice";

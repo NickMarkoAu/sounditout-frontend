@@ -2,6 +2,7 @@ import {createAppContainer} from 'react-navigation';
 import Login from "./src/screens/Login";
 import Signup from "./src/screens/Signup";
 import {createStackNavigator} from "react-navigation-stack";
+import InviteCode from "./src/screens/InviteCode";
 
 const AuthStackNav = createStackNavigator({
     Login: {
@@ -15,15 +16,19 @@ const AuthStackNav = createStackNavigator({
       navigationOptions: {
         headerShown: false
       }
+    },
+    InviteCode: {
+      screen: InviteCode,
+      navigationOptions: {
+        headerShown: false,
+      }
     }
   },
   {
-    headerMode: 'none',
-    mode: 'modal',
+    headerMode: 'screen',
     navigationOptions: {
-      gesturesEnabled: false,
       animationEnabled: true,
-      animationTypeForReplace: 'pop'
+      animationTypeForReplace: 'push'
     },
   }
 );

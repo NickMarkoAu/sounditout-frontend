@@ -8,6 +8,7 @@ import {useTheme} from "../../state/hooks";
 
 const CameraComponent= ({ navigation }) => {
   const {colours} = useTheme;
+  const onComplete = navigation.state.params.onComplete;
 
   const styles = StyleSheet.create({
     container: {
@@ -68,7 +69,8 @@ const CameraComponent= ({ navigation }) => {
   useEffect(() => {
     console.log(imageUri);
     if(imageUri !== null)
-    navigation.navigate("Generate", {imageUri});
+      onComplete(imageUri);
+    // navigation.navigate(onCompletePage, {imageUri});
   }, [imageUri]);
 
   function toggleCameraType() {

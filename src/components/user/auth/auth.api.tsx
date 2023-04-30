@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {AuthCredentials, AuthResponse, ForgotPasswordConfirmation, InitAuthResponse, PageState,} from './auth.model';
-import Config from "react-native-config";
+import {User} from "../user.model";
 
 export const initAuth = async (email: string, pageState: PageState) => {
-  const response = await axios.post<InitAuthResponse>(`${Config.BACKEND_URL}/api/auth/init`, pageState, {
+  const response = await axios.post<InitAuthResponse>(`/api/auth/init`, pageState, {
     params: {
       email
     }
@@ -36,3 +36,14 @@ export const forgotPassword = (username: string) =>
 
 export const confirmForgotPassword = (forgotPasswordConfirmation: ForgotPasswordConfirmation) =>
   axios.post('/api/auth/confirm-forgot-password', forgotPasswordConfirmation);
+
+export const getUserFromToken = async (token: string) => {
+  try {
+    const response = await axios.get<User>(`/api/user/token/${token}`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    console.log("load user from token error ", e.response.data);
+    return e.response.data;
+  }
+}
