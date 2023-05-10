@@ -26,7 +26,8 @@
         "foregroundImage": "./assets/appidentity/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "googleMobileAdsAppId": "ca-app-pub-6514945651134423~9688707625"
+      "googleMobileAdsAppId": "ca-app-pub-6514945651134423~9688707625",
+      "package": "com.sounditout.SoundItOut"
     },
     "web": {
       "favicon": "./assets/appidentity/favicon.png"
@@ -34,6 +35,11 @@
     "plugins": [
       "./plugins/withProguardRules.js",
       "sentry-expo"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "30c0fe44-c438-4344-9f49-6a0350dcbb80"
+      }
+    }
   }
 }

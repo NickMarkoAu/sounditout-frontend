@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sounditout-386309",
+  "private_key_id": "cf081b5424cee6eeb610a77202d16d381b390136",
+
+  "client_email": "sounditout@sounditout-386309.iam.gserviceaccount.com",
+  "client_id": "103240413866406547681",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sounditout%40sounditout-386309.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
