@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "SoundItOut",
+    "owner": "sounditout",
     "slug": "SoundItOut",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +20,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "googleMobileAdsAppId": "ca-app-pub-6514945651134423/5044284406"
+      "googleMobileAdsAppId": "ca-app-pub-6514945651134423/5044284406",
+      "bundleIdentifier": "com.sounditout.SoundItOut"
     },
     "android": {
       "adaptiveIcon": {

@@ -5,9 +5,7 @@
         "image": "ubuntu-22.04-jdk-11-ndk-r21e"
       },
       "ios": {
-        "image": "latest",
-        "node": "12.13.0",
-        "yarn": "1.22.5"
+        "image": "latest"
       }
     },
     "development": {
