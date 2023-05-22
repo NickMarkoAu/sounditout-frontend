@@ -5,8 +5,9 @@ import {useAppSelector, useTheme} from "../../../state/hooks";
 import {selectCurrentProfile} from "../../../state/song-suggestion.selector";
 import HeadlineSongs from "./HeadlineSongs";
 import {UserProfile} from "../../../state/song-suggestion.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const SelectHeadlineSongComponent = ({navigation}) => {
+const SelectHeadlineSongComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
   const profile: UserProfile = useAppSelector(selectCurrentProfile);
 

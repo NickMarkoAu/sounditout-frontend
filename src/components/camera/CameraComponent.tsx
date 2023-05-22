@@ -5,8 +5,9 @@ import * as ImagePicker from 'expo-image-picker';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCameraRetro, faArrowCircleLeft, faImages, faRefresh} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../state/hooks";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const CameraComponent= ({ navigation }) => {
+const CameraComponent= ({ navigation } : {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
   const onComplete = navigation.state.params.onComplete;
 

@@ -8,8 +8,9 @@ import {clearPosts, getPostsForUserAction} from "../../state/song-suggestion.sli
 import {User} from "../user/user.model";
 import {useEffect} from "react";
 import AnimatedLoader from "react-native-animated-loader";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const FeedComponent = ({navigation}) => {
+const FeedComponent = ({navigation}, {navigation: StackNavigationProp}) => {
   const dispatch = useAppDispatch();
   const user: User = useAppSelector(selectCurrentUser);
   const posts: Post[] = useAppSelector(selectPosts);

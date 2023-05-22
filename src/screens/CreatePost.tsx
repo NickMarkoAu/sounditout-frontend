@@ -7,8 +7,9 @@ import NavigationComponent from "../components/navigation/NavigationComponent";
 import React from "react";
 import CreatePostComponent from "../components/post/CreatePostComponent";
 import {selectCurrentPost} from "../state/song-suggestion.selector";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const CreatePost = ({navigation}) => {
+const CreatePost = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const post = useAppSelector(selectCurrentPost);

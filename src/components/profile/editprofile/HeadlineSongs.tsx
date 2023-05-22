@@ -3,9 +3,10 @@ import {useAppSelector, useTheme} from "../../../state/hooks";
 import {selectLoading} from "../../../state/song-suggestion.selector";
 import AnimatedLoader from "react-native-animated-loader";
 import HeadlineSong from "./HeadlineSong";
-import {Post} from "../../../state/song-suggestion.model";
+import {Post, UserProfile} from "../../../state/song-suggestion.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const HeadlineSongs = ({profile, navigation}) => {
+const HeadlineSongs = ({profile, navigation} : {profile: UserProfile, navigation: StackNavigationProp}) => {
   const loading = useAppSelector(selectLoading);
   const {colours} = useTheme;
   const posts: Post[] = profile?.posts || [];

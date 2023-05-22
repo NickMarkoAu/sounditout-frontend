@@ -1,5 +1,12 @@
 import {FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View, Text, useColorScheme} from "react-native";
-import {Post, PostPrivacy, PricingOptions, Song, UserUploadedImage} from "../../../state/song-suggestion.model";
+import {
+  GenerateResult,
+  Post,
+  PostPrivacy,
+  PricingOptions,
+  Song,
+  UserUploadedImage
+} from "../../../state/song-suggestion.model";
 import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCompactDisc, faSquarePlus} from "@fortawesome/free-solid-svg-icons";
@@ -7,8 +14,9 @@ import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
 import {selectCurrentPost, selectCurrentUser, selectPricingOptions} from "../../../state/song-suggestion.selector";
 import { User } from "../../user/user.model";
 import {setCurrentlyPlayingSong, updatePost} from "../../../state/song-suggestion.slice";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const ResultComponent = ({navigation, generateResult}) => {
+const ResultComponent = ({navigation, generateResult} : {navigation: StackNavigationProp, generateResult: GenerateResult}) => {
   const pricing: PricingOptions = useAppSelector(selectPricingOptions);
   const regenerateCost = pricing.regenerateCost;
   const songs: Song[] = generateResult.songs;

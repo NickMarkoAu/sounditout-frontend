@@ -1,13 +1,10 @@
-import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
-import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
-import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
+import {StyleSheet, TextInput, View} from "react-native";
+import {useAppDispatch, useTheme} from "../../../state/hooks";
 import {useState} from "react";
 import {updatePost} from "../../../state/song-suggestion.slice";
 import {Post} from "../../../state/song-suggestion.model";
-import {selectCurrentPost} from "../../../state/song-suggestion.selector";
 
-const AddTagsComponent = ({post}) => {
+const AddTagsComponent = ({post} : {post: Post}) => {
   const {colours} = useTheme;
   const [tagInputValue, setTagInputValue] = useState("");
   const dispatch = useAppDispatch();

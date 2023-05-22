@@ -7,13 +7,13 @@ import {
   faBookmark as faBookmarkRegular
 } from "@fortawesome/free-regular-svg-icons";
 import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
-import {Reaction, ReactionType, SavedPost} from "../../../state/song-suggestion.model";
+import {Post, Reaction, ReactionType, SavedPost} from "../../../state/song-suggestion.model";
 import {User} from "../../user/user.model";
 import {selectCurrentUser} from "../../../state/song-suggestion.selector";
 import {likePostAction, savePostAction} from "../../../state/song-suggestion.slice";
 import {useEffect, useState} from "react";
 
-const ActionButtonsComponent = ({post}) => {
+const ActionButtonsComponent = ({post}: {post: Post}) => {
   const {colours} = useTheme;
 
   const dispatch = useAppDispatch();

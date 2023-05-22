@@ -7,8 +7,9 @@ import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
 import {submitCommentAction} from "../../../state/song-suggestion.slice";
 import {User} from "../../user/user.model";
 import {selectCurrentUser} from "../../../state/song-suggestion.selector";
+import {Post} from "../../../state/song-suggestion.model";
 
-const CommentBoxComponent = ({post}) => {
+const CommentBoxComponent = ({post}: {post: Post}) => {
   const {colours} = useTheme;
   const [comment, setComment] = useState("");
   const dispatch = useAppDispatch();

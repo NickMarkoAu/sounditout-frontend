@@ -2,8 +2,9 @@ import ProfileButton from "./ProfileButton";
 import {Text} from "native-base";
 import {View, StyleSheet} from "react-native";
 import {useTheme} from "../../../state/hooks";
+import {User} from "../user.model";
 
-const ProfileId = ({user}) => {
+const ProfileId = ({user} : {user: User}) => {
   const {colours, fonts} = useTheme;
 
   const styles = StyleSheet.create({

@@ -6,8 +6,9 @@ import {StatusBar} from "expo-status-bar";
 import TopBarComponent from "../components/topbar/TopBarComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import SearchComponent from "../components/search/SearchComponent";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const Search = ({navigation}) => {
+const Search = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({

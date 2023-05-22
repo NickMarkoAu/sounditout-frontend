@@ -3,10 +3,11 @@ import TagComponent from "./TagComponent";
 import {useAppDispatch, useAppSelector, useTheme} from "../../../state/hooks";
 import {selectCurrentPost} from "../../../state/song-suggestion.selector";
 import {updatePost} from "../../../state/song-suggestion.slice";
+import {Post} from "../../../state/song-suggestion.model";
 
-const TagsContainer = ({post}) => {
+const TagsContainer = ({post} : {post: Post}) => {
   const {colours} = useTheme;
-  const tags = post?.image?.tags;
+  const tags: string[] = post?.image?.tags;
   const currentPost = useAppSelector(selectCurrentPost);
   const dispatch = useAppDispatch();
 

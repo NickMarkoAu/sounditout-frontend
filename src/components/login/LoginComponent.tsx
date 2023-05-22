@@ -13,8 +13,9 @@ import {User} from "../user/user.model";
 import {Checkbox} from "native-base";
 import {selectAppInfo} from "../../state/song-suggestion.selector";
 import {AppInfo} from "../../state/appinfo/app-info.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const LoginComponent = ({navigation}) => {
+const LoginComponent = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const [loading, setLoading] = useState(false);

@@ -1,5 +1,5 @@
 import {StyleSheet, TouchableOpacity, View} from "react-native";
-import {ProfileViewMode} from "../../../state/song-suggestion.model";
+import {ProfileViewMode, UserProfile} from "../../../state/song-suggestion.model";
 import {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {useTheme} from "../../../state/hooks";
@@ -7,7 +7,7 @@ import {faCameraRetro, faMusic} from "@fortawesome/free-solid-svg-icons";
 import ImagePosts from "../../post/postviews/ImagePosts";
 import SongPosts from "../../post/postviews/SongPosts";
 
-const ProfilePosts = ({profile}) => {
+const ProfilePosts = ({profile} : {profile: UserProfile}) => {
   const [viewMode, setViewMode] = useState(ProfileViewMode.IMAGE);
   const {colours, fonts} = useTheme;
 

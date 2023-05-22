@@ -15,8 +15,10 @@ import {useEffect} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import * as SecureStore from "expo-secure-store";
+import {User} from "../user/user.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const ProfileComponent = ({user, navigation}) => {
+const ProfileComponent = ({user, navigation} : {user: User, navigation: StackNavigationProp}) => {
   const dispatch = useAppDispatch();
   const profile: UserProfile = useAppSelector(selectCurrentProfile);
   const {colours} = useTheme;
