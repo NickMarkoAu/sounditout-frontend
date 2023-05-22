@@ -231,7 +231,6 @@ const EditProfileComponent = ({navigation} : {navigation: StackNavigationProp}) 
           </TouchableOpacity>
           </View>
           <SongPreviewComponent
-            navigation={navigation}
             onPress={playSong}
             song={profile?.headlineSong}/>
         </View>

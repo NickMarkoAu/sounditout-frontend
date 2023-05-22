@@ -100,7 +100,7 @@ const ResultComponent = ({navigation, generateResult} : {navigation: StackNaviga
       <SafeAreaView style={styles.container}>
         <FlatList style={styles.scrollView} data={songs} renderItem={({item}) =>
           <View style={styles.songPreviewContainer}>
-            <SongPreviewComponent navigation={navigation} song={item} onPress={() => previewSong(item)}/>
+            <SongPreviewComponent song={item} onPress={() => previewSong(item)}/>
             <TouchableOpacity onPress={() => selectSong(item)}>
               <FontAwesomeIcon color={colours.primary} icon={faSquarePlus} size={25}/>
             </TouchableOpacity>

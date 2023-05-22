@@ -81,7 +81,6 @@ const ProfileComponent = ({user, navigation} : {user: User, navigation: StackNav
       <ProfileIdComponent profile={profile} />
       <View style={styles.songPreviewContainer}>
         <SongPreviewComponent
-          navigation={navigation}
           onPress={playSong}
           song={profile?.headlineSong} />
         </View>

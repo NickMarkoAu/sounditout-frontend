@@ -45,7 +45,7 @@ const CreatePostComponent = ({post, navigation}: { post: Post, navigation: Stack
         post && <View style={styles.container}>
             <PostHeadlineComponent image={post.image}/>
             <View style={styles.preview}>
-                <SongPreviewComponent onPress={previewSong} navigation={navigation} song={post?.song}/>
+                <SongPreviewComponent onPress={previewSong} song={post?.song}/>
             </View>
             <TagsContainer post={post}/>
             <AddTagsComponent post={post}/>
