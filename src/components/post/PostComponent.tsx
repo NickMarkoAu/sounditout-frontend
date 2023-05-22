@@ -98,7 +98,7 @@ const PostComponent = ({navigation, post}: {navigation: StackNavigationProp, pos
               </DoubleClick>
             </View>
             <View style={styles.infoContainer}>
-              <SongPreviewComponent navigation={navigation} song={post?.song} onPress={playSong}/>
+              <SongPreviewComponent song={post?.song} onPress={playSong}/>
               <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>
                   {post?.content}
