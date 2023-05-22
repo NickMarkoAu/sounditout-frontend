@@ -2,12 +2,12 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {useTheme} from "../../../state/hooks";
-import {SongMetadata} from "../../../state/song-suggestion.model";
+import {Song, SongMetadata} from "../../../state/song-suggestion.model";
 import {useEffect, useRef, useState} from "react";
 import {getSongMetadata} from "../song.api";
 import LottieView from "lottie-react-native";
 
-const SongPreviewComponent = ({onPress, navigation, song}) => {
+const SongPreviewComponent = ({onPress, song} : {onPress: () => void, song: Song}) => {
   const {colours} = useTheme;
   const [metadata, setMetadata] = useState<SongMetadata>(song?.songMetadata);
   const [songLoading, setSongLoading] = useState<boolean>(true);

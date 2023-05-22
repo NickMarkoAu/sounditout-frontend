@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useTheme} from "../../../state/hooks";
 import {useEffect, useRef, useState} from "react";
-import {SongMetadata} from "../../../state/song-suggestion.model";
+import {Post, Song, SongMetadata} from "../../../state/song-suggestion.model";
 import {getSongMetadata} from "../../video/song.api";
 import LottieView from "lottie-react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
@@ -9,9 +9,9 @@ import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {setCurrentlyPlayingSong} from "../../../state/song-suggestion.slice";
 import {useDispatch} from "react-redux";
 
-const SongPost = ({post}) => {
+const SongPost = ({post} : {post: Post}) => {
   const {colours} = useTheme;
-  const song = post?.song;
+  const song : Song = post?.song;
   const [metadata, setMetadata] = useState<SongMetadata>(song?.songMetadata);
   const [songLoading, setSongLoading] = useState<boolean>(true);
   const animation = useRef(null);

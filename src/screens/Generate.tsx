@@ -5,8 +5,9 @@ import React from "react";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import {StyleSheet, View} from "react-native";
 import {useTheme} from "../state/hooks";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const Generate = ({navigation}) => {
+const Generate = ({navigation}: {navigation: StackNavigationProp}) => {
   const imageUri = navigation.state.params.imageUri;
 
   const {colours} = useTheme;

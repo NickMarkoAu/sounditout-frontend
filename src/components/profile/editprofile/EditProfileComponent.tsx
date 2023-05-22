@@ -13,8 +13,9 @@ import SongPreviewComponent from "../../video/preview/SongPreviewComponent";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {User} from "../../user/user.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const EditProfileComponent = ({navigation}) => {
+const EditProfileComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours, fonts} = useTheme;
   const user: User = useAppSelector(selectCurrentUser);
   const loadedProfile: UserProfile = useAppSelector(selectCurrentProfile);

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const validateInviteCode = async (inviteCode) => {
+export const validateInviteCode = async (inviteCode: string) => {
   try {
     console.log("Validating invite code: ", inviteCode);
     const response = await axios.get(`/api/invite/validate/${inviteCode}`);

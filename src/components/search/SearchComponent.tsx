@@ -10,8 +10,9 @@ import {selectCurrentUser, selectRecentSearches, selectSearchResults} from "../.
 import ImagePosts from "../post/postviews/ImagePosts";
 import SongPosts from "../post/postviews/SongPosts";
 import ProfileList from "../profile/list/ProfileList";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const SearchComponent = ({navigation}) => {
+const SearchComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours, fonts} = useTheme;
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState(SearchType.POST);

@@ -3,8 +3,9 @@ import ImagePost from "./ImagePost";
 import {useAppSelector, useTheme} from "../../../state/hooks";
 import {selectLoading} from "../../../state/song-suggestion.selector";
 import AnimatedLoader from "react-native-animated-loader";
+import {Post} from "../../../state/song-suggestion.model";
 
-const ImagePosts = ({posts = []}) => {
+const ImagePosts = ({posts = []} : {posts: Post[]}) => {
   const loading = useAppSelector(selectLoading);
   const {colours} = useTheme;
 

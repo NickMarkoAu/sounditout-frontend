@@ -6,8 +6,9 @@ import {StatusBar} from "expo-status-bar";
 import TopBarComponent from "../components/topbar/TopBarComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import SelectHeadlineSongComponent from "../components/profile/editprofile/SelectHeadlineSongComponent";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const SelectHeadlineSong = ({navigation}) => {
+const SelectHeadlineSong = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({

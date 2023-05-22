@@ -4,8 +4,9 @@ import {toggleFollowUserAction} from "../../../state/song-suggestion.slice";
 import {useState} from "react";
 import {UserProfile} from "../../../state/song-suggestion.model";
 import {User} from "../../user/user.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const ProfileActionButtons = ({profile, navigation}) => {
+const ProfileActionButtons = ({profile, navigation} : {profile: UserProfile, navigation: StackNavigationProp}) => {
   const isOwn = profile?.own;
   const [isFollowing, setIsFollowing] = useState(profile?.following);
   const {colours} = useTheme;

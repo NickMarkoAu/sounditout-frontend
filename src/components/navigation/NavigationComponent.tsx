@@ -6,8 +6,9 @@ import ProfileButton from "../user/profile/ProfileButton";
 import {useAppSelector, useTheme} from "../../state/hooks";
 import {User} from "../user/user.model";
 import {selectCurrentUser} from "../../state/song-suggestion.selector";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const NavigationComponent = ({navigation}) => {
+const NavigationComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
   const user: User = useAppSelector(selectCurrentUser);
   const styles = StyleSheet.create({

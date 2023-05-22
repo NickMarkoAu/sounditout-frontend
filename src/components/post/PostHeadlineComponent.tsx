@@ -2,11 +2,10 @@ import {Image, StyleSheet, TextInput, View} from "react-native";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {useEffect, useState} from "react";
 import {updatePost} from "../../state/song-suggestion.slice";
-import {Post} from "../../state/song-suggestion.model";
+import {Post, UserUploadedImage} from "../../state/song-suggestion.model";
 import {selectCurrentPost} from "../../state/song-suggestion.selector";
-import {getImageSource} from "../../shared/image.utils";
 
-const PostHeadlineComponent = ({image}) => {
+const PostHeadlineComponent = ({image}: {image: UserUploadedImage}) => {
   const {colours} = useTheme;
   const [imageContent, setImageContent] = useState(null);
   const [caption, setCaption] = useState("");
@@ -55,7 +54,7 @@ const PostHeadlineComponent = ({image}) => {
   });
 
   useEffect(() => {
-    setImageContent(getImageSource(image));
+    setImageContent(image?.presignedUrl);
   }, [image]);
 
   useEffect(() => {

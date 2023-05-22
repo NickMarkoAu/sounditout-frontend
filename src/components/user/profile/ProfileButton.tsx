@@ -1,8 +1,9 @@
 import {Image, View, StyleSheet, TouchableOpacity} from "react-native";
 import {useAppDispatch, useTheme} from "../../../state/hooks";
 import {refreshUserAction} from "../../../state/song-suggestion.slice";
+import {User} from "../user.model";
 
-const ProfileButton = ({onPress, user}) => {
+const ProfileButton = ({onPress, user} : {onPress: ()=> void, user: User}) => {
   const {colours} = useTheme;
   const dispatch = useAppDispatch();
 

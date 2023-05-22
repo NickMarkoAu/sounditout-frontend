@@ -5,8 +5,9 @@ import {faPlayCircle} from "@fortawesome/free-solid-svg-icons";
 import {setCurrentlyPlayingSong, updateCurrentProfile} from "../../../state/song-suggestion.slice";
 import {User} from "../../user/user.model";
 import {UserProfile} from "../../../state/song-suggestion.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const ProfileListId = ({profile, navigation}) => {
+const ProfileListId = ({profile, navigation} : {profile: UserProfile, navigation: StackNavigationProp}) => {
   const {colours, fonts} = useTheme;
   const dispatch = useAppDispatch();
 

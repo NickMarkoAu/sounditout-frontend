@@ -5,8 +5,10 @@ import NavigationComponent from "../components/navigation/NavigationComponent";
 import React from "react";
 import {StyleSheet, View} from "react-native";
 import {useTheme} from "../state/hooks";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
+import {Song} from "../state/song-suggestion.model";
 
-const Player = ({navigation, song}) => {
+const Player = ({navigation, song}: {navigation: StackNavigationProp, song: Song}) => {
   const {colours} = useTheme;
 
   //TODO add song key here
@@ -28,7 +30,7 @@ const Player = ({navigation, song}) => {
       <StatusBar style="light"/>
       <TopBarComponent/>
       {/*//TODO make this data driven*/}
-      <PlayerComponent navigation={navigation} song={song}/>
+      <PlayerComponent song={song}/>
       <NavigationComponent navigation={navigation}/>
     </View>
   );

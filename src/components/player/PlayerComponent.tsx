@@ -1,12 +1,11 @@
 import React, {useState, useCallback, useRef} from "react";
 import {View, StyleSheet, Image, TouchableOpacity} from "react-native";
-import YoutubePlayer from "react-native-youtube-iframe";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCirclePlay, faCirclePause, faFastForward, faFastBackward} from "@fortawesome/free-solid-svg-icons";
 import PreviewComponent from "./PreviewComponent";
 import {useTheme} from "../../state/hooks";
 
-const PlayerComponent = ({navigation, song}) => {
+const PlayerComponent = ({song}) => {
   const {colours} = useTheme;
 
   const [playing, setPlaying] = useState(false);
@@ -74,9 +73,9 @@ const PlayerComponent = ({navigation, song}) => {
           source={require("../../../assets/samples/test-profile.png")} //TODO get this from state
         />
       </View>
-      <View style={styles.previewContainer}>
-        <PreviewComponent song={song}/>
-      </View>
+      {/*<View style={styles.previewContainer}>*/}
+      {/*  <PreviewComponent song={song}/>*/}
+      {/*</View>*/}
       <View style={{height: 0}}>
         <View>
           {/*TODO replace this with whatever player since we are no longer using Youtube*/}

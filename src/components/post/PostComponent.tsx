@@ -9,11 +9,12 @@ import CommentsComponent from "./comments/CommentsComponent";
 import ProfileId from "../user/profile/ProfileId";
 import React from 'react';
 import DoubleClick from 'react-native-double-tap';
-import {Reaction, ReactionType} from "../../state/song-suggestion.model";
+import {Post, Reaction, ReactionType} from "../../state/song-suggestion.model";
 import {User} from "../user/user.model";
 import {selectCurrentUser} from "../../state/song-suggestion.selector";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const PostComponent = ({navigation, post}) => {
+const PostComponent = ({navigation, post}: {navigation: StackNavigationProp, post: Post}) => {
   const {colours, fonts} = useTheme;
   const dispatch = useAppDispatch();
   const user: User = useAppSelector(selectCurrentUser);
@@ -85,7 +86,7 @@ const PostComponent = ({navigation, post}) => {
          <VStack style={styles.postContainer} space="2">
             <View style={styles.postHeader}>
               <ProfileId user={post.user} />
-              <Text style={styles.dateStyle}>{post.date}</Text>
+              <Text style={styles.dateStyle}>{post.date.toString()}</Text>
             </View>
             <View style={styles.imageContainer}>
               <DoubleClick

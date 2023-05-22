@@ -180,7 +180,7 @@ export const generateAction = createAsyncThunk<GenerateResult, {imageUri: string
   }
 );
 
-export const refreshUserAction = createAsyncThunk<User, { userId: number }>(
+export const refreshUserAction = createAsyncThunk<User, { userId: string }>(
   'user/refreshUser',
   async ({userId}, {rejectWithValue}) => {
     try {

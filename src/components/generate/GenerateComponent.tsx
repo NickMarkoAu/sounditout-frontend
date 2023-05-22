@@ -7,8 +7,9 @@ import GenerateSettingsComponent from "./GenerateSettingsComponent";
 import ResultComponent from "./result/ResultComponent";
 import {User} from "../user/user.model";
 import AnimatedLoader from "react-native-animated-loader";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const GenerateComponent = ({navigation, imageUri}) => {
+const GenerateComponent = ({navigation, imageUri} : {navigation: StackNavigationProp, imageUri: string}) => {
   const {colours, fonts} = useTheme;
 
   const pricingOptions: PricingOptions = useAppSelector(selectPricingOptions);

@@ -5,8 +5,9 @@ import {faKey} from "@fortawesome/free-solid-svg-icons";
 import {useAppDispatch, useAppSelector, useTheme} from "../../state/hooks";
 import {validateInviteCodeAction} from "../../state/song-suggestion.slice";
 import {selectLoading} from "../../state/song-suggestion.selector";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const InviteCodeComponent = ({navigation}) => {
+const InviteCodeComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours, fonts} = useTheme;
   const [inviteCode, setInviteCode] = useState('');
   const inviteCodeValid: boolean = useAppSelector(state => state.signup?.inviteCodeValid);

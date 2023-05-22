@@ -1,6 +1,7 @@
 import {View, StyleSheet, Image} from "react-native";
+import {Post} from "../../../state/song-suggestion.model";
 
-const ImagePost = ({post}) => {
+const ImagePost = ({post} : {post: Post}) => {
   const styles = StyleSheet.create({
     container: {
       width: "32%",

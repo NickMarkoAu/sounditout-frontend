@@ -5,10 +5,10 @@ import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import {StatusBar} from "expo-status-bar";
 import TopBarComponent from "../components/topbar/TopBarComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
-import ProfileComponent from "../components/profile/ProfileComponent";
 import EditProfileComponent from "../components/profile/editprofile/EditProfileComponent";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const EditProfile = ({navigation}) => {
+const EditProfile = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({

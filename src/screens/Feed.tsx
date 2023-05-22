@@ -6,8 +6,9 @@ import FeedComponent from "../components/feed/FeedComponent";
 import NavigationComponent from "../components/navigation/NavigationComponent";
 import React from "react";
 import {useTheme} from "../state/hooks";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const Feed = ({navigation}) => {
+const Feed = ({navigation}: {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
 
   const styles = StyleSheet.create({

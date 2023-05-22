@@ -5,8 +5,9 @@ import {faEnvelope, faLock, faUser, faCalendarAlt} from "@fortawesome/free-solid
 import {useAppSelector, useTheme} from "../../state/hooks";
 import {selectAppInfo} from "../../state/song-suggestion.selector";
 import {AppInfo} from "../../state/appinfo/app-info.model";
+import {StackNavigationProp} from "react-navigation-stack/lib/typescript/src/vendor/types";
 
-const SignupComponent = ({navigation}) => {
+const SignupComponent = ({navigation} : {navigation: StackNavigationProp}) => {
   const {colours} = useTheme;
   const inviteCode = navigation.state.params.inviteCode;
   const appInfo: AppInfo = useAppSelector(selectAppInfo);

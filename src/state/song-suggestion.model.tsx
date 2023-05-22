@@ -39,6 +39,7 @@ export interface Post {
   tags: string[];
   liked?: boolean;
   saved?: boolean;
+  shared?: boolean;
 }
 
 export interface SavedPost {
@@ -71,9 +72,9 @@ export enum ReactionType {
 
 export interface UserUploadedImage {
   id: string;
-  url: string;
   presignedUrl: string;
   tags: string[];
+  adultContent: boolean;
 }
 
 export interface UserComment {

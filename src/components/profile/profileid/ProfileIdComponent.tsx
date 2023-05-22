@@ -1,7 +1,8 @@
 import {Image, StyleSheet, View, Text} from "react-native";
 import {useTheme} from "../../../state/hooks";
+import {UserProfile} from "../../../state/song-suggestion.model";
 
-const ProfileIdComponent = ({profile}) => {
+const ProfileIdComponent = ({profile} : {profile: UserProfile}) => {
   const {colours, fonts} = useTheme;
 
   const styles = StyleSheet.create({
